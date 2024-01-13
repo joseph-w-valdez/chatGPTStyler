@@ -1,9 +1,8 @@
-
 {
     "manifest_version": 3,
-    "name": "Chrome Extension Starter",
-    "description": "A Chrome Extension starter kit",
-    "version": "1.0.0",
+    "name": "chatgpt-styler",
+    "description": "Extension to allow users to change the styling for their ChatGPT experience.",
+    "version": "0.0.1",
     "action": {
         "default_icon": {
             "16": "icon-16.png",
@@ -20,7 +19,12 @@
         "48": "icon-48.png",
         "128": "icon-128.png"
     },
-    "host_permissions": ["https:\/\/*/*"],
-    "permissions": ["tabs", "activeTab", "notifications", "scripting"]
+    "host_permissions": ["*://chat.openai.com/*"],
+    "permissions": [],
+    "content_scripts": [
+        {
+            "matches": ["*://chat.openai.com/*"],
+            "js": ["js/contentScript.js"]
+        }
+    ]
 }
-

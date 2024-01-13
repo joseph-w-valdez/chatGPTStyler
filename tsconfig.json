@@ -5,8 +5,9 @@
             "@src/*": ["src/*"]
         },
         "target": "es5",
-        "module": "commonjs",
+        "module": "es6",
         "moduleResolution": "node",
+        "noImplicitReturns": true,
         "rootDir": "./src",
         "outDir": "dist/js",
         "strict": true,

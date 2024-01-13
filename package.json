@@ -1,7 +1,7 @@
 {
-    "name": "react-typescript-chrome-extension-starter",
-    "version": "2.0.0",
-    "description": "Web Extension starter kit built with React, TypeScript, Tailwind CSS, EsLint, Prettier & Webpack",
+    "name": "chatgpt-styler",
+    "version": "0.0.1",
+    "description": "Extension to allow users to change the styling for their ChatGPT experience.",
     "main": "index.js",
     "scripts": {
         "build": "webpack --config webpack.prod.js",
@@ -14,21 +14,22 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/aeksco/react-typescript-chrome-extension-starter.git"
+        "url": "https://github.com/joseph-w-valdez/chatGPTStyler"
     },
     "keywords": [
         "react",
         "typescript",
         "chrome",
         "extension",
-        "boilerplate"
+        "ChatGPT",
+        "UI",
+        "personalize",
+        "edit",
+        "appearance"
     ],
-    "author": "Alexander Schwartzberg",
+    "author": "Joseph Valdez",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/aeksco/react-typescript-chrome-extension-starter/issues"
-    },
-    "homepage": "https://github.com/aeksco/react-typescript-chrome-extension-starter#readme",
+    "homepage": "https://github.com/joseph-w-valdez/chatGPTStyler",
     "devDependencies": {
         "@babel/core": "^7.11.6",
         "@babel/preset-env": "^7.11.5",
@@ -49,7 +50,6 @@
         "@typescript-eslint/eslint-plugin": "^4.4.1",
         "@typescript-eslint/parser": "^4.4.1",
         "autoprefixer": "^10.4.1",
-        "awesome-typescript-loader": "^5.2.1",
         "babel-core": "^6.26.3",
         "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",
@@ -66,8 +66,8 @@
         "react-test-renderer": "^17.0.2",
         "tailwindcss": "^3.0.8",
         "ts-jest": "^26.4.1",
-        "ts-loader": "^8.0.5",
-        "typescript": "^4.0.3",
+        "ts-loader": "^8.3.0",
+        "typescript": "^4.5.4",
         "webpack": "^5.76.0",
         "webpack-cli": "^4.9.1",
         "webpack-merge": "^5.8.0"
