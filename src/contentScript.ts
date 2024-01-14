@@ -1,8 +1,7 @@
 console.log("Content script loaded.");
 
 // changing the background color of the page
-document.body.style.backgroundColor = '#343541';
-
+/* document.body.style.backgroundColor = '#343541'; */
 
 const customStyle = document.createElement('style');
 document.head.appendChild(customStyle);
@@ -12,14 +11,15 @@ let chatBoxColorUserStyle = '';
 let chatBoxColorNonUserStyle = '';
 let chatBoxPaddingStyle = ''; 
 let chatBoxBorderRadiusStyle = '';
+let inputBoxMaxWidthStyle = '';
 
 const updateStyles = () => {
     customStyle.textContent = maxWidthStyle + chatBoxColorUserStyle + chatBoxColorNonUserStyle 
-                              + chatBoxPaddingStyle + chatBoxBorderRadiusStyle;
+                              + chatBoxPaddingStyle + chatBoxBorderRadiusStyle + inputBoxMaxWidthStyle;
 };
 
 const updateMaxWidth = (widthPercentage: number) => {
-    maxWidthStyle = `[data-testid] > * > * { max-width: ${widthPercentage}% }`;
+    maxWidthStyle = `@media (min-width: 1200px) { [data-testid] > * > * { max-width: ${widthPercentage}% } }`;
     updateStyles();
 };
 
@@ -42,12 +42,20 @@ const updateChatBoxBorderRadius = (borderRadius: string) => {
     updateStyles();
 };
 
+const updateInputBoxMaxWidth = (widthPercentage: number) => {
+    inputBoxMaxWidthStyle = `@media (min-width: 1600px) {
+      form { max-width: ${widthPercentage}% !important; }
+    }`;
+    updateStyles();
+}
+
 // default settings
 updateMaxWidth(95)
 updateChatBoxColor('#3c6083', false)   
 updateChatBoxColor('#4e7645', true)   
 updateChatBoxPadding('10px');
 updateChatBoxBorderRadius('5px');
+updateInputBoxMaxWidth(70)
 
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener(
