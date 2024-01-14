@@ -1,19 +1,24 @@
-### v2.0.0
+# Changelog
 
--   Bump `version` field in `package.json` to `2.0.0`
--   Upgrade `react` + `react-dom` to version `17.x`
--   Upgrade Storybook to version `6.4`
--   Upgrade `webpack` to `5.x`
--   Storybook stories written in Component Story Format
--   Add Tailwind@3.x with CSS modules
--   Removed Bootstrap and SCSS
--   Add `CONTRIBUTING.md`
--   Add `CHANGELOG.md`
--   Add `CODE_OF_CONDUCT.md`
--   Add `.github/PULL_REQUEST_TEMPLATE.md`
--   Add `.github/ISSUE_TEMPLATE.md`
--   Simplify Storybook tooling
--   Updated placeholder icon for extension
--   Verified support for Microsoft Edge
--   Updated `README.md` screenshots
--   Add `.vscode` directory with workplace settings and recommended extensions
+## [0.0.1] - 2024-01-13
+
+### Added
+
+-   Implemented basic content script functionality:
+    -   Enabled changing the background color of the page (commented out for now).
+    -   Created a custom style element and attached it to the `head` element.
+    -   Added functions to update various styles dynamically:
+        -   `updateMessageMaxWidth(widthPercentage: number)`: Updates the maximum width of messages.
+        -   `updateMessageColor(color: string, isUser: boolean)`: Updates the background color of messages based on user or non-user messages.
+        -   `updateMessagePadding(padding: string)`: Updates the padding of messages.
+        -   `updateMessageBorderRadius(borderRadius: string)`: Updates the border radius of messages.
+        -   `updateInputBoxMaxWidth(widthPercentage: number)`: Updates the maximum width of the input box.
+    -   Created `setDefaultSettings()` function to set default styles on script load.
+
+### Changed
+
+-   No changes in this release.
+
+### Fixed
+
+-   No bug fixes in this release.

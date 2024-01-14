@@ -7,15 +7,15 @@ const customStyle = document.createElement('style');
 document.head.appendChild(customStyle);
 
 let messageMaxWidthStyle = '';
-let chatBoxColorUserStyle = ''; 
-let chatBoxColorNonUserStyle = '';
-let chatBoxPaddingStyle = ''; 
-let chatBoxBorderRadiusStyle = '';
+let messageColorUserStyle = ''; 
+let messageColorNonUserStyle = '';
+let messagePaddingStyle = ''; 
+let messageBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
 
 const updateAllStyles = () => {
-    customStyle.textContent = messageMaxWidthStyle + chatBoxColorUserStyle + chatBoxColorNonUserStyle 
-                              + chatBoxPaddingStyle + chatBoxBorderRadiusStyle + inputBoxMaxWidthStyle;
+    customStyle.textContent = messageMaxWidthStyle + messageColorUserStyle + messageColorNonUserStyle 
+                              + messagePaddingStyle + messageBorderRadiusStyle + inputBoxMaxWidthStyle;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
@@ -25,20 +25,20 @@ const updateMessageMaxWidth = (widthPercentage: number) => {
 
 const updateMessageColor = (color: string, isUser: boolean) => {
     if (isUser) {
-        chatBoxColorUserStyle = `[data-testid]:nth-child(even) > * > * { background-color: ${color}; }`;
+        messageColorUserStyle = `[data-testid]:nth-child(even) > * > * { background-color: ${color}; }`;
     } else {
-        chatBoxColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * { background-color: ${color}; }`;
+        messageColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * { background-color: ${color}; }`;
     }
     updateAllStyles();
 };
 
 const updateMessagePadding = (padding: string) => {
-    chatBoxPaddingStyle = `[data-testid] > * > * { padding: ${padding}; }`;
+    messagePaddingStyle = `[data-testid] > * > * { padding: ${padding}; }`;
     updateAllStyles();
 };
 
 const updateMessageBorderRadius = (borderRadius: string) => {
-    chatBoxBorderRadiusStyle = `[data-testid] > * > * { border-radius: ${borderRadius}; }`;
+    messageBorderRadiusStyle = `[data-testid] > * > * { border-radius: ${borderRadius}; }`;
     updateAllStyles();
 };
 
