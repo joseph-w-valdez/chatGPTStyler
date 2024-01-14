@@ -6,56 +6,60 @@ console.log("Content script loaded.");
 const customStyle = document.createElement('style');
 document.head.appendChild(customStyle);
 
-let maxWidthStyle = '';
+let messageMaxWidthStyle = '';
 let chatBoxColorUserStyle = ''; 
 let chatBoxColorNonUserStyle = '';
 let chatBoxPaddingStyle = ''; 
 let chatBoxBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
 
-const updateStyles = () => {
-    customStyle.textContent = maxWidthStyle + chatBoxColorUserStyle + chatBoxColorNonUserStyle 
+const updateAllStyles = () => {
+    customStyle.textContent = messageMaxWidthStyle + chatBoxColorUserStyle + chatBoxColorNonUserStyle 
                               + chatBoxPaddingStyle + chatBoxBorderRadiusStyle + inputBoxMaxWidthStyle;
 };
 
-const updateMaxWidth = (widthPercentage: number) => {
-    maxWidthStyle = `@media (min-width: 1200px) { [data-testid] > * > * { max-width: ${widthPercentage}% } }`;
-    updateStyles();
+const updateMessageMaxWidth = (widthPercentage: number) => {
+    messageMaxWidthStyle = `@media (min-width: 1200px) { [data-testid] > * > * { max-width: ${widthPercentage}% } }`;
+    updateAllStyles();
 };
 
-const updateChatBoxColor = (color: string, isUser: boolean) => {
+const updateMessageColor = (color: string, isUser: boolean) => {
     if (isUser) {
         chatBoxColorUserStyle = `[data-testid]:nth-child(even) > * > * { background-color: ${color}; }`;
     } else {
         chatBoxColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * { background-color: ${color}; }`;
     }
-    updateStyles();
+    updateAllStyles();
 };
 
-const updateChatBoxPadding = (padding: string) => {
+const updateMessagePadding = (padding: string) => {
     chatBoxPaddingStyle = `[data-testid] > * > * { padding: ${padding}; }`;
-    updateStyles();
+    updateAllStyles();
 };
 
-const updateChatBoxBorderRadius = (borderRadius: string) => {
+const updateMessageBorderRadius = (borderRadius: string) => {
     chatBoxBorderRadiusStyle = `[data-testid] > * > * { border-radius: ${borderRadius}; }`;
-    updateStyles();
+    updateAllStyles();
 };
 
 const updateInputBoxMaxWidth = (widthPercentage: number) => {
     inputBoxMaxWidthStyle = `@media (min-width: 1600px) {
       form { max-width: ${widthPercentage}% !important; }
     }`;
-    updateStyles();
+    updateAllStyles();
 }
 
-// default settings
-updateMaxWidth(95)
-updateChatBoxColor('#3c6083', false)   
-updateChatBoxColor('#4e7645', true)   
-updateChatBoxPadding('10px');
-updateChatBoxBorderRadius('5px');
-updateInputBoxMaxWidth(70)
+const setDefaultSettings = () => {
+    updateMessageMaxWidth(95)
+    updateMessageColor('#3c6083', false)   
+    updateMessageColor('#4e7645', true)   
+    updateMessagePadding('10px');
+    updateMessageBorderRadius('5px');
+    updateInputBoxMaxWidth(70)
+}
+
+// set default settings on load
+setDefaultSettings()
 
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener(

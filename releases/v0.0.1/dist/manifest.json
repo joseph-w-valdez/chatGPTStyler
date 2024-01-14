@@ -1,0 +1,30 @@
+{
+    "manifest_version": 3,
+    "name": "chatgpt-styler",
+    "description": "Extension to allow users to change the styling for their ChatGPT experience.",
+    "version": "0.0.1",
+    "action": {
+        "default_icon": {
+            "16": "icon-16.png",
+            "48": "icon-48.png",
+            "128": "icon-128.png"
+        },
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "service_worker": "js/backgroundPage.js"
+    },
+    "icons": {
+        "16": "icon-16.png",
+        "48": "icon-48.png",
+        "128": "icon-128.png"
+    },
+    "host_permissions": ["*://chat.openai.com/*"],
+    "permissions": ["activeTab"],
+    "content_scripts": [
+        {
+            "matches": ["*://chat.openai.com/*"],
+            "js": ["js/contentScript.js"]
+        }
+    ]
+}
