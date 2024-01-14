@@ -20,7 +20,7 @@
         "128": "icon-128.png"
     },
     "host_permissions": ["*://chat.openai.com/*"],
-    "permissions": [],
+    "permissions": ["activeTab"],
     "content_scripts": [
         {
             "matches": ["*://chat.openai.com/*"],
