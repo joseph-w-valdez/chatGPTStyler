@@ -1,34 +1,35 @@
 console.log("Content script loaded.");
 
-// changing the background color of the page
-/* document.body.style.backgroundColor = '#343541'; */
-
 const customStyle = document.createElement('style');
 document.head.appendChild(customStyle);
 
 let messageMaxWidthStyle = '';
-let messageColorUserStyle = ''; 
-let messageColorNonUserStyle = '';
 let messagePaddingStyle = ''; 
 let messageBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
+let messageBoxColors = '';
+
+const updateMessageColor = (color: string, isUser: boolean, isDark: boolean) => {
+    messageBoxColors = `
+      @media (prefers-color-scheme: light) {
+        [data-testid]:nth-child(even) > * > * { background-color: ${isUser && !isDark ? color : '#62B1F6'} }
+        [data-testid]:nth-child(odd) > * > * { background-color: ${!isUser && !isDark ? color : '#EEEEEE'} }
+      }
+      @media (prefers-color-scheme: dark) {
+        [data-testid]:nth-child(even) > * > * { background-color: ${isUser && isDark ? color : '#4e7645'} }
+        [data-testid]:nth-child(odd) > * > * { background-color: ${!isUser && isDark ? color : '#3c6083'} }
+      }
+    `;
+    updateAllStyles();
+};
 
 const updateAllStyles = () => {
-    customStyle.textContent = messageMaxWidthStyle + messageColorUserStyle + messageColorNonUserStyle 
-                              + messagePaddingStyle + messageBorderRadiusStyle + inputBoxMaxWidthStyle;
+    customStyle.textContent = messageBoxColors + messageMaxWidthStyle + messagePaddingStyle 
+                              + messageBorderRadiusStyle + inputBoxMaxWidthStyle;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
     messageMaxWidthStyle = `@media (min-width: 1200px) { [data-testid] > * > * { max-width: ${widthPercentage}% } }`;
-    updateAllStyles();
-};
-
-const updateMessageColor = (color: string, isUser: boolean) => {
-    if (isUser) {
-        messageColorUserStyle = `[data-testid]:nth-child(even) > * > * { background-color: ${color}; }`;
-    } else {
-        messageColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * { background-color: ${color}; }`;
-    }
     updateAllStyles();
 };
 
@@ -49,13 +50,26 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
     updateAllStyles();
 }
 
+const resetDefaultMessageColors = () => {
+  messageBoxColors = `
+  @media (prefers-color-scheme: light) {
+    [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
+    [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
+  }
+  @media (prefers-color-scheme: dark) {
+    [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
+    [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
+  }
+`;
+updateAllStyles();
+}
+
 const setDefaultSettings = () => {
-    updateMessageMaxWidth(95)
-    updateMessageColor('#3c6083', false)   
-    updateMessageColor('#4e7645', true)   
+    updateMessageMaxWidth(95);
     updateMessagePadding('10px');
     updateMessageBorderRadius('5px');
-    updateInputBoxMaxWidth(70)
+    updateInputBoxMaxWidth(70);
+    resetDefaultMessageColors();
 }
 
 // set default settings on load
