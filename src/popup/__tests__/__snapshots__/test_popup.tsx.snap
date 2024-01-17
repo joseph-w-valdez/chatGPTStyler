@@ -7,38 +7,22 @@ exports[`component renders 1`] = `
   <div
     className="mx-4 my-4"
   >
-    <div
-      className="row"
-    >
-      <div
-        className="col-lg-12 text-center"
-      >
-        <p
-          className="lead mb-0"
-        >
-          Example Extension
-        </p>
-      </div>
-    </div>
+    <Header />
     <hr />
-    <div
-      className="grid gap-3 grid-cols-2 mt-3 w-full"
-    >
-      <button
-        className="btn"
-        data-testid="scroll-to-top"
-        onClick={[Function]}
-      >
-        Scroll To Top
-      </button>
-      <button
-        className="btn"
-        data-testid="scroll-to-bottom"
-        onClick={[Function]}
-      >
-        Scroll To Bottom
-      </button>
-    </div>
+    <RenderPage
+      userMessageColorLiveChange={[Function]}
+      chatMessageColorLiveChange={[Function]}
+      messageMaxWidthLiveChange={[Function]}
+      messagePaddingLiveChange={[Function]}
+      messageBorderRadiusLiveChange={[Function]}
+      inputBoxMaxWidthLiveChange={[Function]}
+      userColorLiveChange={[Function]}
+      userFontSizeOnChange={[Function]}
+      userFontWeightOnChange={[Function]}
+      chatColorLiveChange={[Function]}
+      chatFontSizeOnChange={[Function]}
+      chatFontWeightOnChange={[Function]}
+    />
   </div>
 </div>
 `;

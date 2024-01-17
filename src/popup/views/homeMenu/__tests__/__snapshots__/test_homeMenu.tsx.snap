@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders HomeMenu component correctly 1`] = `
+<div
+  className="grid gap-3 grid-cols-1 mt-3 w-full px-4"
+>
+  <HomeButton
+    btnLabel="Message Editor"
+    dataTestid="message-editor"
+    onClick={[Function]}
+  />
+  <HomeButton
+    btnLabel="Miscellaneous"
+    dataTestid="misc-editor"
+    onClick={[Function]}
+  />
+</div>
+`;

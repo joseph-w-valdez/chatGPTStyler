@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0] - 2024-04-01
+
+### Added
+
+-   Updated popup to be able to update and save settings.
+-   Popup saves settings when closed.
+-   Popup sends message to content script for live changes.
+
 ## [0.1.5] - 2024-02-12
 
 ### Added

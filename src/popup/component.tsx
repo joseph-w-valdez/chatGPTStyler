@@ -1,74 +1,74 @@
 import React from "react";
-import { Hello } from "@src/components/hello";
-import browser, { Tabs } from "webextension-polyfill";
-import { Scroller } from "@src/components/scroller";
+import { useState, useEffect } from "react";
+import browser from "webextension-polyfill";
 import css from "./styles.module.css";
+import { Header } from "@src/components/header/Header";
+import {
+    SettingsType,
+    getOptionsFromStorage,
+} from "@src/lib/utilities/googleStorage";
+import { MessageEditor } from "./views/messageEditor";
+import { HomeMenu } from "./views/homeMenu";
+import { defaultSettings } from "@src/shared/utils/data";
+import { loadSettings } from "@src/shared/utils";
+import { MiscEditor } from "./views/miscEditor/component";
 
-// // // //
+const port = browser.runtime.connect({ name: "popup" });
 
-// Scripts to execute in current tab
-const scrollToTopPosition = 0;
-const scrollToBottomPosition = 9999999;
+export function Popup(): JSX.Element {
+    const [liveSettings, setLiveSettings] = useState<SettingsType>({
+        ...defaultSettings,
+    });
+    const [page, setPage] = useState<string>("Home");
 
-function scrollWindow(position: number) {
-    window.scroll(0, position);
-}
+    const sendSettingsToBackground = (updatedSettings: SettingsType) => {
+        try {
+            console.log("sending settings to background", liveSettings);
+            port.postMessage({
+                type: "updateSettings",
+                settings: updatedSettings,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-/**
- * Executes a string of Javascript on the current tab
- * @param code The string of code to execute on the current tab
- */
-function executeScript(position: number): void {
-    // Query for the active tab in the current window
-    browser.tabs
-        .query({ active: true, currentWindow: true })
-        .then((tabs: Tabs.Tab[]) => {
-            // Pulls current tab from browser.tabs.query response
-            const currentTab: Tabs.Tab | number = tabs[0];
+    useEffect(() => {
+        sendSettingsToBackground(liveSettings);
+    }, [liveSettings]);
 
-            // Short circuits function execution is current tab isn't found
-            if (!currentTab) {
-                return;
-            }
-            const currentTabId: number = currentTab.id as number;
-
-            // Executes the script in the current tab
-            browser.scripting
-                .executeScript({
-                    target: {
-                        tabId: currentTabId,
-                    },
-                    func: scrollWindow,
-                    args: [position],
-                })
-                .then(() => {
-                    console.log("Done Scrolling");
-                });
-        });
-}
-
-// // // //
-
-export function Popup() {
-    // Sends the `popupMounted` event
-    React.useEffect(() => {
+    useEffect(() => {
+        port.postMessage({ popupOpened: true });
         browser.runtime.sendMessage({ popupMounted: true });
+        getOptionsFromStorage((savedOptions) => {
+            setLiveSettings(savedOptions);
+            loadSettings(savedOptions);
+            console.log("loaded options from storage", savedOptions);
+        });
+        return () => {
+            port.disconnect();
+        };
     }, []);
 
     // Renders the component tree
     return (
         <div className={css.popupContainer}>
-            <div className="mx-4 my-4">
-                <Hello />
-                <hr />
-                <Scroller
-                    onClickScrollTop={() => {
-                        executeScript(scrollToTopPosition);
-                    }}
-                    onClickScrollBottom={() => {
-                        executeScript(scrollToBottomPosition);
-                    }}
-                />
+            <div className="w-full">
+                <Header page={page} setPage={setPage} />
+                <hr className="mb-2" />
+                {page === "Message Editor" ? (
+                    <MessageEditor
+                        liveSettings={liveSettings}
+                        setLiveSettings={setLiveSettings}
+                    />
+                ) : page === "Miscellaneous" ? (
+                    <MiscEditor
+                        liveSettings={liveSettings}
+                        setLiveSettings={setLiveSettings}
+                    />
+                ) : (
+                    <HomeMenu setPage={setPage} />
+                )}
             </div>
         </div>
     );

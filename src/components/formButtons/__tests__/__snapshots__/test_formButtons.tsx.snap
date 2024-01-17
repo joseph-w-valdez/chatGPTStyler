@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component renders 1`] = `
+<div className="grid grid-cols-4 gap-1">
+  <button
+    className="btnGrey col-span-2"
+    onClick={[Function]}
+  >
+    Restore Default
+  </button>
+  <button
+    className="btn"
+    disabled={true}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="btnRed"
+    disabled={true}
+    onClick={[Function]}
+  >
+    Cancel
+  </button>
+</div>
+`;
