@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextEditor renders correctly 1`] = `
+  <div>
+    <TextFormControls
+      colorLiveChange={[Function]}
+      fontSizeOnChange={[Function]}
+      fontWeightOnChange={[Function]}
+      section="User"
+    />
+    <TextFormControls
+      colorLiveChange={[Function]}
+      fontSizeOnChange={[Function]}
+      fontWeightOnChange={[Function]}
+      section="Chat"
+    />
+  </div>
+`;

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextFormControls Default 1`] = `
+<div>
+    <h1>Sample Text</h1>
+    <hr />
+    <label>
+        Text Color:
+        <select defaultValue="" id="SampleColorType" onChange={[Function]}>
+            <option disabled={true} hidden={true} value="">
+                Color Type
+            </option>
+            <option value="name">Name</option>
+            <option value="hex">HEX</option>
+            <option value="rgb">RGB</option>
+            <option value="hsl">HSL</option>
+        </select>
+        <input
+            disabled={false}
+            id="SampleTextColor"
+            maxLength={0}
+            placeholder="Select Color Type"
+            type="text"
+            value=""
+            onChange={[Function]}
+        />
+    </label>
+    <br />
+    <label>
+        Font Size:
+        <input
+            id="SampleFontSize"
+            placeholder="pixel"
+            type="text"
+            onChange={[Function]}
+        />
+    </label>
+    <br />
+    <label>
+        Font Weight:
+        <select defaultValue="" id="SampleFontWeight" onChange={[Function]}>
+            <option disabled={true} hidden={true} value="">
+                Select a Font Weight
+            </option>
+            <option value="100">Thin</option>
+            <option value="200">Extra Light</option>
+            <option value="300">Light</option>
+            <option value="400">Normal</option>
+            <option value="500">Medium</option>
+            <option value="600">Semi Bold</option>
+            <option value="700">Bold</option>
+            <option value="800">Extra Bold</option>
+            <option value="900">Heavy</option>
+            <option value="950">Extra Black</option>
+        </select>
+    </label>
+</div>;
+`;

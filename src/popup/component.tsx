@@ -1,73 +1,131 @@
 import React from "react";
-import { Hello } from "@src/components/hello";
-import browser, { Tabs } from "webextension-polyfill";
-import { Scroller } from "@src/components/scroller";
+import { useState, useEffect } from "react";
+import browser from "webextension-polyfill";
 import css from "./styles.module.css";
+import { Header } from "@src/components/header";
+import { RenderPage } from "@src/lib/utilities/RenderPage";
+import {
+    OptionsTypes,
+    getOptionsFromStorage,
+    saveOptionsToStorage,
+} from "@src/lib/utilities/googleStorage";
 
-// // // //
+export function Popup(): JSX.Element {
+    const [options, setOptions] = useState<OptionsTypes>({
+        messageColorUserStyle: "",
+        messageColorNonUserStyle: "",
+        messageMaxWidthStyle: "",
+        messagePaddingStyle: "",
+        messageBorderRadiusStyle: "",
+        inputBoxMaxWidthStyle: "",
+        textColorUserStyle: "",
+        textColorNonUserStyle: "",
+        textSizeUserStyle: "",
+        textSizeNonUserStyle: "",
+        textWeightUserStyle: "",
+        textWeightNonUserStyle: "",
+    });
 
-// Scripts to execute in current tab
-const scrollToTopPosition = 0;
-const scrollToBottomPosition = 9999999;
-
-function scrollWindow(position: number) {
-    window.scroll(0, position);
-}
-
-/**
- * Executes a string of Javascript on the current tab
- * @param code The string of code to execute on the current tab
- */
-function executeScript(position: number): void {
-    // Query for the active tab in the current window
-    browser.tabs
-        .query({ active: true, currentWindow: true })
-        .then((tabs: Tabs.Tab[]) => {
-            // Pulls current tab from browser.tabs.query response
-            const currentTab: Tabs.Tab | number = tabs[0];
-
-            // Short circuits function execution is current tab isn't found
-            if (!currentTab) {
-                return;
-            }
-            const currentTabId: number = currentTab.id as number;
-
-            // Executes the script in the current tab
-            browser.scripting
-                .executeScript({
-                    target: {
-                        tabId: currentTabId,
-                    },
-                    func: scrollWindow,
-                    args: [position],
-                })
-                .then(() => {
-                    console.log("Done Scrolling");
-                });
-        });
-}
-
-// // // //
-
-export function Popup() {
     // Sends the `popupMounted` event
-    React.useEffect(() => {
+    useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
     }, []);
+
+    // Load options from storage when the popup is opened
+    useEffect(() => {
+        getOptionsFromStorage((savedOptions) => {
+            setOptions(savedOptions);
+            console.log("loaded options from storage", savedOptions);
+        });
+    }, []);
+
+    // Use useEffect to save options whenever they change
+    useEffect(() => {
+        if (options) {
+            saveOptionsToStorage(options);
+            console.log("latest options", options);
+        }
+    }, [options]);
 
     // Renders the component tree
     return (
         <div className={css.popupContainer}>
             <div className="mx-4 my-4">
-                <Hello />
+                <Header />
                 <hr />
-                <Scroller
-                    onClickScrollTop={() => {
-                        executeScript(scrollToTopPosition);
-                    }}
-                    onClickScrollBottom={() => {
-                        executeScript(scrollToBottomPosition);
-                    }}
+                <RenderPage
+                    userMessageColorLiveChange={(colorStyle) =>
+                        setOptions({
+                            ...options,
+                            messageColorUserStyle: colorStyle,
+                        })
+                    }
+                    chatMessageColorLiveChange={(colorStyle) =>
+                        setOptions({
+                            ...options,
+                            messageColorNonUserStyle: colorStyle,
+                        })
+                    }
+                    messageMaxWidthLiveChange={(e) =>
+                        setOptions({
+                            ...options,
+                            messageMaxWidthStyle: e.currentTarget.value,
+                        })
+                    }
+                    messagePaddingLiveChange={(e) =>
+                        setOptions({
+                            ...options,
+                            messagePaddingStyle: e.currentTarget.value,
+                        })
+                    }
+                    messageBorderRadiusLiveChange={(e) =>
+                        setOptions({
+                            ...options,
+                            messageBorderRadiusStyle: e.currentTarget.value,
+                        })
+                    }
+                    inputBoxMaxWidthLiveChange={(e) =>
+                        setOptions({
+                            ...options,
+                            inputBoxMaxWidthStyle: e.currentTarget.value,
+                        })
+                    }
+                    userColorLiveChange={(colorStyle) =>
+                        setOptions({
+                            ...options,
+                            textColorUserStyle: colorStyle,
+                        })
+                    }
+                    userFontSizeOnChange={(e) =>
+                        setOptions({
+                            ...options,
+                            textSizeUserStyle: e.currentTarget.value,
+                        })
+                    }
+                    userFontWeightOnChange={(e) =>
+                        setOptions({
+                            ...options,
+                            textWeightUserStyle: e.currentTarget.value,
+                        })
+                    }
+                    chatColorLiveChange={(colorStyle) =>
+                        setOptions({
+                            ...options,
+                            textColorNonUserStyle: colorStyle,
+                        })
+                    }
+                    chatFontSizeOnChange={(e) =>
+                        setOptions({
+                            ...options,
+                            textSizeNonUserStyle: e.currentTarget.value,
+                        })
+                    }
+                    chatFontWeightOnChange={(e) =>
+                        setOptions({
+                            ...options,
+                            textWeightNonUserStyle: e.currentTarget.value,
+                        })
+                    }
                 />
             </div>
         </div>

@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageFormControl renders correctly 1`] = `
+<div>
+  <h1>
+    Test Message
+  </h1>
+  <hr />
+  <label>
+    Message Color
+    <select
+      defaultValue=""
+      id="TestColorType"
+      onChange={[Function]}
+    >
+      <option
+        disabled={true}
+        hidden={true}
+        value=""
+      >
+        Color Type
+      </option>
+      <option
+        value="name"
+      >
+        Name
+      </option>
+      <option
+        value="hex"
+      >
+        HEX
+      </option>
+      <option
+        value="rgb"
+      >
+        RGB
+      </option>
+      <option
+        value="hsl"
+      >
+        HSL
+      </option>
+    </select>
+    <input
+      disabled={true}
+      id="TestTextColor"
+      maxLength={0}
+      placeholder="Select Color Type"
+      type="text"
+      value=""
+    />
+  </label>
+</div>
+`;
+
+exports[`MessageFormControl updates colorType and colorCode correctly 1`] = `
+<div>
+  <h1>
+    Test Message
+  </h1>
+  <hr />
+  <label>
+    Message Color
+    <select
+      defaultValue=""
+      id="TestColorType"
+      onChange={[Function]}
+    >
+      <option
+        disabled={true}
+        hidden={true}
+        value=""
+      >
+        Color Type
+      </option>
+      <option
+        value="name"
+      >
+        Name
+      </option>
+      <option
+        value="hex"
+      >
+        HEX
+      </option>
+      <option
+        value="rgb"
+      >
+        RGB
+      </option>
+      <option
+        value="hsl"
+      >
+        HSL
+      </option>
+    </select>
+    <input
+      disabled={false}
+      id="TestTextColor"
+      maxLength={6}
+      placeholder="HEX"
+      type="text"
+      value="1a2b3c"
+    />
+  </label>
+</div>
+`;

@@ -1,6 +1,10 @@
 console.log("Content script loaded.");
 
+// changing the background color of the page
+/* document.body.style.backgroundColor = '#343541'; */
+
 const customStyle = document.createElement("style");
+customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
 
 let messageMaxWidthStyle = "";
@@ -170,3 +174,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
     console.log(response.reply);
 });
+
+loadSettings();
