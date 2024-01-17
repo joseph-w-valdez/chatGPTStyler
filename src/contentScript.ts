@@ -11,6 +11,7 @@ let messageColorUserStyle = '';
 let messageColorNonUserStyle = '';
 let messagePaddingStyle = ''; 
 let messageBorderRadiusStyle = '';
+
 let inputBoxMaxWidthStyle = '';
 
 const updateAllStyles = () => {
