@@ -14,14 +14,13 @@ let inputBoxMaxWidthStyle = '';
 let messageWidthContent = '';
 let messageUserAutoMargin = '';
 let messageNonUserAutoMargin = '';
-let messageTextWidth = '';
 let messageMaxContent = '';
 
 const updateAllStyles = () => {
     customStyle.textContent = messageMaxWidthStyle + messageColorUserStyle + messageColorNonUserStyle 
                               + messagePaddingStyle + messageBorderRadiusStyle + inputBoxMaxWidthStyle 
                               + messageWidthContent + messageUserAutoMargin + messageNonUserAutoMargin
-                              + messageTextWidth + messageMaxContent;
+                              + messageMaxContent;
 };
 
 const updateMessageMaxContent = (widthPercentage: number) => {
@@ -82,12 +81,6 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
     updateAllStyles();
 }
 
-const updateMessageTextWidth = (width: string) => {
-    messageTextWidth = `@media (min-width: 1600px) { form { width: ${width}; }
-    }`;
-    updateAllStyles();
-}
-
 const setDefaultSettings = () => {
     updateMessageMaxWidth(95)
     updateMessageColor('#3c6083', false)   
@@ -98,7 +91,6 @@ const setDefaultSettings = () => {
     updateMessageWidthContent('fit-content');
     updateMessageAutoMargin({ marginLeft: 'auto', marginRight: 0, isUser: true });
     updateMessageAutoMargin({ marginRight: 'auto', marginLeft: 0, isUser: false });
-    updateMessageTextWidth('fit-content');
     updateMessageMaxContent(100);
 }
 
