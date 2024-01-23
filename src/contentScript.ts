@@ -8,16 +8,17 @@ let messagePaddingStyle = '';
 let messageBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
 let messageBoxColors = '';
+let selectionColors = '';
 
 const updateMessageColor = (color: string, isUser: boolean, isDark: boolean) => {
     messageBoxColors = `
-      @media (prefers-color-scheme: light) {
-        [data-testid]:nth-child(even) > * > * { background-color: ${isUser && !isDark ? color : '#62B1F6'} }
-        [data-testid]:nth-child(odd) > * > * { background-color: ${!isUser && !isDark ? color : '#EEEEEE'} }
-      }
-      @media (prefers-color-scheme: dark) {
+      .dark {
         [data-testid]:nth-child(even) > * > * { background-color: ${isUser && isDark ? color : '#4e7645'} }
         [data-testid]:nth-child(odd) > * > * { background-color: ${!isUser && isDark ? color : '#3c6083'} }
+      }
+      .light {
+        [data-testid]:nth-child(even) > * > * { background-color: ${isUser && !isDark ? color : '#62B1F6'} }
+        [data-testid]:nth-child(odd) > * > * { background-color: ${!isUser && !isDark ? color : '#EEEEEE'} }
       }
     `;
     updateAllStyles();
@@ -25,7 +26,7 @@ const updateMessageColor = (color: string, isUser: boolean, isDark: boolean) => 
 
 const updateAllStyles = () => {
     customStyle.textContent = messageBoxColors + messageMaxWidthStyle + messagePaddingStyle 
-                              + messageBorderRadiusStyle + inputBoxMaxWidthStyle;
+                              + messageBorderRadiusStyle + inputBoxMaxWidthStyle + selectionColors;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
@@ -52,16 +53,16 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
 
 const resetDefaultMessageColors = () => {
   messageBoxColors = `
-  @media (prefers-color-scheme: light) {
-    [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
-    [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
-  }
-  @media (prefers-color-scheme: dark) {
+  .dark {
     [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
     [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
   }
+  .light {
+    [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
+    [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
+  }
 `;
-updateAllStyles();
+  updateAllStyles();
 }
 
 const setDefaultSettings = () => {
@@ -73,7 +74,7 @@ const setDefaultSettings = () => {
 }
 
 // set default settings on load
-setDefaultSettings()
+setDefaultSettings();
 
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener(
