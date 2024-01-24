@@ -2,29 +2,35 @@
 
 ## Description
 
-Google extension to customize and improve on ChatGPT
+Google extension to customize and improve on the existing ChatGPT website. 
 
 ## Installation
 
-- npm i
-- npm run dev
+- Copy the GitHub Repository
+- ``` npm i ```
+- ``` npm run dev ```
 
 ## Preview
 
-Screenshots and GIFs
+![Kapture 2024-01-24 at 14 23 38](https://github.com/joseph-w-valdez/chatGPTStyler/assets/113474295/9a604f65-7541-44f0-9665-f58f712c196b)
 
 ## Features
 
-- 
+- User chat box enclosed in green
+- ChatGPT chat box enclosed in blue
 
 ## Technologies
+
+- React
+- TypeScript
+- Tailwind
 
 ## System Requirements
 
 
 ## Contact
-- submit bugs
-- emails here
+- Please submit any bugs to us through issues on GitHub or contact us below:
+- matthewjhcha@gmail.com
 
 
 [![GitHub stars](https://img.shields.io/github/stars/aeksco/react-typescript-web-extension-starter.svg?style=social&label=Stars&style=plastic)]()
