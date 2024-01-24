@@ -6,9 +6,10 @@ Google extension to customize and improve on ChatGPT
 
 ## Installation
 
+- npm i
 - npm run dev
 
-## Live Demo
+## Preview
 
 Screenshots and GIFs
 
@@ -16,8 +17,13 @@ Screenshots and GIFs
 
 - 
 
-## Feedback
+## Technologies
 
+## System Requirements
+
+
+## Contact
+- submit bugs
 - emails here
 
 
