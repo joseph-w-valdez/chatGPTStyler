@@ -4,41 +4,33 @@
 
 Google extension to customize and improve on the existing ChatGPT website. 
 
-## Installation
-
-- In [Google Chrome](https://www.google.com/chrome/), open up [chrome://extensions](chrome://extensions) in a new tab. Make sure the `Developer Mode` checkbox in the upper-right corner is turned on. Click `Load unpacked` and select the `dist` directory in this repository - your extension should now be loaded.
-- Copy the GitHub Repository
-  ```
-  npm i npm run dev
-  ```
-
-## Preview
-
-![Kapture 2024-01-24 at 14 23 38](https://github.com/joseph-w-valdez/chatGPTStyler/assets/113474295/9a604f65-7541-44f0-9665-f58f712c196b)
-
 ## Features
 
 - User chat box enclosed in green
 - ChatGPT chat box enclosed in blue
 
-## Getting Started
+## Preview
+
+![Kapture 2024-01-24 at 14 23 38](https://github.com/joseph-w-valdez/chatGPTStyler/assets/113474295/9a604f65-7541-44f0-9665-f58f712c196b)
+
+## Installation
+
 Run the following commands to install dependencies and start developing
 
 1. Clone the repository.
 ```
 https://github.com/joseph-w-valdez/chatGPTStyler
 ```
-3. Install all dependencies with NPM.
+2. Install all dependencies with NPM.
 ```
 npm install
 ```
-
-4. Start the project.
+3. Start the project.
 ```
 npm run dev
 ```
 
-
+4. In [Google Chrome](https://www.google.com/chrome/), open up [chrome://extensions](chrome://extensions) in a new tab. Make sure the `Developer Mode` checkbox in the upper-right corner is turned on. Click `Load unpacked` and select the `dist` directory in this repository - your extension should now be loaded.
 
 ## Technologies
 
@@ -46,12 +38,8 @@ npm run dev
 - TypeScript
 - Tailwind
 
-## System Requirements
-
-
 ## Contact
-- Please submit any bugs to us through issues on GitHub or contact us below:
-- matthewjhcha@gmail.com
+- Please submit any bugs through issues on GitHub
 
 
 [![GitHub stars](https://img.shields.io/github/stars/aeksco/react-typescript-web-extension-starter.svg?style=social&label=Stars&style=plastic)]()
