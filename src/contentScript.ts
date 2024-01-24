@@ -70,6 +70,25 @@ const resetDefaultMessageColors = () => {
   updateAllStyles();
 }
 
+const $sendMessageContainer = document.querySelector('form > div > div > div') as HTMLDivElement | null;
+
+if ($sendMessageContainer) {
+  const scrollToBottom = () => {
+    const scrollToBottomButton = document.querySelector('[data-testid] ~ button') as HTMLButtonElement
+    if (scrollToBottomButton) scrollToBottomButton.click()
+  }
+  $sendMessageContainer.addEventListener('keydown', (event: KeyboardEventInit) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      scrollToBottom();
+    }
+  });
+  $sendMessageContainer.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLButtonElement || event.target instanceof SVGElement){
+      scrollToBottom();
+    }
+  })
+}
+
 const setDefaultSettings = () => {
     updateMessageMaxWidth(95);
     updateMessagePadding('10px');
