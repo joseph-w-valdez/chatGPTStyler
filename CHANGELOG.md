@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.2] - 2024-01-30
+
+### Added
+
+-   Added CSS to chat message buttons to unset visibility.
+
+### Changed
+
+-   No changes in this release.
+
+### Fixed
+
+-   No bug fixes in this release.
+
 ## [0.1.1] - 2024-01-17
 
 ### Added
