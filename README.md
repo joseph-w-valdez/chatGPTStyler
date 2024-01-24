@@ -9,6 +9,7 @@ Google extension to customize and improve on the existing ChatGPT website. Built
 - User message area enclosed in green
 - ChatGPT message area enclosed in blue
 - Widened message area to extend to the width of the screen and utilize the available space
+- Settings to change colors and themes
 
 ## Preview
 
