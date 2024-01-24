@@ -8,7 +8,7 @@ Google extension to customize and improve on the existing ChatGPT website.
 
 - In [Google Chrome](https://www.google.com/chrome/), open up [chrome://extensions](chrome://extensions) in a new tab. Make sure the `Developer Mode` checkbox in the upper-right corner is turned on. Click `Load unpacked` and select the `dist` directory in this repository - your extension should now be loaded.
 - Copy the GitHub Repository
-  ```
+  ```shell
   npm i npm run dev
   ```
 
@@ -20,6 +20,22 @@ Google extension to customize and improve on the existing ChatGPT website.
 
 - User chat box enclosed in green
 - ChatGPT chat box enclosed in blue
+
+## Getting Started
+Run the following commands to install dependencies and start developing
+
+1. Clone the repository.
+2. Install all dependencies with NPM.
+     ```shell
+  npm i npm run dev
+  ```
+
+4. Start the project.
+   ```
+  npm i npm run dev
+  ```
+
+
 
 ## Technologies
 
