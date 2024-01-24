@@ -2,7 +2,7 @@
 
 ## Description
 
-Google extension to customize and improve on the existing ChatGPT website. 
+Google extension to customize and improve on the existing ChatGPT website. Built to enhance on ChatGPT's functionality by making it easier for user's to view messages and interact with the web application.
 
 ## Features
 
@@ -39,8 +39,15 @@ npm run dev
 - TypeScript
 - Tailwind
 
+## System Requirements
+
+- Node 14.11.8
+- React 17.0.2
+- Web Extension Polyfill 0.9.0
+- TypeScript 4.5.4
+
 ## Contact
-- Please submit any bugs through issues on GitHub
+- Please submit any bugs through issues on the repository
 
 
 [![GitHub stars](https://img.shields.io/github/stars/aeksco/react-typescript-web-extension-starter.svg?style=social&label=Stars&style=plastic)]()
