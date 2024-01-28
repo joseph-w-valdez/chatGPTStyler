@@ -1,8 +1,9 @@
-name: Release Artifact
+name: Build and Zip Artifacts on Tag Push
 
 on:
-    release:
-        types: [created]
+    push:
+        tags:
+            - "*"
 
 jobs:
     build-and-archive:
@@ -16,6 +17,7 @@ jobs:
               uses: actions/setup-node@v2
               with:
                   node-version: "14"
+
             - name: Install Dependencies
               run: npm install
 
@@ -23,10 +25,10 @@ jobs:
               run: npm run build
 
             - name: Zip dist folder
-              run: zip -r release-${{ github.event.release.tag_name }}.zip dist
+              run: zip -r dist-${{ github.ref_name }}.zip dist
 
             - name: Upload Artifact
               uses: actions/upload-artifact@v2
               with:
-                  name: release-${{ github.event.release.tag_name }}
-                  path: release-${{ github.event.release.tag_name }}.zip
+                  name: dist-${{ github.ref_name }}.zip
+                  path: dist-${{ github.ref_name }}.zip
