@@ -12,15 +12,10 @@ let messageColorNonUserStyle = '';
 let messagePaddingStyle = ''; 
 let messageBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
-let chatMessageButtons = `
-    [data-testid] button {
-      visibility: unset
-    }
-`;
 
 const updateAllStyles = () => {
     customStyle.textContent = messageMaxWidthStyle + messageColorUserStyle + messageColorNonUserStyle 
-                              + messagePaddingStyle + messageBorderRadiusStyle + inputBoxMaxWidthStyle + chatMessageButtons;
+                              + messagePaddingStyle + messageBorderRadiusStyle + inputBoxMaxWidthStyle;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
