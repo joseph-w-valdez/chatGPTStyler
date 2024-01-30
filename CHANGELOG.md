@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.1] - 2024-01-17
+
+### Added
+
+-   Added function to reset message colors to default.
+
+### Changed
+
+-   updateMessageColor function now has another parameter for dark mode.
+
+### Fixed
+
+-   No bug fixes in this release.
+
 ## [0.1.0] - 2024-01-13
 
 ### Added
