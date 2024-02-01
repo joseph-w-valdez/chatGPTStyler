@@ -9,6 +9,11 @@ let messageBorderRadiusStyle = '';
 let inputBoxMaxWidthStyle = '';
 let messageBoxColors = '';
 let selectionColors = '';
+let chatMessageButtons = `
+    [data-testid] button {
+      visibility: unset
+    }
+`;
 
 const updateMessageColor = (color: string, isUser: boolean, isDark: boolean) => {
     messageBoxColors = `
@@ -26,8 +31,8 @@ const updateMessageColor = (color: string, isUser: boolean, isDark: boolean) => 
 
 const updateAllStyles = () => {
     customStyle.textContent = messageBoxColors + messageMaxWidthStyle + messagePaddingStyle 
-                              + messageBorderRadiusStyle + inputBoxMaxWidthStyle + selectionColors;
-};
+                              + messageBorderRadiusStyle + inputBoxMaxWidthStyle + selectionColors + chatMessageButtons;
+}
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
     messageMaxWidthStyle = `@media (min-width: 1200px) { [data-testid] > * > * { max-width: ${widthPercentage}% } }`;
