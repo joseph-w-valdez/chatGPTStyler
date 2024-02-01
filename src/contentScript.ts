@@ -1,3 +1,8 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import { ScrollToTop } from "./components/scrollToTop";
+import { doc } from "prettier";
+
 console.log("Content script loaded.");
 
 const customStyle = document.createElement('style');
@@ -94,3 +99,25 @@ chrome.runtime.onMessage.addListener(
 chrome.runtime.sendMessage({ message: 'Content script active' }, response => {
   console.log(response.reply);
 });
+
+
+const mountComponent = () => {
+  const mountPoint = document.createElement('div');
+  mountPoint.id = 'scroll-to-top-mount';
+
+  if (!document.getElementById('scroll-to-top-mount')) {
+    const $parentDiv = document.querySelector('div[role="presentation"] > div > div > div > div ');
+    if ($parentDiv) {
+      $parentDiv.appendChild(mountPoint);
+      ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
+    }
+  }
+};
+
+const checkAndMountComponent = () => {
+  mountComponent();
+};
+
+checkAndMountComponent();
+
+setInterval(checkAndMountComponent, 1000);
