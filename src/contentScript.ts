@@ -70,20 +70,23 @@ const resetDefaultMessageColors = () => {
   updateAllStyles();
 }
 
-const $sendMessageContainer = document.querySelector('form > div > div > div') as HTMLDivElement | null;
+const $main = document.querySelector('main');
 
-if ($sendMessageContainer) {
+if ($main) {
   const scrollToBottom = () => {
-    const scrollToBottomButton = document.querySelector('[data-testid] ~ button') as HTMLButtonElement
-    if (scrollToBottomButton) scrollToBottomButton.click()
+    const messagesContainer = document.querySelector('[role="presentation"] > div > div > div')
+    if (messagesContainer) {
+      setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 0);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
   }
-  $sendMessageContainer.addEventListener('keydown', (event: KeyboardEventInit) => {
+  $main.addEventListener('keydown', (event: KeyboardEventInit) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       scrollToBottom();
     }
   });
-  $sendMessageContainer.addEventListener('click', (event) => {
-    if (event.target instanceof HTMLButtonElement || event.target instanceof SVGElement){
+  $main.addEventListener('click', (event) => {
+    if ((event.target instanceof HTMLButtonElement && event.target.getAttribute('data-testid') === 'send-button') || (event.target instanceof SVGElement && event.target.closest('[data-testid="send-button"]'))){
       scrollToBottom();
     }
   })
