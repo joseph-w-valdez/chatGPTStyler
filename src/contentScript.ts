@@ -74,17 +74,19 @@ const $main = document.querySelector('main');
 
 if ($main) {
   const scrollToBottom = () => {
-    const messagesContainer = document.querySelector('[role="presentation"] > div > div > div')
-    if (messagesContainer) {
-      setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 0);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    const $messagesContainer = document.querySelector('[role="presentation"] > div > div > div')
+    if ($messagesContainer) {
+      setTimeout(() => $messagesContainer.scrollTop = $messagesContainer.scrollHeight, 0);
+      $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
     }
   }
-  $main.addEventListener('keydown', (event: KeyboardEventInit) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+
+  $main.addEventListener('keydown', (event: KeyboardEvent) => {
+    if ((event.target instanceof HTMLTextAreaElement && event.target.getAttribute('id') === 'prompt-textarea' && event.target.textContent !== '') && (event.key === 'Enter' && !event.shiftKey)) {
       scrollToBottom();
     }
   });
+
   $main.addEventListener('click', (event) => {
     if ((event.target instanceof HTMLButtonElement && event.target.getAttribute('data-testid') === 'send-button') || (event.target instanceof SVGElement && event.target.closest('[data-testid="send-button"]'))){
       scrollToBottom();
