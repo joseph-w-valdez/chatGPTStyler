@@ -1,18 +1,16 @@
 # Changelog
 
+## [0.1.3] - 2024-02-09
+
+### Added
+
+-   Added CSS for text selection in messages.
+
 ## [0.1.2] - 2024-01-30
 
 ### Added
 
 -   Added CSS to chat message buttons to unset visibility.
-
-### Changed
-
--   No changes in this release.
-
-### Fixed
-
--   No bug fixes in this release.
 
 ## [0.1.1] - 2024-01-17
 
@@ -23,10 +21,6 @@
 ### Changed
 
 -   updateMessageColor function now has another parameter for dark mode.
-
-### Fixed
-
--   No bug fixes in this release.
 
 ## [0.1.0] - 2024-01-13
 
@@ -42,11 +36,3 @@
         -   `updateMessageBorderRadius(borderRadius: string)`: Updates the border radius of messages.
         -   `updateInputBoxMaxWidth(widthPercentage: number)`: Updates the maximum width of the input box.
     -   Created `setDefaultSettings()` function to set default styles on script load.
-
-### Changed
-
--   No changes in this release.
-
-### Fixed
-
--   No bug fixes in this release.
