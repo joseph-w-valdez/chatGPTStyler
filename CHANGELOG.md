@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.3] - 2024-02-08
+
+### Added
+
+-   Added CSS to light and dark mode default values for editing textarea background color.
+
+### Changed
+
+-   No changes in this release.
+
+### Fixed
+
+-   No bug fixes in this release.
+
 ## [0.1.2] - 2024-01-30
 
 ### Added
