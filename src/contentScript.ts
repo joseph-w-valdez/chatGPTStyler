@@ -14,6 +14,12 @@ let chatMessageButtons = `
       visibility: unset
     }
 `;
+const codeSnippitWidth = `
+    [data-testid] > * > * > *:nth-child(2) {
+        width: 100%;
+        max-width: calc(100% - 72px);
+    }
+`;
 
 const updateMessageColor = (
     color: string,
@@ -49,7 +55,8 @@ const updateAllStyles = () => {
         messageBorderRadiusStyle +
         inputBoxMaxWidthStyle +
         selectionColors +
-        chatMessageButtons;
+        chatMessageButtons +
+        codeSnippitWidth;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
@@ -76,24 +83,24 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
 
 const resetDefaultMessageColors = () => {
     messageBoxColors = `
-  .dark {
-    [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
-    [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
-    [data-testid] textarea {
-        padding: 3px;
-        background-color: rgba(0, 0, 0, 0.4);
-        border-radius: 5px
-    }
-  }
-  .light {
-    [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
-    [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
-    [data-testid] textarea {
-        padding: 3px;
-        background-color: rgba(255, 255, 255, 0.4);
-        border-radius: 5px
-    }
-  }
+      .dark {
+        [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
+        [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
+        [data-testid] textarea {
+            padding: 3px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 5px
+        }
+      }
+      .light {
+        [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
+        [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
+        [data-testid] textarea {
+            padding: 3px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 5px
+        }
+      }
 `;
     updateAllStyles();
 };
