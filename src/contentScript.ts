@@ -14,6 +14,12 @@ let chatMessageButtons = `
       visibility: unset
     }
 `;
+const codeSnippitWidth = `
+    [data-testid] > * > * > *:nth-child(2) {
+        width: 100%;
+        max-width: calc(100% - 72px);
+    }
+`;
 
 const updateMessageColor = (
     color: string,
@@ -49,7 +55,8 @@ const updateAllStyles = () => {
         messageBorderRadiusStyle +
         inputBoxMaxWidthStyle +
         selectionColors +
-        chatMessageButtons;
+        chatMessageButtons +
+        codeSnippitWidth;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
