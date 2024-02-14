@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.3] - 2024-02-02
+
+### Added
+
+-   Implemented functionality for chat container to scroll to bottom when a new message is sent
+
+### Changed
+
+-   No changes in this release.
+
+### Fixed
+
+-   No bug fixes in this release.
+
 ## [0.1.2] - 2024-01-30
 
 ### Added
@@ -9,6 +23,20 @@
 ### Changed
 
 -   No changes in this release.
+
+### Fixed
+
+-   No bug fixes in this release.
+
+## [0.1.1] - 2024-01-17
+
+### Added
+
+-   Added function to reset message colors to default.
+
+### Changed
+
+-   updateMessageColor function now has another parameter for dark mode.
 
 ### Fixed
 
