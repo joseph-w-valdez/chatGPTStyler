@@ -1,3 +1,8 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import { ScrollToTop } from "./components/scrollToTop";
+import { doc } from "prettier";
+
 console.log("Content script loaded.");
 
 const customStyle = document.createElement("style");
@@ -12,6 +17,12 @@ let selectionColors = "";
 let chatMessageButtons = `
     [data-testid] button {
       visibility: unset
+    }
+`;
+const codeSnippitWidth = `
+    [data-testid] > * > * > *:nth-child(2) {
+        width: 100%;
+        max-width: calc(100% - 72px);
     }
 `;
 
@@ -49,7 +60,8 @@ const updateAllStyles = () => {
         messageBorderRadiusStyle +
         inputBoxMaxWidthStyle +
         selectionColors +
-        chatMessageButtons;
+        chatMessageButtons +
+        codeSnippitWidth;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
@@ -76,24 +88,24 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
 
 const resetDefaultMessageColors = () => {
     messageBoxColors = `
-  .dark {
-    [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
-    [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
-    [data-testid] textarea {
-        padding: 3px;
-        background-color: rgba(0, 0, 0, 0.4);
-        border-radius: 5px
-    }
-  }
-  .light {
-    [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
-    [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
-    [data-testid] textarea {
-        padding: 3px;
-        background-color: rgba(255, 255, 255, 0.4);
-        border-radius: 5px
-    }
-  }
+      .dark {
+        [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
+        [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
+        [data-testid] textarea {
+            padding: 3px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 5px
+        }
+      }
+      .light {
+        [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
+        [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
+        [data-testid] textarea {
+            padding: 3px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 5px
+        }
+      }
 `;
     updateAllStyles();
 };
@@ -163,3 +175,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
     console.log(response.reply);
 });
+
+
+const mountComponent = () => {
+  const mountPoint = document.createElement('div');
+  mountPoint.id = 'scroll-to-top-mount';
+
+  if (!document.getElementById('scroll-to-top-mount')) {
+    const $parentDiv = document.querySelector('div[role="presentation"] > div > div > div > div ');
+    if ($parentDiv) {
+      $parentDiv.appendChild(mountPoint);
+      ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
+    }
+  }
+};
+
+const checkAndMountComponent = () => {
+  mountComponent();
+};
+
+checkAndMountComponent();
+
+setInterval(checkAndMountComponent, 1000);
