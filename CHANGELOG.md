@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5] - 2024-02-12
+
+### Added
+
+-   Added CSS to code snippet parent to fix width.
+
 ## [0.1.4] - 2024-02-08
 
 ### Added
