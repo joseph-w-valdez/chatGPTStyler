@@ -18,7 +18,7 @@ let chatMessageButtons = `
       visibility: unset
     }
 `;
-const codeSnippitWidth = `
+const codeSnippetWidth = `
     [data-testid] > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
@@ -60,7 +60,7 @@ const updateAllStyles = () => {
         inputBoxMaxWidthStyle +
         selectionColors +
         chatMessageButtons +
-        codeSnippitWidth;
+        codeSnippetWidth;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
