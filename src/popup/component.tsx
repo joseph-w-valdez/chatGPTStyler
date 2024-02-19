@@ -29,7 +29,6 @@ export function Popup(): JSX.Element {
     // Sends the `popupMounted` event
     useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
-        console.log("KEVIN");
     }, []);
 
     // Load options from storage when the popup is opened
@@ -55,6 +54,7 @@ export function Popup(): JSX.Element {
                 <Header />
                 <hr />
                 <RenderPage
+                    setOptions={setOptions}
                     userMessageColorLiveChange={(colorStyle) =>
                         setOptions({
                             ...options,
@@ -68,7 +68,7 @@ export function Popup(): JSX.Element {
                         })
                     }
                     messageMaxWidthLiveChange={(e) =>
-                        setOptions({
+                            setOptions({
                             ...options,
                             messageMaxWidthStyle: e.currentTarget.value,
                         })

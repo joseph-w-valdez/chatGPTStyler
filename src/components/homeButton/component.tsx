@@ -7,8 +7,6 @@ interface HomeButtonProps {
     btnLabel: string;
 }
 
-// // // //
-
 export function HomeButton({
     dataTestid,
     onClick,

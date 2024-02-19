@@ -33,10 +33,12 @@ export const getOptionsFromStorage = (
         };
 
         callback(options);
+        console.log("GETTING OPTIONS FROM STORAGE", options);
     });
 };
 
 export const saveOptionsToStorage = (options: OptionsTypes): void => {
+    console.log("SAVING OPTIONS TO STORAGE", options);
     chrome.storage.sync.set({ options }, () => {
         // notify content scripts that settings have changed
         chrome.tabs.query({}, (tabs) => {

@@ -4,15 +4,17 @@ import { useState, useEffect } from "react";
 export interface MessageFormControlProps {
     section: string;
     colorLiveChange: (colorStyle: string) => void;
+    option: any;
 }
 
 export function MessageFormControl({
     section,
     colorLiveChange,
+    option,
 }: MessageFormControlProps): JSX.Element {
     const [placeholderValue, setPlaceholderValue] = useState<string>("");
     const [colorType, setColorType] = useState<string>("");
-    const [colorCode, setColorCode] = useState<string>("");
+    const [colorCode, setColorCode] = useState<string>(option);
     const [colorStyle, setColorStyle] = useState<string>("");
     const [inputMaxLength, setInputMaxLength] = useState<number>();
 
@@ -56,7 +58,6 @@ export function MessageFormControl({
                 Message Color
                 <select
                     id={`${section}ColorType`}
-                    defaultValue={""}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setColorType(e.currentTarget.value)
                     }
@@ -72,8 +73,8 @@ export function MessageFormControl({
                 <input
                     disabled={colorType ? false : true}
                     type="text"
-                    id={`${section}TextColor`}
-                    placeholder={placeholderValue}
+                    id={`${section} TextColor`}
+                    placeholder={option}
                     maxLength={inputMaxLength}
                     value={colorCode}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
