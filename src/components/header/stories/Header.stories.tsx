@@ -9,4 +9,4 @@ export default {
     component: Header,
 } as ComponentMeta<typeof Header>;
 
-export const Render = () => <Header />;
+export const Render = () => <Header page="string" setPage={() => {}} />;

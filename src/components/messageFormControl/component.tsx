@@ -51,37 +51,46 @@ export function MessageFormControl({
     }, [colorType, colorCode, colorStyle]);
 
     return (
-        <div>
-            <h1>{`${section} Message`}</h1>
-            <hr />
-            <label>
-                Message Color
-                <select
-                    id={`${section}ColorType`}
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setColorType(e.currentTarget.value)
-                    }
-                >
-                    <option value="" disabled hidden>
-                        Color Type
-                    </option>
-                    <option value="name">Name</option>
-                    <option value="hex">HEX</option>
-                    <option value="rgb">RGB</option>
-                    <option value="hsl">HSL</option>
-                </select>
-                <input
-                    disabled={colorType ? false : true}
-                    type="text"
-                    id={`${section} TextColor`}
-                    placeholder={option}
-                    maxLength={inputMaxLength}
-                    value={colorCode}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setColorCode(e.currentTarget.value)
-                    }
-                />
+        <div className="flex flex-col justify-center items-center bg-indigo-400 rounded-md p-2 gap-1 font-medium">
+            <label
+                htmlFor={`${section}ColorType`}
+                className=" text-white text-center"
+            >
+                {section} Message Background Color
             </label>
+            <select
+                id={`${section}ColorType`}
+                className="p-1 rounded-md"
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setColorType(e.currentTarget.value)
+                }
+            >
+                <option value="" disabled hidden>
+                    Color Type
+                </option>
+                <option value="">Select</option>
+                <option value="name">Name</option>
+                <option value="hex">HEX</option>
+                <option value="rgb">RGB</option>
+                <option value="hsl">HSL</option>
+            </select>
+            <input
+                className={`text-center w-9/12 p-1 rounded-md ${
+                    colorType
+                        ? "animate-fade-in placeholder:text-black/30"
+                        : "animate-fade-out placeholder:text-white/70 "
+                }`}
+                disabled={!colorType}
+                type="text"
+                id={`${section} TextColor`}
+                placeholder={option}
+                defaultValue={option}
+                maxLength={inputMaxLength}
+                value={colorCode}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setColorCode(e.currentTarget.value)
+                }
+            />
         </div>
     );
 }

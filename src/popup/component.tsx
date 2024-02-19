@@ -26,6 +26,7 @@ export function Popup(): JSX.Element {
         textWeightNonUserStyle: "",
     });
 
+    const [page, setPage] = useState<string>("Home Page");
     // Sends the `popupMounted` event
     useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
@@ -50,9 +51,9 @@ export function Popup(): JSX.Element {
     // Renders the component tree
     return (
         <div className={css.popupContainer}>
-            <div className="mx-4 my-4">
-                <Header />
-                <hr />
+            <div className="w-full">
+                <Header page={page} setPage={setPage} />
+                <hr className="mb-2" />
                 <RenderPage
                     setOptions={setOptions}
                     userMessageColorLiveChange={(colorStyle) =>
@@ -128,6 +129,8 @@ export function Popup(): JSX.Element {
                         })
                     }
                     options={options}
+                    page={page}
+                    setPage={setPage}
                 />
             </div>
         </div>

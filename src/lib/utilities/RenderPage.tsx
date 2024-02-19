@@ -28,6 +28,8 @@ interface RenderPageProps {
         event: React.ChangeEvent<HTMLSelectElement>,
     ) => void;
     options: OptionsTypes;
+    page: string;
+    setPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function RenderPage({
@@ -44,10 +46,10 @@ export function RenderPage({
     chatFontSizeOnChange,
     chatFontWeightOnChange,
     options,
-    setOptions
+    setOptions,
+    page,
+    setPage,
 }: RenderPageProps): JSX.Element {
-    const [page, setPage] = useState<string>("Home Page");
-
     switch (page) {
         case "Text Editor":
             return (
@@ -58,6 +60,7 @@ export function RenderPage({
                     chatColorLiveChange={chatColorLiveChange}
                     chatFontSizeOnChange={chatFontSizeOnChange}
                     chatFontWeightOnChange={chatFontWeightOnChange}
+                    setPage={setPage}
                 />
             );
         case "Message Editor":

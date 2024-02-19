@@ -13,7 +13,11 @@ export function HomeButton({
     btnLabel,
 }: HomeButtonProps): JSX.Element {
     return (
-        <button className={css.btn} data-testid={dataTestid} onClick={onClick}>
+        <button
+            className={`${css.btn}`}
+            data-testid={dataTestid}
+            onClick={onClick}
+        >
             {btnLabel}
         </button>
     );
