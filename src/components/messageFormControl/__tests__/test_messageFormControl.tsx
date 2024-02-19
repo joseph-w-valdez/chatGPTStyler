@@ -5,14 +5,14 @@ import { MessageFormControl } from "../index"; // Adjust the import path based o
 describe("MessageFormControl component", () => {
     it("renders correctly", () => {
         const wrapper = mount(
-            <MessageFormControl section="Test" colorLiveChange={jest.fn()} />,
+            <MessageFormControl section="Test" colorLiveChange={jest.fn()} option={jest.fn()}/>,
         );
         expect(wrapper).toMatchSnapshot();
     });
 
     it("updates colorType and colorCode correctly for HEX", () => {
         const wrapper = mount(
-            <MessageFormControl section="Test" colorLiveChange={jest.fn()} />,
+            <MessageFormControl section="Test" colorLiveChange={jest.fn()} option={jest.fn()} />,
         );
 
         wrapper.find("select").simulate("change", { target: { value: "hex" } });
@@ -25,7 +25,7 @@ describe("MessageFormControl component", () => {
 
     it("updates colorType and colorCode correctly for RGB", () => {
         const wrapper = mount(
-            <MessageFormControl section="Test" colorLiveChange={jest.fn()} />,
+            <MessageFormControl section="Test" colorLiveChange={jest.fn()} option={jest.fn()}/>,
         );
 
         wrapper.find("select").simulate("change", { target: { value: "rgb" } });
