@@ -12,6 +12,22 @@ describe("MessageEditor Component", () => {
         messagePaddingLiveChange: jest.fn(),
         messageBorderRadiusLiveChange: jest.fn(),
         inputBoxMaxWidthLiveChange: jest.fn(),
+        options: {
+            messageColorUserStyle: "",
+            messageColorNonUserStyle: "",
+            messageMaxWidthStyle: "",
+            messagePaddingStyle: "",
+            messageBorderRadiusStyle: "",
+            inputBoxMaxWidthStyle: "",
+            textColorUserStyle: "",
+            textColorNonUserStyle: "",
+            textSizeUserStyle: "",
+            textSizeNonUserStyle: "",
+            textWeightUserStyle: "",
+            textWeightNonUserStyle: "",
+        },
+        setPage: jest.fn,
+        setOptions: jest.fn,
     };
 
     beforeEach(() => {

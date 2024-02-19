@@ -11,7 +11,7 @@ export function HomeMenu({
     messageEditorRedirect,
 }: HomeMenuProps): JSX.Element {
     return (
-        <div className="grid gap-3 grid-cols-2 mt-3 w-full">
+        <div className="grid gap-3 grid-cols-1 mt-3 w-full">
             <HomeButton
                 dataTestid="text-editor"
                 onClick={textEditorRedirect}

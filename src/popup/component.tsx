@@ -68,7 +68,7 @@ export function Popup(): JSX.Element {
                         })
                     }
                     messageMaxWidthLiveChange={(e) =>
-                            setOptions({
+                        setOptions({
                             ...options,
                             messageMaxWidthStyle: e.currentTarget.value,
                         })
