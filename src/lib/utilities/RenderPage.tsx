@@ -3,6 +3,7 @@ import { useState } from "react";
 import { HomeMenu } from "@src/pages/homeMenu";
 import { TextEditor } from "@src/pages/textEditor/component";
 import { MessageEditor } from "@src/pages/messageEditor";
+import { OptionsTypes } from "./googleStorage";
 
 interface RenderPageProps {
     userMessageColorLiveChange: (colorStyle: string) => void;
@@ -25,6 +26,7 @@ interface RenderPageProps {
     chatFontWeightOnChange: (
         event: React.ChangeEvent<HTMLSelectElement>,
     ) => void;
+    options: OptionsTypes;
 }
 
 export function RenderPage({
@@ -40,6 +42,7 @@ export function RenderPage({
     chatColorLiveChange,
     chatFontSizeOnChange,
     chatFontWeightOnChange,
+    options,
 }: RenderPageProps): JSX.Element {
     const [page, setPage] = useState<string>("Home Page");
 
@@ -66,6 +69,7 @@ export function RenderPage({
                         messageBorderRadiusLiveChange
                     }
                     inputBoxMaxWidthLiveChange={inputBoxMaxWidthLiveChange}
+                    options={options}
                 />
             );
         default:

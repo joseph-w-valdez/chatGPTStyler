@@ -12,6 +12,8 @@ let messagePaddingStyle = "";
 let messageBorderRadiusStyle = "";
 let inputBoxMaxWidthStyle = "";
 let messageBoxColors = "";
+let messageColorUser = "";
+let messageColorChatGPT = "";
 let selectionColors = "";
 let chatMessageButtons = `
     [data-testid] button {
@@ -26,28 +28,40 @@ const codeSnippetWidth = `
 `;
 
 const updateMessageColor = (
-    color: string,
-    isUser: boolean,
+    userColor: string,
+    chatGPTColor: string,
     isDark: boolean,
 ) => {
     messageBoxColors = `
       .dark {
         [data-testid]:nth-child(even) > * > * { background-color: ${
-            isUser && isDark ? color : "#4e7645"
+            userColor ? userColor : "#4e7645"
         } }
         [data-testid]:nth-child(odd) > * > * { background-color: ${
-            !isUser && isDark ? color : "#3c6083"
+            chatGPTColor ? chatGPTColor : "#3c6083"
         } }
       }
       .light {
         [data-testid]:nth-child(even) > * > * { background-color: ${
-            isUser && !isDark ? color : "#62B1F6"
+            userColor ? userColor : "#62B1F6"
         } }
         [data-testid]:nth-child(odd) > * > * { background-color: ${
-            !isUser && !isDark ? color : "#EEEEEE"
+            chatGPTColor ? chatGPTColor : "#EEEEEE"
         } }
       }
     `;
+    updateAllStyles();
+};
+
+const updateMessageColorUser = (color: string) => {
+    messageColorUser = `
+        [data-testid]:nth-child(even) > * > * { background-color: ${color} !important }`;
+    updateAllStyles();
+};
+
+const updateMessageColorChatGPT = (color: string) => {
+    messageColorChatGPT = `
+        [data-testid]:nth-child(odd) > * > * { background-color: ${color} !important }`;
     updateAllStyles();
 };
 
@@ -60,7 +74,9 @@ const updateAllStyles = () => {
         inputBoxMaxWidthStyle +
         selectionColors +
         chatMessageButtons +
-        codeSnippetWidth;
+        codeSnippetWidth +
+        messageColorUser +
+        messageColorChatGPT;
 };
 
 const updateMessageMaxWidth = (widthPercentage: number) => {
@@ -68,13 +84,13 @@ const updateMessageMaxWidth = (widthPercentage: number) => {
     updateAllStyles();
 };
 
-const updateMessagePadding = (padding: string) => {
-    messagePaddingStyle = `[data-testid] > * > * { padding: ${padding}; }`;
+const updateMessagePadding = (padding: number) => {
+    messagePaddingStyle = `[data-testid] > * > * { padding: ${padding}px; }`;
     updateAllStyles();
 };
 
-const updateMessageBorderRadius = (borderRadius: string) => {
-    messageBorderRadiusStyle = `[data-testid] > * > * { border-radius: ${borderRadius}; }`;
+const updateMessageBorderRadius = (borderRadius: number) => {
+    messageBorderRadiusStyle = `[data-testid] > * > * { border-radius: ${borderRadius}px; }`;
     updateAllStyles();
 };
 
@@ -153,14 +169,64 @@ if ($main) {
 
 const setDefaultSettings = () => {
     updateMessageMaxWidth(95);
-    updateMessagePadding("10px");
-    updateMessageBorderRadius("5px");
+    updateMessagePadding(10);
+    updateMessageBorderRadius(5);
     updateInputBoxMaxWidth(70);
     resetDefaultMessageColors();
+    // updateMessageColor("", "", true);
 };
 
 // set default settings on load
 setDefaultSettings();
+
+// Load settings and apply them
+
+const loadSettings = () => {
+    chrome.storage.sync.get(["options"], (result) => {
+        const settings = result.options;
+        if (settings) {
+            // Assuming 'settings' is an object with appropriate properties
+            // Update styles based on loaded settings
+            if (settings.messageMaxWidthStyle)
+                updateMessageMaxWidth(settings.messageMaxWidthStyle);
+            if (settings.messageColorUserStyle)
+                updateMessageColorUser(settings.messageColorUserStyle);
+            if (settings.messageColorNonUserStyle)
+                updateMessageColorChatGPT(settings.messageColorNonUserStyle);
+            if (settings.messagePaddingStyle)
+                updateMessagePadding(settings.messagePaddingStyle);
+            if (settings.messageBorderRadiusStyle)
+                updateMessageBorderRadius(settings.messageBorderRadiusStyle);
+            if (settings.inputBoxMaxWidthStyle)
+                updateInputBoxMaxWidth(settings.inputBoxMaxWidthStyle);
+        } else {
+            // Set default styles if no settings are found
+            setDefaultSettings();
+        }
+    });
+};
+
+// Listen for changes in Chrome Storage
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "sync" && changes.options.newValue) {
+        const newSettings = changes.options.newValue;
+        // const oldSettings = changes.options.oldValue;
+        console.log(changes.options);
+        console.log("Settings changed", newSettings);
+        if (newSettings.messageMaxWidthStyle)
+            updateMessageMaxWidth(newSettings.messageMaxWidthStyle);
+        if (newSettings.messageColorUserStyle)
+            updateMessageColorUser(newSettings.messageColorUserStyle);
+        if (newSettings.messageColorNonUserStyle)
+            updateMessageColorChatGPT(newSettings.messageColorNonUserStyle);
+        if (newSettings.messagePaddingStyle)
+            updateMessagePadding(newSettings.messagePaddingStyle);
+        if (newSettings.messageBorderRadiusStyle)
+            updateMessageBorderRadius(newSettings.messageBorderRadiusStyle);
+        if (newSettings.inputBoxMaxWidthStyle)
+            updateInputBoxMaxWidth(newSettings.inputBoxMaxWidthStyle);
+    }
+});
 
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

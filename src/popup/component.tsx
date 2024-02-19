@@ -29,6 +29,7 @@ export function Popup(): JSX.Element {
     // Sends the `popupMounted` event
     useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
+        console.log("KEVIN");
     }, []);
 
     // Load options from storage when the popup is opened
@@ -126,6 +127,7 @@ export function Popup(): JSX.Element {
                             textWeightNonUserStyle: e.currentTarget.value,
                         })
                     }
+                    options={options}
                 />
             </div>
         </div>
