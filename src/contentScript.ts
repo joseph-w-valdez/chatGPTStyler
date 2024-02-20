@@ -116,42 +116,27 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
 };
 
 const updateTextColorStyle = (color: string, isUser: boolean) => {
-    switch (isUser) {
-        case true:
-            textColorUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { color: ${color}}`;
-            updateAllStyles();
-            break;
-        case false:
-            textColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { color: ${color}}`;
-            updateAllStyles();
-            break;
-    }
+    if (isUser)
+        textColorUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { color: ${color}}`;
+    else
+        textColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { color: ${color}}`;
+    updateAllStyles();
 };
 
 const updateTextSizeStyle = (size: number, isUser: boolean) => {
-    switch (isUser) {
-        case true:
-            textSizeUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}`;
-            updateAllStyles();
-            break;
-        case false:
-            textSizeNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}`;
-            updateAllStyles();
-            break;
-    }
+    if (isUser)
+        textSizeUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}`;
+    else
+        textSizeNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}`;
+    updateAllStyles();
 };
 
 const updateFontWeightStyle = (weight: string, isUser: boolean) => {
-    switch (isUser) {
-        case true:
-            textWeightUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} `;
-            updateAllStyles();
-            break;
-        case false:
-            textWeightNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} `;
-            updateAllStyles();
-            break;
-    }
+    if (isUser)
+        textWeightUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} `;
+    else
+        textWeightNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} `;
+    updateAllStyles();
 };
 
 const resetDefaultMessageColors = () => {
