@@ -41,12 +41,12 @@ export function Popup(): JSX.Element {
     }, []);
 
     // Use useEffect to save options whenever they change
-    useEffect(() => {
-        if (options) {
-            saveOptionsToStorage(options);
-            console.log("latest options", options);
-        }
-    }, [options]);
+    // useEffect(() => {
+    //     if (options) {
+    //         saveOptionsToStorage(options);
+    //         console.log("latest options", options);
+    //     }
+    // }, [options]);
 
     // Renders the component tree
     return (

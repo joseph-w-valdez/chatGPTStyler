@@ -5,12 +5,14 @@ export interface MessageFormControlProps {
     section: string;
     colorLiveChange: (colorStyle: string) => void;
     option: any;
+    applyUpdates: (action: string, value: number | string) => void;
 }
 
 export function MessageFormControl({
     section,
     colorLiveChange,
     option,
+    applyUpdates,
 }: MessageFormControlProps): JSX.Element {
     const [placeholderValue, setPlaceholderValue] = useState<string>("");
     const [colorType, setColorType] = useState<string>("");
@@ -87,9 +89,10 @@ export function MessageFormControl({
                 defaultValue={option}
                 maxLength={inputMaxLength}
                 value={colorCode}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setColorCode(e.currentTarget.value)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setColorCode(e.currentTarget.value);
+                    applyUpdates(section, e.currentTarget.value);
+                }}
             />
         </div>
     );

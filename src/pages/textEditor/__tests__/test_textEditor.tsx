@@ -17,7 +17,6 @@ describe("TextEditor component", () => {
                 chatColorLiveChange={mockFunction}
                 chatFontSizeOnChange={mockFunction}
                 chatFontWeightOnChange={mockFunction}
-                setPage={mockFunction}
             />,
         );
 
@@ -35,7 +34,6 @@ describe("TextEditor component", () => {
                 chatColorLiveChange={mockFunction}
                 chatFontSizeOnChange={mockFunction}
                 chatFontWeightOnChange={mockFunction}
-                setPage={mockFunction}
             />,
         );
 

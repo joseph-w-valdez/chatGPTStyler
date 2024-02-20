@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getOptionsFromStorage } from "@src/lib/utilities/googleStorage";
+import {
+    getOptionsFromStorage,
+    OptionsTypes,
+    saveOptionsToStorage,
+} from "@src/lib/utilities/googleStorage";
 import { MessageFormControl } from "@src/components/messageFormControl";
-import { OptionsTypes } from "@src/lib/utilities/googleStorage";
 import css from "./styles.module.css";
 
 export interface MessageEditorProps {
@@ -28,9 +31,12 @@ export function MessageEditor({
     messageBorderRadiusLiveChange,
     inputBoxMaxWidthLiveChange,
     options,
+    setPage,
     setOptions,
 }: MessageEditorProps): JSX.Element {
-    const callFunction = (action: string, value: number) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const applyUpdates = (action: string, value: number | string) => {
+        setIsEditing(true);
         console.log("action", action);
         console.log("value", value);
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -41,10 +47,10 @@ export function MessageEditor({
         });
     };
     class InputSetting {
-        name = "";
+        name: string = "";
         id: keyof OptionsTypes = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void = () => {};
 
         constructor(
             name: string,
@@ -101,7 +107,6 @@ export function MessageEditor({
             "rgba(60, 7, 83",
             "rgba(3, 6, 55",
         ];
-        console.log("hjgj", setting.id);
         return (
             <div className="flex justify-between items-center" key={index}>
                 <label
@@ -115,26 +120,35 @@ export function MessageEditor({
                     <input
                         className={`outline-none px-2 py-2 text-right w-full rounded-l-sm`}
                         type="text"
+                        maxLength={2}
                         style={{
                             backgroundColor: `${bgColors[index]}, 0.1)`,
                         }}
+                        value={options[setting.id]}
                         id={setting.id}
-                        placeholder={options[setting.id]}
-                        onChange={setting.onChange}
+                        onChange={(e) => {
+                            console.log("KEVIN", options, savedOption);
+                            applyUpdates(
+                                setting.id,
+                                Number(e.currentTarget.value),
+                            );
+                            setting.onChange(e);
+                        }}
                     ></input>
                     <input
                         type="range"
                         min="1"
                         max="95"
-                        // value={options[setting.id]}
-                        defaultValue={options[setting.id]}
+                        value={options[setting.id]}
                         className="absolute w-full h-0.5 left-0 top-8 accent-gray-500"
-                        onChange={(e) =>
-                            callFunction(
+                        onChange={(e) => {
+                            console.log("KEVIN", options, savedOption);
+                            applyUpdates(
                                 setting.id,
                                 Number(e.currentTarget.value),
-                            )
-                        }
+                            );
+                            setting.onChange(e);
+                        }}
                         step={"1"}
                     ></input>
                     {/* <input
@@ -160,19 +174,60 @@ export function MessageEditor({
     };
 
     return (
-        <div className="grid grid-cols-1 gap-y-3 animate-fade-in px-3 pb-2">
+        <div
+            className={`grid grid-cols-1 gap-y-3 ${
+                !isEditing ? "animate-fade-in" : ""
+            } px-3 pb-2`}
+        >
             {inputSettings.map(mapInputSettings)}
             <div className="grid grid-cols-2 gap-2 place-items-center">
                 <MessageFormControl
                     section={"User"}
                     colorLiveChange={userMessageColorLiveChange}
                     option={savedOption.messageColorUserStyle}
+                    applyUpdates={applyUpdates}
                 />
                 <MessageFormControl
                     section={"Chat"}
                     colorLiveChange={chatMessageColorLiveChange}
                     option={savedOption.messageColorNonUserStyle}
+                    applyUpdates={applyUpdates}
                 />
+            </div>
+            <div className="grid grid-cols-4 gap-1">
+                <button
+                    className={`${css.btn} col-span-2`}
+                    onClick={() => {
+                        saveOptionsToStorage(options);
+                        setIsEditing(false);
+                    }}
+                >
+                    Restore Default
+                </button>
+                <button
+                    disabled={!isEditing}
+                    // className={`${css.btn}`}
+                    className={`${css.btn}`}
+                    onClick={() => {
+                        saveOptionsToStorage(options);
+                        setSavedOption({ ...options });
+                        setIsEditing(false);
+                    }}
+                >
+                    Save
+                </button>
+                <button
+                    disabled={!isEditing}
+                    // className={`${css.btn}`}
+                    className={`${css.btnRed}`}
+                    onClick={() => {
+                        setOptions({ ...savedOption });
+                        applyUpdates("restoreUserSettings", "");
+                        setIsEditing(false);
+                    }}
+                >
+                    Cancel
+                </button>
             </div>
         </div>
     );

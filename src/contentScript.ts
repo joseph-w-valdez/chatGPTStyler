@@ -317,6 +317,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         updateMessageBorderRadius(request.arg);
     else if (request.action === "inputBoxMaxWidthStyle")
         updateInputBoxMaxWidth(request.arg);
+    else if (request.action === "User") updateMessageColorUser(request.arg);
+    else if (request.action === "Chat") updateMessageColorChatGPT(request.arg);
+    else if (request.action === "restoreUserSettings") loadSettings();
 });
 
 // send a message to the background script if needed

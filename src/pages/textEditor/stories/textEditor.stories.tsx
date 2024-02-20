@@ -12,7 +12,6 @@ storiesOf("TextEditor", module)
             chatColorLiveChange={action("Chat Color Live Change")}
             chatFontSizeOnChange={action("Chat Font Size Change")}
             chatFontWeightOnChange={action("Chat Font Weight Change")}
-            setPage={action("Page changed")}
         />
     ))
     .add("With Custom Props", () => (
@@ -23,6 +22,5 @@ storiesOf("TextEditor", module)
             chatColorLiveChange={action("Chat Color Live Change")}
             chatFontSizeOnChange={action("Chat Font Size Change")}
             chatFontWeightOnChange={action("Chat Font Weight Change")}
-            setPage={action("Page changed")}
         />
     ));
