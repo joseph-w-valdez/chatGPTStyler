@@ -7,6 +7,8 @@ const customStyle = document.createElement("style");
 customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
 
+console.log("KEVIN TESTING");
+
 let messageMaxWidthStyle = "";
 let messagePaddingStyle = "";
 let messageBorderRadiusStyle = "";
