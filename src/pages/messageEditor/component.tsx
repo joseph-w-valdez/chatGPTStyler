@@ -44,7 +44,7 @@ export function MessageEditor({
         name = "";
         id: keyof OptionsTypes = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void = () => {};
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
         constructor(
             name: string,
