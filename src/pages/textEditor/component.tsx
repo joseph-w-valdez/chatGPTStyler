@@ -8,7 +8,6 @@ interface TextEditorProps {
     chatColorLiveChange: (colorStyle: string) => void;
     chatFontSizeOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     chatFontWeightOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    setPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function TextEditor({
@@ -18,17 +17,9 @@ export function TextEditor({
     chatColorLiveChange,
     chatFontSizeOnChange,
     chatFontWeightOnChange,
-    setPage,
 }: TextEditorProps): JSX.Element {
     return (
         <div className="grid grid-cols-1 gap-4">
-            <button
-                onClick={() => {
-                    setPage("");
-                }}
-            >
-                back
-            </button>
             <TextFormControls
                 section={"User"}
                 colorLiveChange={userColorLiveChange}
