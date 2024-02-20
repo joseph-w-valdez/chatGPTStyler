@@ -236,6 +236,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
+// Listen for messages from the popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log(
+        "Request from Message Editor Sliders!: chrome.runtime.onMessage.addListener Callback",
+    );
+    if (request.action === "messageMaxWidthStyle")
+        updateMessageMaxWidth(request.arg);
+    else if (request.action === "messagePaddingStyle")
+        updateMessagePadding(request.arg);
+    else if (request.action === "messageBorderRadiusStyle")
+        updateMessageBorderRadius(request.arg);
+    else if (request.action === "inputBoxMaxWidthStyle")
+        updateInputBoxMaxWidth(request.arg);
+});
+
 // send a message to the background script if needed
 chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
     console.log(response.reply);

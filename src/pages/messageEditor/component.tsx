@@ -31,6 +31,16 @@ export function MessageEditor({
     setPage,
     setOptions,
 }: MessageEditorProps): JSX.Element {
+    const callFunction = (action: string, value: number) => {
+        console.log("action", action);
+        console.log("value", value);
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id || 0, {
+                action: action,
+                arg: value,
+            });
+        });
+    };
     class InputSetting {
         name: string = "";
         id: keyof OptionsTypes = "messageMaxWidthStyle";
@@ -86,19 +96,29 @@ export function MessageEditor({
     }, []);
 
     const mapInputSettings = (setting: InputSetting, index: number) => {
-        const bgColors = ["#910A67", "#720455", "#3C0753", "#030637"];
+        const bgColors = [
+            "rgba(145, 10, 103",
+            "rgba(114, 4, 85",
+            "rgba(60, 7, 83",
+            "rgba(3, 6, 55",
+        ];
+        console.log("hjgj", setting.id);
         return (
             <div className="flex justify-between items-center" key={index}>
                 <label
                     htmlFor={setting.id}
-                    className={`bg-settings${
-                        index + 1
-                    } basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2`}
+                    className={`basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2`}
+                    style={{
+                        backgroundColor: `${bgColors[index]})`,
+                    }}
                 >{`${setting.name}:`}</label>{" "}
                 <div className="relative flex ">
                     <input
-                        className={`bg-${bgColors[index]}]/10 outline-none px-2 py-2 text-right w-full rounded-l-sm`}
+                        className={`outline-none px-2 py-2 text-right w-full rounded-l-sm`}
                         type="text"
+                        style={{
+                            backgroundColor: `${bgColors[index]}, 0.1)`,
+                        }}
                         id={setting.id}
                         placeholder={options[setting.id]}
                         onChange={setting.onChange}
@@ -107,13 +127,33 @@ export function MessageEditor({
                         type="range"
                         min="1"
                         max="95"
+                        // value={options[setting.id]}
+                        defaultValue={options[setting.id]}
+                        className="absolute w-full h-0.5 left-0 top-8 accent-gray-500"
+                        onChange={(e) =>
+                            callFunction(
+                                setting.id,
+                                Number(e.currentTarget.value),
+                            )
+                        }
+                        step={"1"}
+                    ></input>
+                    {/* <input
+                        type="range"
+                        min="1"
+                        max="95"
                         value={options[setting.id]}
                         className="absolute w-full h-0.5 left-0 top-8 accent-gray-500"
                         onChange={setting.onChange}
-                        step={"2"}
-                    ></input>
+                        step={"3"}
+                    ></input> */}
                 </div>
-                <div className={`bg-[${bgColors[index]}]/10 py-2 rounded-r-sm`}>
+                <div
+                    className={`py-2 rounded-r-sm`}
+                    style={{
+                        backgroundColor: `${bgColors[index]}, 0.1)`,
+                    }}
+                >
                     {setting.valueType}
                 </div>
             </div>
