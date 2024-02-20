@@ -16,8 +16,14 @@ let inputBoxMaxWidthStyle = "";
 let messageBoxColors = "";
 let messageColorUser = "";
 let messageColorChatGPT = "";
-let selectionColors = "";
-let chatMessageButtons = `
+let textColorUserStyle = "";
+let textColorNonUserStyle = "";
+let textSizeUserStyle = "";
+let textSizeNonUserStyle = "";
+let textWeightUserStyle = "";
+let textWeightNonUserStyle = "";
+const selectionColors = "";
+const chatMessageButtons = `
     [data-testid] button {
       visibility: unset
     }
@@ -74,6 +80,12 @@ const updateAllStyles = () => {
         messagePaddingStyle +
         messageBorderRadiusStyle +
         inputBoxMaxWidthStyle +
+        textColorUserStyle +
+        textColorNonUserStyle +
+        textSizeUserStyle +
+        textSizeNonUserStyle +
+        textWeightUserStyle +
+        textWeightNonUserStyle +
         selectionColors +
         chatMessageButtons +
         codeSnippetWidth +
@@ -101,6 +113,45 @@ const updateInputBoxMaxWidth = (widthPercentage: number) => {
       form { max-width: ${widthPercentage}% !important; }
     }`;
     updateAllStyles();
+};
+
+const updateTextColorStyle = (color: string, isUser: boolean) => {
+    switch (isUser) {
+        case true:
+            textColorUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { color: ${color}}`;
+            updateAllStyles();
+            break;
+        case false:
+            textColorNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { color: ${color}}`;
+            updateAllStyles();
+            break;
+    }
+};
+
+const updateTextSizeStyle = (size: number, isUser: boolean) => {
+    switch (isUser) {
+        case true:
+            textSizeUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}`;
+            updateAllStyles();
+            break;
+        case false:
+            textSizeNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}`;
+            updateAllStyles();
+            break;
+    }
+};
+
+const updateFontWeightStyle = (weight: string, isUser: boolean) => {
+    switch (isUser) {
+        case true:
+            textWeightUserStyle = `[data-testid]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} `;
+            updateAllStyles();
+            break;
+        case false:
+            textWeightNonUserStyle = `[data-testid]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} `;
+            updateAllStyles();
+            break;
+    }
 };
 
 const resetDefaultMessageColors = () => {
@@ -176,6 +227,12 @@ const setDefaultSettings = () => {
     updateInputBoxMaxWidth(70);
     resetDefaultMessageColors();
     // updateMessageColor("", "", true);
+    updateTextColorStyle("#000000", true);
+    updateTextColorStyle("#6699ff", false);
+    updateTextSizeStyle(18, true);
+    updateTextSizeStyle(18, false);
+    updateFontWeightStyle("heavy", true);
+    updateFontWeightStyle("heavy", false);
 };
 
 // set default settings on load
@@ -201,6 +258,18 @@ const loadSettings = () => {
                 updateMessageBorderRadius(settings.messageBorderRadiusStyle);
             if (settings.inputBoxMaxWidthStyle)
                 updateInputBoxMaxWidth(settings.inputBoxMaxWidthStyle);
+            if (settings.textColorUserStyle)
+                updateTextColorStyle(settings.textColorUserStyle, true);
+            if (settings.textColorNonUserStyle)
+                updateTextColorStyle(settings.textColorNonUserStyle, false);
+            if (settings.textSizeUserStyle)
+                updateTextSizeStyle(settings.textSizeUserStyle, true);
+            if (settings.textSizeNonUserStyle)
+                updateTextSizeStyle(settings.textSizeNonUserStyle, false);
+            if (settings.textWeightUserStyle)
+                updateFontWeightStyle(settings.textWeightUserStyle, true);
+            if (settings.textWeightNonUserStyle)
+                updateFontWeightStyle(settings.textWeightNonUserStyle, false);
         } else {
             // Set default styles if no settings are found
             setDefaultSettings();
@@ -227,6 +296,18 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
             updateMessageBorderRadius(newSettings.messageBorderRadiusStyle);
         if (newSettings.inputBoxMaxWidthStyle)
             updateInputBoxMaxWidth(newSettings.inputBoxMaxWidthStyle);
+        if (newSettings.textColorUserStyle)
+            updateTextColorStyle(newSettings.textColorUserStyle, true);
+        if (newSettings.textColorNonUserStyle)
+            updateTextColorStyle(newSettings.textColorNonUserStyle, false);
+        if (newSettings.textSizeUserStyle)
+            updateTextSizeStyle(newSettings.textSizeUserStyle, true);
+        if (newSettings.textSizeNonUserStyle)
+            updateTextSizeStyle(newSettings.textSizeNonUserStyle, false);
+        if (newSettings.textWeightUserStyle)
+            updateFontWeightStyle(newSettings.textWeightUserStyle, true);
+        if (newSettings.textWeightNonUserStyle)
+            updateFontWeightStyle(newSettings.textWeightNonUserStyle, false);
     }
 });
 

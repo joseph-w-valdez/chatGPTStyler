@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { HomeMenu } from "@src/pages/homeMenu";
 import { TextEditor } from "@src/pages/textEditor/component";
 import { MessageEditor } from "@src/pages/messageEditor";

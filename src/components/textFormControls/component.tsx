@@ -20,7 +20,7 @@ export function TextFormControls({
     const [colorCode, setColorCode] = useState<string>("");
     const [colorStyle, setColorStyle] = useState<string>("");
     const [inputMaxLength, setInputMaxLength] = useState<number>();
- 
+
     useEffect(() => {
         switch (colorType) {
             case "name":
@@ -108,14 +108,9 @@ export function TextFormControls({
                     <option value="" disabled hidden>
                         Select a Font Weight
                     </option>
-                    <option value="100">Thin</option>
-                    <option value="200">Extra Light</option>
-                    <option value="300">Light</option>
                     <option value="400">Normal</option>
                     <option value="500">Medium</option>
-                    <option value="600">Semi Bold</option>
                     <option value="700">Bold</option>
-                    <option value="800">Extra Bold</option>
                 </select>
             </label>
         </div>
