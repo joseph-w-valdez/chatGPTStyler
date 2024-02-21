@@ -16,6 +16,21 @@ const mockProps: TextFormControlsProps = {
     colorLiveChange: mockColorLiveChange,
     fontSizeOnChange: mockFontSizeOnChange,
     fontWeightOnChange: mockFontWeightOnChange,
+    option: {
+        messageMaxWidthStyle: "",
+        messageColorUserStyle: "",
+        messageColorNonUserStyle: "",
+        messagePaddingStyle: "",
+        messageBorderRadiusStyle: "",
+        inputBoxMaxWidthStyle: "",
+        textColorUserStyle: "",
+        textColorNonUserStyle: "",
+        textSizeUserStyle: "",
+        textSizeNonUserStyle: "",
+        textWeightUserStyle: "",
+        textWeightNonUserStyle: "",
+    },
+    applyUpdates: jest.fn(),
 };
 
 // Test to ensure that TextFormControls renders correctly
@@ -55,8 +70,4 @@ test("TextFormControls updates state and calls colorLiveChange on color type cha
 
     // Assert that colorLiveChange is called with the correct value
     expect(mockColorLiveChange).toHaveBeenCalledWith("");
-
-    // You can add more assertions based on your component's behavior
 });
-
-// Add more tests based on your component's behavior

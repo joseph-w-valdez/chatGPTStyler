@@ -31,7 +31,7 @@ export function MessageEditor({
     messageBorderRadiusLiveChange,
     inputBoxMaxWidthLiveChange,
     options,
-    setPage,
+
     setOptions,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
@@ -47,10 +47,10 @@ export function MessageEditor({
         });
     };
     class InputSetting {
-        name: string = "";
+        name = "";
         id: keyof OptionsTypes = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void = () => {};
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
         constructor(
             name: string,

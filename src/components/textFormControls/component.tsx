@@ -6,6 +6,8 @@ export interface TextFormControlsProps {
     colorLiveChange: (colorStyle: string) => void;
     fontSizeOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     fontWeightOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    option: any;
+    applyUpdates: (action: string, value: number | string) => void;
 }
 
 export function TextFormControls({
@@ -13,11 +15,13 @@ export function TextFormControls({
     colorLiveChange,
     fontSizeOnChange,
     fontWeightOnChange,
+    option,
+    applyUpdates,
 }: TextFormControlsProps): JSX.Element {
     const [placeholderValue, setPlaceholderValue] =
         useState<string>("Select Color Type");
     const [colorType, setColorType] = useState<string>("");
-    const [colorCode, setColorCode] = useState<string>("");
+    const [colorCode, setColorCode] = useState<string>(option);
     const [colorStyle, setColorStyle] = useState<string>("");
     const [inputMaxLength, setInputMaxLength] = useState<number>();
 
@@ -53,66 +57,68 @@ export function TextFormControls({
         colorLiveChange(colorStyle);
     }, [colorType, colorCode, colorStyle]);
 
-    // // // //
     return (
-        <div>
-            <h1>{`${section} Text`}</h1>
+        <div className="mx-3 px-3 py-4 bg-pink-900 rounded-lg text-white">
+            <h1 className="text-sm font-semibold">{`${section} Text`}</h1>
             <hr />
-            <label>
-                Text Color:
-                <select
-                    id={`${section}ColorType`}
-                    defaultValue={""}
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setColorType(e.currentTarget.value)
-                    }
-                >
-                    <option value="" disabled hidden>
-                        Color Type
-                    </option>
-                    <option value="name">Name</option>
-                    <option value="hex">HEX</option>
-                    <option value="rgb">RGB</option>
-                    <option value="hsl">HSL</option>
-                </select>
-                <input
-                    disabled={colorType ? false : true}
-                    type="text"
-                    id={`${section}TextColor`}
-                    placeholder={placeholderValue}
-                    maxLength={inputMaxLength}
-                    value={colorCode}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setColorCode(e.currentTarget.value)
-                    }
-                />
-            </label>
-            <br />
-            <label>
-                Font Size:
-                <input
-                    type="text"
-                    id={`${section}FontSize`}
-                    placeholder="pixel"
-                    onChange={fontSizeOnChange}
-                />
-            </label>
-            <br />
-            <label>
-                Font Weight:
-                <select
-                    id={`${section}FontWeight`}
-                    defaultValue={""}
-                    onChange={fontWeightOnChange}
-                >
-                    <option value="" disabled hidden>
-                        Select a Font Weight
-                    </option>
-                    <option value="400">Normal</option>
-                    <option value="500">Medium</option>
-                    <option value="700">Bold</option>
-                </select>
-            </label>
+            <div className="text-xs">
+                <label>
+                    Text Color:
+                    <select
+                        id={`${section}ColorType`}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setColorType(e.currentTarget.value)
+                        }
+                    >
+                        <option value="" disabled hidden>
+                            Select
+                        </option>
+                        <option value="name">Name</option>
+                        <option value="hex">HEX</option>
+                        <option value="rgb">RGB</option>
+                        <option value="hsl">HSL</option>
+                    </select>
+                    <input
+                        disabled={colorType ? false : true}
+                        type="text"
+                        id={`${section}TextColor`}
+                        placeholder={option}
+                        defaultValue={option}
+                        maxLength={inputMaxLength}
+                        value={colorCode}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setColorCode(e.currentTarget.value);
+                            applyUpdates(section, e.currentTarget.value);
+                        }}
+                    />
+                </label>
+                <br />
+                <label>
+                    Font Size:
+                    <input
+                        type="text"
+                        id={`${section}FontSize`}
+                        placeholder="pixel"
+                        onChange={fontSizeOnChange}
+                    />
+                </label>
+                <br />
+                <label>
+                    Font Weight:
+                    <select
+                        id={`${section}FontWeight`}
+                        defaultValue={""}
+                        onChange={fontWeightOnChange}
+                    >
+                        <option value="" disabled hidden>
+                            Weight
+                        </option>
+                        <option value="400">Normal</option>
+                        <option value="500">Medium</option>
+                        <option value="700">Bold</option>
+                    </select>
+                </label>
+            </div>
         </div>
     );
 }

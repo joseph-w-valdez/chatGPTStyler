@@ -1,29 +1,27 @@
-import * as React from "react";
+import React from "react";
 import { mount } from "enzyme";
-import { MessageFormControl } from "../index"; // Adjust the import path based on your project structure
+import { MessageFormControl, MessageFormControlProps } from "../component";
 
 describe("MessageFormControl component", () => {
+    const defaultProps: MessageFormControlProps = {
+        section: "Test",
+        colorLiveChange: jest.fn(),
+        option: "",
+        applyUpdates: jest.fn(),
+    };
+
+    const mountComponent = (props?: Partial<MessageFormControlProps>) => {
+        const mergedProps = { ...defaultProps, ...props };
+        return mount(<MessageFormControl {...mergedProps} />);
+    };
+
     it("renders correctly", () => {
-        const wrapper = mount(
-            <MessageFormControl
-                applyUpdates={jest.fn}
-                section="Test"
-                colorLiveChange={jest.fn()}
-                option={jest.fn()}
-            />,
-        );
+        const wrapper = mountComponent();
         expect(wrapper).toMatchSnapshot();
     });
 
     it("updates colorType and colorCode correctly for HEX", () => {
-        const wrapper = mount(
-            <MessageFormControl
-                applyUpdates={jest.fn}
-                section="Test"
-                colorLiveChange={jest.fn()}
-                option={jest.fn()}
-            />,
-        );
+        const wrapper = mountComponent();
 
         wrapper.find("select").simulate("change", { target: { value: "hex" } });
         wrapper
@@ -34,14 +32,7 @@ describe("MessageFormControl component", () => {
     });
 
     it("updates colorType and colorCode correctly for RGB", () => {
-        const wrapper = mount(
-            <MessageFormControl
-                applyUpdates={jest.fn}
-                section="Test"
-                colorLiveChange={jest.fn()}
-                option={jest.fn()}
-            />,
-        );
+        const wrapper = mountComponent();
 
         wrapper.find("select").simulate("change", { target: { value: "rgb" } });
         wrapper

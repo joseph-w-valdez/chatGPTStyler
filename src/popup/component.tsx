@@ -7,7 +7,6 @@ import { RenderPage } from "@src/lib/utilities/RenderPage";
 import {
     OptionsTypes,
     getOptionsFromStorage,
-    saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
 
 export function Popup(): JSX.Element {

@@ -59,6 +59,8 @@ export function RenderPage({
                     chatColorLiveChange={chatColorLiveChange}
                     chatFontSizeOnChange={chatFontSizeOnChange}
                     chatFontWeightOnChange={chatFontWeightOnChange}
+                    options={options}
+                    setOptions={setOptions}
                 />
             );
         case "Message Editor":
