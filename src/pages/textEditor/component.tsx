@@ -2,45 +2,32 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { TextFormControls } from "@src/components/textFormControls";
 import {
-    OptionsTypes,
-    getOptionsFromStorage,
+    SettingsType,
     saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
 import css from "./styles.module.css";
 
 interface TextEditorProps {
-    userColorLiveChange: (colorStyle: string) => void;
-    userFontSizeOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    userFontWeightOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    chatColorLiveChange: (colorStyle: string) => void;
-    chatFontSizeOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    chatFontWeightOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    options: OptionsTypes;
-    setOptions: (options: OptionsTypes) => void;
+    settings: SettingsType;
+    setOptions: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
 export function TextEditor({
-    userColorLiveChange,
-    userFontSizeOnChange,
-    userFontWeightOnChange,
-    chatColorLiveChange,
-    chatFontSizeOnChange,
-    chatFontWeightOnChange,
-    options,
+    settings,
     setOptions,
 }: TextEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
-    const [savedOption, setSavedOption] = useState<OptionsTypes>(options);
+    const [liveChanges, setLiveChanges] = useState<SettingsType>(settings);
 
-    useEffect(() => {
-        getOptionsFromStorage((savedOptions) => {
-            setOptions(savedOptions);
-            setSavedOption(savedOptions);
-            console.log(savedOption);
-        });
-    }, []);
+    // useEffect(() => {
+    //     getOptionsFromStorage((savedOptions) => {
+    //         setOptions(savedOptions);
+    //         setLiveSettings(savedOptions);
+    //         console.log(liveSettings);
+    //     });
+    // }, []);
 
-    const applyUpdates = (action: string, value: number | string) => {
+    const sendMessageToRuntime = (action: string, value: number | string) => {
         setIsEditing(true);
         console.log("action", action);
         console.log("value", value);
@@ -54,27 +41,37 @@ export function TextEditor({
     return (
         <div className="grid grid-cols-1 gap-4">
             <TextFormControls
-                section={"User"}
-                colorLiveChange={userColorLiveChange}
-                fontSizeOnChange={userFontSizeOnChange}
-                fontWeightOnChange={userFontWeightOnChange}
-                option={savedOption.textColorUserStyle}
-                applyUpdates={applyUpdates}
+                settingsOptions={"Size"}
+                liveChanges={liveChanges}
+                setLiveChanges={setLiveChanges}
+                applyUpdates={sendMessageToRuntime}
             />
             <TextFormControls
-                section={"Chat"}
-                colorLiveChange={chatColorLiveChange}
-                fontSizeOnChange={chatFontSizeOnChange}
-                fontWeightOnChange={chatFontWeightOnChange}
-                option={savedOption.textColorNonUserStyle}
-                applyUpdates={applyUpdates}
+                settingsOptions={"Weight"}
+                liveChanges={liveChanges}
+                setLiveChanges={setLiveChanges}
+                applyUpdates={sendMessageToRuntime}
             />
             <div className="grid grid-cols-4 gap-1">
                 <button
                     className={`${css.btn} col-span-2`}
                     onClick={() => {
-                        saveOptionsToStorage(options);
-                        setIsEditing(false);
+                        setLiveChanges({
+                            messageMaxWidthStyle: "95",
+                            messageColorUserStyle: "",
+                            messageColorNonUserStyle: "",
+                            messagePaddingStyle: "10",
+                            messageBorderRadiusStyle: "5",
+                            inputBoxMaxWidthStyle: "70",
+                            textColorUserStyle: "",
+                            textColorNonUserStyle: "",
+                            textSizeUserStyle: "",
+                            textSizeNonUserStyle: "",
+                            textWeightUserStyle: "",
+                            textWeightNonUserStyle: "",
+                        });
+                        sendMessageToRuntime("restoreDefaultSettings", "");
+                        setIsEditing(true);
                     }}
                 >
                     Restore Default
@@ -83,8 +80,8 @@ export function TextEditor({
                     disabled={!isEditing}
                     className={`${css.btn}`}
                     onClick={() => {
-                        saveOptionsToStorage(options);
-                        setSavedOption({ ...options });
+                        saveOptionsToStorage(liveChanges);
+                        setLiveChanges(liveChanges);
                         setIsEditing(false);
                     }}
                 >
@@ -94,8 +91,8 @@ export function TextEditor({
                     disabled={!isEditing}
                     className={`${css.btnRed}`}
                     onClick={() => {
-                        setOptions({ ...savedOption });
-                        applyUpdates("restoreUserSettings", "");
+                        setOptions({ ...liveChanges });
+                        sendMessageToRuntime("restoreUserSettings", "");
                         setIsEditing(false);
                     }}
                 >

@@ -2,10 +2,10 @@ import React from "react";
 import { HomeMenu } from "@src/pages/homeMenu";
 import { TextEditor } from "@src/pages/textEditor/component";
 import { MessageEditor } from "@src/pages/messageEditor";
-import { OptionsTypes } from "./googleStorage";
+import { SettingsType } from "./googleStorage";
 
 interface RenderPageProps {
-    setOptions: (options: OptionsTypes) => void;
+    setOptions: (options: SettingsType) => void;
     userMessageColorLiveChange: (colorStyle: string) => void;
     chatMessageColorLiveChange: (colorStyle: string) => void;
     messageMaxWidthLiveChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,7 +26,7 @@ interface RenderPageProps {
     chatFontWeightOnChange: (
         event: React.ChangeEvent<HTMLSelectElement>,
     ) => void;
-    options: OptionsTypes;
+    options: SettingsType;
     page: string;
     setPage: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -52,43 +52,44 @@ export function RenderPage({
     switch (page) {
         case "Text Editor":
             return (
-                <TextEditor
-                    userColorLiveChange={userColorLiveChange}
-                    userFontSizeOnChange={userFontSizeOnChange}
-                    userFontWeightOnChange={userFontWeightOnChange}
-                    chatColorLiveChange={chatColorLiveChange}
-                    chatFontSizeOnChange={chatFontSizeOnChange}
-                    chatFontWeightOnChange={chatFontWeightOnChange}
-                    options={options}
-                    setOptions={setOptions}
-                />
+                // <TextEditor
+                //     userColorLiveChange={userColorLiveChange}
+                //     userFontSizeOnChange={userFontSizeOnChange}
+                //     userFontWeightOnChange={userFontWeightOnChange}
+                //     chatColorLiveChange={chatColorLiveChange}
+                //     chatFontSizeOnChange={chatFontSizeOnChange}
+                //     chatFontWeightOnChange={chatFontWeightOnChange}
+                // />
+                <></>
             );
         case "Message Editor":
             return (
-                <MessageEditor
-                    userMessageColorLiveChange={userMessageColorLiveChange}
-                    chatMessageColorLiveChange={chatMessageColorLiveChange}
-                    messageMaxWidthLiveChange={messageMaxWidthLiveChange}
-                    messagePaddingLiveChange={messagePaddingLiveChange}
-                    messageBorderRadiusLiveChange={
-                        messageBorderRadiusLiveChange
-                    }
-                    inputBoxMaxWidthLiveChange={inputBoxMaxWidthLiveChange}
-                    options={options}
-                    setPage={setPage}
-                    setOptions={setOptions}
-                />
+                // <MessageEditor
+                //     userMessageColorLiveChange={userMessageColorLiveChange}
+                //     chatMessageColorLiveChange={chatMessageColorLiveChange}
+                //     messageMaxWidthLiveChange={messageMaxWidthLiveChange}
+                //     messagePaddingLiveChange={messagePaddingLiveChange}
+                //     messageBorderRadiusLiveChange={
+                //         messageBorderRadiusLiveChange
+                //     }
+                //     inputBoxMaxWidthLiveChange={inputBoxMaxWidthLiveChange}
+                //     options={options}
+                //     setPage={setPage}
+                //     setOptions={setOptions}
+                // />
+                <></>
             );
         default:
             return (
-                <HomeMenu
-                    messageEditorRedirect={() => {
-                        setPage("Message Editor");
-                    }}
-                    textEditorRedirect={() => {
-                        setPage("Text Editor");
-                    }}
-                />
+                // <HomeMenu
+                //     messageEditorRedirect={() => {
+                //         setPage("Message Editor");
+                //     }}
+                //     textEditorRedirect={() => {
+                //         setPage("Text Editor");
+                //     }}
+                // />
+                <></>
             );
     }
 }

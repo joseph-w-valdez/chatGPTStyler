@@ -14,11 +14,8 @@ const Template: Story<TextFormControlsProps> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-    section: "Sample Section",
-    colorLiveChange: action("Color Live Change"),
-    fontSizeOnChange: action("Font Size Change"),
-    fontWeightOnChange: action("Font Weight Change"),
-    option: {
+    settingsOptions: "Size",
+    liveChanges: {
         messageMaxWidthStyle: "",
         messageColorUserStyle: "",
         messageColorNonUserStyle: "",
@@ -32,5 +29,6 @@ Default.args = {
         textWeightUserStyle: "",
         textWeightNonUserStyle: "",
     },
+    setLiveChanges: action(""),
     applyUpdates: action("Apply Updates"),
 };

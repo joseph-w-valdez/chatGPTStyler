@@ -1,30 +1,27 @@
 import React from "react";
 import { HomeButton } from "@src/components/homeButton";
+import css from "./styles.module.css";
 
 interface HomeMenuProps {
-    textEditorRedirect: any;
-    messageEditorRedirect: any;
+    setPage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function HomeMenu({
-    textEditorRedirect,
-    messageEditorRedirect,
-}: HomeMenuProps): JSX.Element {
+export function HomeMenu({ setPage }: HomeMenuProps): JSX.Element {
     return (
         <div className="grid gap-3 grid-cols-1 mt-3 w-full px-4">
             <HomeButton
                 dataTestid="text-editor"
-                onClick={textEditorRedirect}
+                onClick={() => setPage("Text Editor")}
                 btnLabel="Text Editor"
             />
             <HomeButton
                 dataTestid="message-editor"
-                onClick={messageEditorRedirect}
+                onClick={() => setPage("Message Editor")}
                 btnLabel="Message Editor"
             />
             <HomeButton
                 dataTestid="misc-editor"
-                onClick={messageEditorRedirect}
+                onClick={() => setPage("Message Editor")}
                 btnLabel="Miscellaneous"
             />
         </div>

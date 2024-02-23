@@ -1,67 +1,93 @@
+import { SettingsType } from "@src/lib/utilities/googleStorage";
 import React from "react";
 import { useState, useEffect } from "react";
 
 export interface MessageFormControlProps {
-    section: string;
-    colorLiveChange: (colorStyle: string) => void;
-    option: any;
+    settingsOptions: "message" | "text";
+    setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveChanges: SettingsType;
     applyUpdates: (action: string, value: number | string) => void;
 }
 
 export function MessageFormControl({
-    section,
-    colorLiveChange,
-    option,
+    settingsOptions,
+    setLiveChanges,
+    liveChanges,
     applyUpdates,
 }: MessageFormControlProps): JSX.Element {
-    const [placeholderValue, setPlaceholderValue] = useState<string>("");
     const [colorType, setColorType] = useState<string>("");
-    const [colorCode, setColorCode] = useState<string>(option);
-    const [colorStyle, setColorStyle] = useState<string>("");
-    const [inputMaxLength, setInputMaxLength] = useState<number>();
-
-    useEffect(() => {
+    const [inputMaxLength, setInputMaxLength] = useState<number>(30);
+    const formatColor = (color: string) => {
         switch (colorType) {
             case "name":
-                setPlaceholderValue("Color Name");
                 setInputMaxLength(30);
-                colorCode && setColorStyle(colorCode);
-                break;
+                return color;
             case "hex":
-                setPlaceholderValue("HEX");
                 setInputMaxLength(6);
-                colorCode.length === 6 && setColorStyle(`#${colorCode}`);
-                break;
+                return `#${color}`;
             case "rgb":
-                setPlaceholderValue("R, G, B");
                 setInputMaxLength(11);
-                colorCode.length >= 5 && setColorStyle(`rgb(${colorCode})`);
-                break;
+                return `rgb(${color})`;
             case "hsl":
-                setPlaceholderValue("HUE, Saturation%, Light%");
                 setInputMaxLength(9);
-                colorCode.length >= 7 && setColorStyle(`hsl(${colorCode})`);
-                break;
+                return `hsl(${color})`;
             default:
-                setPlaceholderValue("Select Color Type");
-                setColorType("");
-                setColorCode("");
-                setColorStyle("");
-                setInputMaxLength(0);
+                return color;
         }
-        colorLiveChange(colorStyle);
-    }, [colorType, colorCode, colorStyle]);
+    };
+
+    const formatKey = (isUser: boolean): keyof SettingsType => {
+        let formattedKey: keyof SettingsType;
+        if (isUser) formattedKey = `${settingsOptions}ColorUserStyle`;
+        else formattedKey = `${settingsOptions}ColorNonUserStyle`;
+        return formattedKey;
+    };
+    // useEffect(() => {
+    //     switch (colorType) {
+    //         case "name":
+    //             setPlaceholderValue("Color Name");
+    //             setInputMaxLength(30);
+    //             colorCode && setColorStyle(colorCode);
+    //             break;
+    //         case "hex":
+    //             setPlaceholderValue("HEX");
+    //             setInputMaxLength(6);
+    //             colorCode.length === 6 && setColorStyle(`#${colorCode}`);
+    //             break;
+    //         case "rgb":
+    //             setPlaceholderValue("R, G, B");
+    //             setInputMaxLength(11);
+    //             colorCode.length >= 5 && setColorStyle(`rgb(${colorCode})`);
+    //             break;
+    //         case "hsl":
+    //             setPlaceholderValue("HUE, Saturation%, Light%");
+    //             setInputMaxLength(9);
+    //             colorCode.length >= 7 && setColorStyle(`hsl(${colorCode})`);
+    //             break;
+    //         default:
+    //             setPlaceholderValue("Select Color Type");
+    //             setColorType("");
+    //             setColorCode("");
+    //             setColorStyle("");
+    //             setInputMaxLength(0);
+    //     }
+    //     colorLiveChange(colorStyle);
+    // }, [colorType, colorCode, colorStyle]);
 
     return (
         <div className="flex flex-col justify-center items-center bg-indigo-400 rounded-md p-2 gap-1 font-medium">
             <label
-                htmlFor={`${section}ColorType`}
+                htmlFor={`${formatKey(true)}ColorType`}
                 className=" text-white text-center"
             >
-                {section} Message Background Color
+                {`Chat Message ${
+                    formatKey(true) === "messageColorUserStyle"
+                        ? "Background"
+                        : "Text"
+                } Color`}
             </label>
             <select
-                id={`${section}ColorType`}
+                id={`${formatKey(true)}`}
                 className="p-1 rounded-md"
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                     setColorType(e.currentTarget.value)
@@ -76,24 +102,62 @@ export function MessageFormControl({
                 <option value="rgb">RGB</option>
                 <option value="hsl">HSL</option>
             </select>
-            <input
-                className={`text-center w-9/12 p-1 rounded-md ${
-                    colorType
-                        ? "animate-fade-in placeholder:text-black/30"
-                        : "animate-fade-out placeholder:text-white/70 "
-                }`}
-                disabled={!colorType}
-                type="text"
-                id={`${section} TextColor`}
-                placeholder={option}
-                defaultValue={option}
-                maxLength={inputMaxLength}
-                value={colorCode}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setColorCode(e.currentTarget.value);
-                    applyUpdates(section, e.currentTarget.value);
-                }}
-            />
+            <div className="grid grid-cols-2 gap-x-1">
+                <input
+                    className={`text-center w-full p-1 rounded-md ${
+                        colorType
+                            ? "animate-fade-in placeholder:text-black/30"
+                            : "animate-fade-out placeholder:text-white/70 "
+                    }`}
+                    disabled={!colorType}
+                    type="text"
+                    id={`${formatKey(true)} TextColor`}
+                    maxLength={inputMaxLength}
+                    value={liveChanges[formatKey(true)]}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setLiveChanges({
+                            ...liveChanges,
+                            [formatKey(true)]: formatColor(
+                                e.currentTarget.value,
+                            ),
+                        });
+                        applyUpdates(
+                            formatKey(true),
+                            formatColor(e.currentTarget.value),
+                        );
+                    }}
+                />
+                <input
+                    className={`text-center w-full p-1 rounded-md ${
+                        colorType
+                            ? "animate-fade-in placeholder:text-black/30"
+                            : "animate-fade-out placeholder:text-white/70 "
+                    }`}
+                    disabled={!colorType}
+                    type="text"
+                    id={`${formatKey(false)} TextColor`}
+                    maxLength={inputMaxLength}
+                    value={liveChanges[formatKey(false)]}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setLiveChanges({
+                            ...liveChanges,
+                            [formatKey(false)]: formatColor(
+                                e.currentTarget.value,
+                            ),
+                        });
+                        applyUpdates(
+                            formatKey(false),
+                            formatColor(e.currentTarget.value),
+                        );
+                    }}
+                />
+                <span className="text-white rounded-md font-medium text-center p-0 m-0">
+                    User
+                </span>
+                <span className="text-white rounded-md font-medium text-center p-0 m-0">
+                    Chat-GPT
+                </span>
+            </div>
         </div>
     );
 }

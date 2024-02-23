@@ -1,44 +1,27 @@
 import React, { useEffect, useState } from "react";
 import {
-    getOptionsFromStorage,
-    OptionsTypes,
+    SettingsType,
     saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
 import { MessageFormControl } from "@src/components/messageFormControl";
 import css from "./styles.module.css";
 
 export interface MessageEditorProps {
-    userMessageColorLiveChange: (colorStyle: string) => void;
-    chatMessageColorLiveChange: (colorStyle: string) => void;
-    messageMaxWidthLiveChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    messagePaddingLiveChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    messageBorderRadiusLiveChange: (
-        e: React.ChangeEvent<HTMLInputElement>,
-    ) => void;
-    inputBoxMaxWidthLiveChange: (
-        e: React.ChangeEvent<HTMLInputElement>,
-    ) => void;
-    options: OptionsTypes;
-    setPage: (page: string) => void;
-    setOptions: (options: OptionsTypes) => void;
+    settings: SettingsType;
+    setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
 export function MessageEditor({
-    userMessageColorLiveChange,
-    chatMessageColorLiveChange,
-    messageMaxWidthLiveChange,
-    messagePaddingLiveChange,
-    messageBorderRadiusLiveChange,
-    inputBoxMaxWidthLiveChange,
-    options,
-
-    setOptions,
+    settings,
+    setSettings,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
-    const applyUpdates = (action: string, value: number | string) => {
+    const [liveChanges, setLiveChanges] = useState<SettingsType>(settings);
+    const sendMessageToRuntime = (
+        action: string,
+        value: number | string | SettingsType,
+    ) => {
         setIsEditing(true);
-        console.log("action", action);
-        console.log("value", value);
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             chrome.tabs.sendMessage(tabs[0].id || 0, {
                 action: action,
@@ -46,59 +29,35 @@ export function MessageEditor({
             });
         });
     };
+
+    // useEffect(() => {
+    //     getOptionsFromStorage((savedOptions) => {
+    //         setSettings(savedOptions);
+    //         setLiveChanges(savedOptions);
+    //     });
+    // }, []);
+
     class InputSetting {
-        name = "";
-        id: keyof OptionsTypes = "messageMaxWidthStyle";
+        name: string = "";
+        id: keyof SettingsType = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
         constructor(
             name: string,
-            id: keyof OptionsTypes = "messageMaxWidthStyle",
+            id: keyof SettingsType = "messageMaxWidthStyle",
             valueType: "px" | "%" = "px",
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
         ) {
             this.name = name;
             this.id = id;
             this.valueType = valueType;
-            this.onChange = onChange;
         }
     }
     const inputSettings = [
-        new InputSetting(
-            "Message Width",
-            "messageMaxWidthStyle",
-            "%",
-            messageMaxWidthLiveChange,
-        ),
-        new InputSetting(
-            "Message Padding",
-            "messagePaddingStyle",
-            "px",
-            messagePaddingLiveChange,
-        ),
-        new InputSetting(
-            "Message Border",
-            "messageBorderRadiusStyle",
-            "px",
-            messageBorderRadiusLiveChange,
-        ),
-        new InputSetting(
-            "Input Box Width",
-            "inputBoxMaxWidthStyle",
-            "%",
-            inputBoxMaxWidthLiveChange,
-        ),
+        new InputSetting("Message Width", "messageMaxWidthStyle", "%"),
+        new InputSetting("Message Padding", "messagePaddingStyle", "px"),
+        new InputSetting("Message Border", "messageBorderRadiusStyle", "px"),
+        new InputSetting("Input Box Width", "inputBoxMaxWidthStyle", "%"),
     ];
-
-    const [savedOption, setSavedOption] = useState<OptionsTypes>(options);
-
-    useEffect(() => {
-        getOptionsFromStorage((savedOptions) => {
-            setOptions(savedOptions);
-            setSavedOption(savedOptions);
-        });
-    }, []);
 
     const mapInputSettings = (setting: InputSetting, index: number) => {
         const bgColors = [
@@ -124,42 +83,38 @@ export function MessageEditor({
                         style={{
                             backgroundColor: `${bgColors[index]}, 0.1)`,
                         }}
-                        value={options[setting.id]}
+                        value={liveChanges[setting.id]}
                         id={setting.id}
                         onChange={(e) => {
-                            console.log("KEVIN", options, savedOption);
-                            applyUpdates(
+                            sendMessageToRuntime(
                                 setting.id,
                                 Number(e.currentTarget.value),
                             );
-                            setting.onChange(e);
+                            setLiveChanges({
+                                ...liveChanges,
+                                [setting.id]: e.currentTarget.value,
+                            });
                         }}
                     ></input>
                     <input
                         type="range"
                         min="1"
                         max="95"
-                        value={options[setting.id]}
-                        className="absolute w-full h-0.5 left-0 top-8 accent-gray-500"
+                        value={liveChanges[setting.id]}
+                        className="absolute w-full h-0.5 left-0 bottom-0"
                         onChange={(e) => {
-                            console.log("KEVIN", options, savedOption);
-                            applyUpdates(
+                            sendMessageToRuntime(
                                 setting.id,
                                 Number(e.currentTarget.value),
                             );
-                            setting.onChange(e);
+                            setLiveChanges({
+                                ...liveChanges,
+                                [setting.id]: e.currentTarget.value,
+                            });
                         }}
                         step={"1"}
+                        style={{ accentColor: `${bgColors[index]})` }}
                     ></input>
-                    {/* <input
-                        type="range"
-                        min="1"
-                        max="95"
-                        value={options[setting.id]}
-                        className="absolute w-full h-0.5 left-0 top-8 accent-gray-500"
-                        onChange={setting.onChange}
-                        step={"3"}
-                    ></input> */}
                 </div>
                 <div
                     className={`py-2 rounded-r-sm`}
@@ -182,24 +137,38 @@ export function MessageEditor({
             {inputSettings.map(mapInputSettings)}
             <div className="grid grid-cols-2 gap-2 place-items-center">
                 <MessageFormControl
-                    section={"User"}
-                    colorLiveChange={userMessageColorLiveChange}
-                    option={savedOption.messageColorUserStyle}
-                    applyUpdates={applyUpdates}
+                    settingsOptions={"message"}
+                    setLiveChanges={setLiveChanges}
+                    liveChanges={liveChanges}
+                    applyUpdates={sendMessageToRuntime}
                 />
                 <MessageFormControl
-                    section={"Chat"}
-                    colorLiveChange={chatMessageColorLiveChange}
-                    option={savedOption.messageColorNonUserStyle}
-                    applyUpdates={applyUpdates}
+                    settingsOptions={"text"}
+                    setLiveChanges={setLiveChanges}
+                    liveChanges={liveChanges}
+                    applyUpdates={sendMessageToRuntime}
                 />
             </div>
             <div className="grid grid-cols-4 gap-1">
                 <button
                     className={`${css.btn} col-span-2`}
                     onClick={() => {
-                        saveOptionsToStorage(options);
-                        setIsEditing(false);
+                        setLiveChanges({
+                            messageMaxWidthStyle: "95",
+                            messageColorUserStyle: "",
+                            messageColorNonUserStyle: "",
+                            messagePaddingStyle: "10",
+                            messageBorderRadiusStyle: "5",
+                            inputBoxMaxWidthStyle: "70",
+                            textColorUserStyle: "",
+                            textColorNonUserStyle: "",
+                            textSizeUserStyle: "",
+                            textSizeNonUserStyle: "",
+                            textWeightUserStyle: "",
+                            textWeightNonUserStyle: "",
+                        });
+                        sendMessageToRuntime("restoreDefaultSettings", "");
+                        setIsEditing(true);
                     }}
                 >
                     Restore Default
@@ -209,8 +178,8 @@ export function MessageEditor({
                     // className={`${css.btn}`}
                     className={`${css.btn}`}
                     onClick={() => {
-                        saveOptionsToStorage(options);
-                        setSavedOption({ ...options });
+                        saveOptionsToStorage(liveChanges);
+                        setSettings(liveChanges);
                         setIsEditing(false);
                     }}
                 >
@@ -221,8 +190,8 @@ export function MessageEditor({
                     // className={`${css.btn}`}
                     className={`${css.btnRed}`}
                     onClick={() => {
-                        setOptions({ ...savedOption });
-                        applyUpdates("restoreUserSettings", "");
+                        setLiveChanges(settings);
+                        sendMessageToRuntime("restoreUserSettings", settings);
                         setIsEditing(false);
                     }}
                 >

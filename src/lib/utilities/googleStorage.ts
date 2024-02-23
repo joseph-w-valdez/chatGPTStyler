@@ -1,4 +1,4 @@
-export interface OptionsTypes {
+export interface SettingsType {
     messageMaxWidthStyle: string;
     messageColorUserStyle: string;
     messageColorNonUserStyle: string;
@@ -14,16 +14,16 @@ export interface OptionsTypes {
 }
 
 export const getOptionsFromStorage = (
-    callback: (options: OptionsTypes) => void,
+    callback: (options: SettingsType) => void,
 ): void => {
     chrome.storage.sync.get(["options"], (result) => {
         const options = result.options || {
-            messageMaxWidthStyle: "",
+            messageMaxWidthStyle: 95,
             messageColorUserStyle: "",
             messageColorNonUserStyle: "",
-            messagePaddingStyle: "",
-            messageBorderRadiusStyle: "",
-            inputBoxMaxWidthStyle: "",
+            messagePaddingStyle: 10,
+            messageBorderRadiusStyle: 5,
+            inputBoxMaxWidthStyle: 70,
             textColorUserStyle: "",
             textColorNonUserStyle: "",
             textSizeUserStyle: "",
@@ -37,7 +37,7 @@ export const getOptionsFromStorage = (
     });
 };
 
-export const saveOptionsToStorage = (options: OptionsTypes): void => {
+export const saveOptionsToStorage = (options: SettingsType): void => {
     console.log("SAVING OPTIONS TO STORAGE", options);
     chrome.storage.sync.set({ options }, () => {
         // notify content scripts that settings have changed

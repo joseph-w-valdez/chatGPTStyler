@@ -1,71 +1,92 @@
+import { SettingsType } from "@src/lib/utilities/googleStorage";
 import React from "react";
 import { useState, useEffect } from "react";
 
 export interface TextFormControlsProps {
-    section: string;
-    colorLiveChange: (colorStyle: string) => void;
-    fontSizeOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    fontWeightOnChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    option: any;
+    settingsOptions: "Weight" | "Size";
+    setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveChanges: SettingsType;
     applyUpdates: (action: string, value: number | string) => void;
 }
 
 export function TextFormControls({
-    section,
-    colorLiveChange,
-    fontSizeOnChange,
-    fontWeightOnChange,
-    option,
+    settingsOptions,
+    liveChanges,
+    setLiveChanges,
     applyUpdates,
 }: TextFormControlsProps): JSX.Element {
     const [placeholderValue, setPlaceholderValue] =
         useState<string>("Select Color Type");
     const [colorType, setColorType] = useState<string>("");
-    const [colorCode, setColorCode] = useState<string>(option);
+    const [colorCode, setColorCode] = useState<string>("");
     const [colorStyle, setColorStyle] = useState<string>("");
-    const [inputMaxLength, setInputMaxLength] = useState<number>();
+    const [inputMaxLength, setInputMaxLength] = useState<number>(10);
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     switch (colorType) {
+    //         case "name":
+    //             setPlaceholderValue("Color Name");
+    //             setInputMaxLength(30);
+    //             colorCode && setColorStyle(colorCode);
+    //             break;
+    //         case "hex":
+    //             setPlaceholderValue("HEX");
+    //             setInputMaxLength(6);
+    //             colorCode.length === 6 && setColorStyle(`#${colorCode}`);
+    //             break;
+    //         case "rgb":
+    //             setPlaceholderValue("R, G, B");
+    //             setInputMaxLength(11);
+    //             colorCode.length >= 5 && setColorStyle(`rgb(${colorCode})`);
+    //             break;
+    //         case "hsl":
+    //             setPlaceholderValue("HUE, Saturation%, Light%");
+    //             setInputMaxLength(9);
+    //             colorCode.length >= 7 && setColorStyle(`hsl(${colorCode})`);
+    //             break;
+    //         default:
+    //             setPlaceholderValue("Select Color Type");
+    //             setColorType("");
+    //             setColorCode("");
+    //             setColorStyle("");
+    //             setInputMaxLength(0);
+    //     }
+    //     colorLiveChange(colorStyle);
+    // }, [colorType, colorCode, colorStyle]);
+
+    const formatKey = (isUser: boolean): keyof SettingsType => {
+        let formattedKey: keyof SettingsType;
+        if (isUser) formattedKey = `text${settingsOptions}UserStyle`;
+        else formattedKey = `text${settingsOptions}NonUserStyle`;
+        return formattedKey;
+    };
+    const formatColor = (color: string) => {
         switch (colorType) {
             case "name":
-                setPlaceholderValue("Color Name");
                 setInputMaxLength(30);
-                colorCode && setColorStyle(colorCode);
-                break;
+                return color;
             case "hex":
-                setPlaceholderValue("HEX");
                 setInputMaxLength(6);
-                colorCode.length === 6 && setColorStyle(`#${colorCode}`);
-                break;
+                return `#${color}`;
             case "rgb":
-                setPlaceholderValue("R, G, B");
                 setInputMaxLength(11);
-                colorCode.length >= 5 && setColorStyle(`rgb(${colorCode})`);
-                break;
+                return `rgb(${color})`;
             case "hsl":
-                setPlaceholderValue("HUE, Saturation%, Light%");
                 setInputMaxLength(9);
-                colorCode.length >= 7 && setColorStyle(`hsl(${colorCode})`);
-                break;
+                return `hsl(${color})`;
             default:
-                setPlaceholderValue("Select Color Type");
-                setColorType("");
-                setColorCode("");
-                setColorStyle("");
-                setInputMaxLength(0);
+                return color;
         }
-        colorLiveChange(colorStyle);
-    }, [colorType, colorCode, colorStyle]);
-
+    };
     return (
         <div className="mx-3 px-3 py-4 bg-pink-900 rounded-lg text-white">
-            <h1 className="text-sm font-semibold">{`${section} Text`}</h1>
+            <h1 className="text-sm font-semibold">{`${settingsOptions} Text`}</h1>
             <hr />
             <div className="text-xs">
                 <label>
                     Text Color:
                     <select
-                        id={`${section}ColorType`}
+                        id={`${settingsOptions}ColorType`}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                             setColorType(e.currentTarget.value)
                         }
@@ -79,16 +100,17 @@ export function TextFormControls({
                         <option value="hsl">HSL</option>
                     </select>
                     <input
-                        disabled={colorType ? false : true}
+                        disabled={!colorType}
                         type="text"
-                        id={`${section}TextColor`}
-                        placeholder={option}
-                        defaultValue={option}
+                        id={`${formatKey(true)} TextColor`}
                         maxLength={inputMaxLength}
-                        value={colorCode}
+                        value={liveChanges[formatKey(true)]}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setColorCode(e.currentTarget.value);
-                            applyUpdates(section, e.currentTarget.value);
+                            applyUpdates(
+                                settingsOptions,
+                                e.currentTarget.value,
+                            );
                         }}
                     />
                 </label>
@@ -97,18 +119,29 @@ export function TextFormControls({
                     Font Size:
                     <input
                         type="text"
-                        id={`${section}FontSize`}
+                        id={`${settingsOptions}FontSize`}
                         placeholder="pixel"
-                        onChange={fontSizeOnChange}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setLiveChanges({
+                                ...liveChanges,
+                                [formatKey(false)]: formatColor(
+                                    e.currentTarget.value,
+                                ),
+                            });
+                            applyUpdates(
+                                formatKey(false),
+                                formatColor(e.currentTarget.value),
+                            );
+                        }}
                     />
                 </label>
                 <br />
                 <label>
                     Font Weight:
                     <select
-                        id={`${section}FontWeight`}
+                        id={`${settingsOptions}FontWeight`}
                         defaultValue={""}
-                        onChange={fontWeightOnChange}
+                        onChange={() => setLiveChanges((prev) => prev)}
                     >
                         <option value="" disabled hidden>
                             Weight

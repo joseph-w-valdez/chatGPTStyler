@@ -12,11 +12,8 @@ const mockFontWeightOnChange = jest.fn();
 
 // Mock the props
 const mockProps: TextFormControlsProps = {
-    section: "Test",
-    colorLiveChange: mockColorLiveChange,
-    fontSizeOnChange: mockFontSizeOnChange,
-    fontWeightOnChange: mockFontWeightOnChange,
-    option: {
+    settingsOptions: "Size",
+    liveChanges: {
         messageMaxWidthStyle: "",
         messageColorUserStyle: "",
         messageColorNonUserStyle: "",
@@ -30,6 +27,7 @@ const mockProps: TextFormControlsProps = {
         textWeightUserStyle: "",
         textWeightNonUserStyle: "",
     },
+    setLiveChanges: jest.fn,
     applyUpdates: jest.fn(),
 };
 

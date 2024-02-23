@@ -5,12 +5,16 @@ import css from "./styles.module.css";
 import { Header } from "@src/components/header";
 import { RenderPage } from "@src/lib/utilities/RenderPage";
 import {
-    OptionsTypes,
+    SettingsType,
     getOptionsFromStorage,
+    saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
+import { MessageEditor } from "@src/pages/messageEditor";
+import { TextEditor } from "@src/pages/textEditor";
+import { HomeMenu } from "@src/pages/homeMenu";
 
 export function Popup(): JSX.Element {
-    const [options, setOptions] = useState<OptionsTypes>({
+    const [settings, setSettings] = useState<SettingsType>({
         messageColorUserStyle: "",
         messageColorNonUserStyle: "",
         messageMaxWidthStyle: "",
@@ -25,7 +29,14 @@ export function Popup(): JSX.Element {
         textWeightNonUserStyle: "",
     });
 
-    const [page, setPage] = useState<string>("Home Page");
+    const updateLiveValues = (
+        setting: keyof SettingsType,
+        value: number | string,
+    ) => {
+        setSettings({ ...settings, [setting]: value });
+    };
+
+    const [page, setPage] = useState<string>("Home Menu");
     // Sends the `popupMounted` event
     useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
@@ -34,18 +45,12 @@ export function Popup(): JSX.Element {
     // Load options from storage when the popup is opened
     useEffect(() => {
         getOptionsFromStorage((savedOptions) => {
-            setOptions(savedOptions);
+            setSettings(savedOptions);
             console.log("loaded options from storage", savedOptions);
         });
     }, []);
 
     // Use useEffect to save options whenever they change
-    // useEffect(() => {
-    //     if (options) {
-    //         saveOptionsToStorage(options);
-    //         console.log("latest options", options);
-    //     }
-    // }, [options]);
 
     // Renders the component tree
     return (
@@ -53,84 +58,16 @@ export function Popup(): JSX.Element {
             <div className="w-full">
                 <Header page={page} setPage={setPage} />
                 <hr className="mb-2" />
-                <RenderPage
-                    setOptions={setOptions}
-                    userMessageColorLiveChange={(colorStyle) =>
-                        setOptions({
-                            ...options,
-                            messageColorUserStyle: colorStyle,
-                        })
-                    }
-                    chatMessageColorLiveChange={(colorStyle) =>
-                        setOptions({
-                            ...options,
-                            messageColorNonUserStyle: colorStyle,
-                        })
-                    }
-                    messageMaxWidthLiveChange={(e) =>
-                        setOptions({
-                            ...options,
-                            messageMaxWidthStyle: e.currentTarget.value,
-                        })
-                    }
-                    messagePaddingLiveChange={(e) =>
-                        setOptions({
-                            ...options,
-                            messagePaddingStyle: e.currentTarget.value,
-                        })
-                    }
-                    messageBorderRadiusLiveChange={(e) =>
-                        setOptions({
-                            ...options,
-                            messageBorderRadiusStyle: e.currentTarget.value,
-                        })
-                    }
-                    inputBoxMaxWidthLiveChange={(e) =>
-                        setOptions({
-                            ...options,
-                            inputBoxMaxWidthStyle: e.currentTarget.value,
-                        })
-                    }
-                    userColorLiveChange={(colorStyle) =>
-                        setOptions({
-                            ...options,
-                            textColorUserStyle: colorStyle,
-                        })
-                    }
-                    userFontSizeOnChange={(e) =>
-                        setOptions({
-                            ...options,
-                            textSizeUserStyle: e.currentTarget.value,
-                        })
-                    }
-                    userFontWeightOnChange={(e) =>
-                        setOptions({
-                            ...options,
-                            textWeightUserStyle: e.currentTarget.value,
-                        })
-                    }
-                    chatColorLiveChange={(colorStyle) =>
-                        setOptions({
-                            ...options,
-                            textColorNonUserStyle: colorStyle,
-                        })
-                    }
-                    chatFontSizeOnChange={(e) =>
-                        setOptions({
-                            ...options,
-                            textSizeNonUserStyle: e.currentTarget.value,
-                        })
-                    }
-                    chatFontWeightOnChange={(e) =>
-                        setOptions({
-                            ...options,
-                            textWeightNonUserStyle: e.currentTarget.value,
-                        })
-                    }
-                    options={options}
-                    page={page}
-                    setPage={setPage}
-                />
+                {page === "Message Editor" ? (
+                    <MessageEditor
+                        settings={settings}
+                        setSettings={setSettings}
+                    />
+                ) : page === "Text Editor" ? (
+                    <TextEditor settings={settings} setOptions={setSettings} />
+                ) : (
+                    <HomeMenu setPage={setPage} />
+                )}
             </div>
         </div>
     );

@@ -17,6 +17,5 @@ const Template: ComponentStory<typeof HomeMenu> = (args) => (
 
 export const Render = Template.bind({});
 Render.args = {
-    textEditorRedirect: () => alert("Redirecting"),
-    messageEditorRedirect: () => alert("Redirecting"),
+    setPage: () => alert("Redirecting"),
 };

@@ -4,9 +4,22 @@ import { MessageFormControl, MessageFormControlProps } from "../component";
 
 describe("MessageFormControl component", () => {
     const defaultProps: MessageFormControlProps = {
-        section: "Test",
-        colorLiveChange: jest.fn(),
-        option: "",
+        settingsOptions: "text",
+        setLiveChanges: jest.fn(),
+        liveChanges: {
+            messageMaxWidthStyle: "",
+            messageColorUserStyle: "",
+            messageColorNonUserStyle: "",
+            messagePaddingStyle: "",
+            messageBorderRadiusStyle: "",
+            inputBoxMaxWidthStyle: "",
+            textColorUserStyle: "",
+            textColorNonUserStyle: "",
+            textSizeUserStyle: "",
+            textSizeNonUserStyle: "",
+            textWeightUserStyle: "",
+            textWeightNonUserStyle: "",
+        },
         applyUpdates: jest.fn(),
     };
 
