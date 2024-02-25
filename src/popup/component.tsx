@@ -8,8 +8,8 @@ import {
     getOptionsFromStorage,
     saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
-import { MessageEditor } from "@src/pages/messageEditor";
-import { HomeMenu } from "@src/pages/homeMenu";
+import { MessageEditor } from "./views/messageEditor";
+import { HomeMenu } from "./views/homeMenu";
 import { defaultSettings } from "@src/shared/utils/data";
 
 export function Popup(): JSX.Element {

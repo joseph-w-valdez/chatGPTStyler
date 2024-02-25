@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
-import { ColorControls } from "@src/components/messageFormControl/ColorControls";
+import { ColorControls } from "./components/ColorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/MessageSliderControls";
 // import * as update from "@src/shared/utils";
