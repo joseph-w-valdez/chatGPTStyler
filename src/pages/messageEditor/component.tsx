@@ -3,6 +3,7 @@ import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { MessageFormControl } from "@src/components/messageFormControl";
 import { FormButtons } from "@src/components/formButtons/component";
 import { MessageSliderControls } from "./components/MessageSliderControls";
+// import * as update from "@src/shared/utils";
 
 export interface MessageEditorProps {
     settings: SettingsType;
@@ -17,7 +18,26 @@ export function MessageEditor({
     const [liveChanges, setLiveChanges] = useState<SettingsType>({
         ...settings,
     });
-    const sendMessageToRuntime = (
+    // const sendMessageToTab = (
+    //     action: keyof SettingsType | "restoreSettings",
+    //     value?: string | SettingsType,
+    // ) => {
+    //     let cssTextContent = "";
+    //     console.log("VALUE PASSED", value);
+    //     if (action === "restoreSettings" && typeof value !== "string")
+    //         cssTextContent = update.loadSettings(value);
+    //     else if (action !== "restoreSettings" && typeof value === "string")
+    //         cssTextContent = update.updateStyles(action, value);
+    //     setIsEditing(true);
+    //     console.log("CSS GENERATED", cssTextContent);
+    //     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    //         chrome.tabs.sendMessage(tabs[0].id || 0, {
+    //             action: "updateStyles",
+    //             arg: cssTextContent,
+    //         });
+    //     });
+    // };
+    const sendMessageToTab = (
         action: keyof SettingsType | "restoreSettings",
         value?: number | string | SettingsType,
     ) => {
@@ -39,12 +59,12 @@ export function MessageEditor({
             <MessageSliderControls
                 setLiveChanges={setLiveChanges}
                 liveChanges={liveChanges}
-                sendMessageToRuntime={sendMessageToRuntime}
+                sendMessageToRuntime={sendMessageToTab}
             />
             <MessageFormControl
                 setLiveChanges={setLiveChanges}
                 liveChanges={liveChanges}
-                sendMessageToRuntime={sendMessageToRuntime}
+                sendMessageToRuntime={sendMessageToTab}
             />
             <FormButtons
                 isEditing={isEditing}
@@ -53,7 +73,7 @@ export function MessageEditor({
                 setLiveChanges={setLiveChanges}
                 settings={settings}
                 setSettings={setSettings}
-                sendMessageToRuntime={sendMessageToRuntime}
+                sendMessageToRuntime={sendMessageToTab}
             />
         </div>
     );

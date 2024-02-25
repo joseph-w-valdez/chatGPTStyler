@@ -6,7 +6,7 @@ export interface MessageSliderControlsProps {
     liveChanges: SettingsType;
     sendMessageToRuntime: (
         action: keyof SettingsType | "restoreSettings",
-        value?: number | string | SettingsType,
+        value?: string | SettingsType,
     ) => void;
 }
 export type colorSetting = "messageColor" | "textColor";
@@ -68,7 +68,7 @@ export function MessageSliderControls({
                         onChange={(e) => {
                             sendMessageToRuntime(
                                 setting.id,
-                                Number(e.currentTarget.value),
+                                e.currentTarget.value,
                             );
                             setLiveChanges({
                                 ...liveChanges,
@@ -85,7 +85,7 @@ export function MessageSliderControls({
                         onChange={(e) => {
                             sendMessageToRuntime(
                                 setting.id,
-                                Number(e.currentTarget.value),
+                                e.currentTarget.value,
                             );
                             setLiveChanges({
                                 ...liveChanges,

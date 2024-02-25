@@ -61,6 +61,9 @@ if ($main) {
 }
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    //         if (request.action === "updateStyles")
+    //         customStyle.textContent = request.arg;
+    // });
     if (request.action in defaultSettings) {
         const updatedSetting: keyof SettingsType = request.action;
         customStyle.textContent = update.updateStyles(

@@ -6,7 +6,7 @@ let messageBorderRadiusStyle = "";
 let inputBoxMaxWidthStyle = "";
 let messageBoxColors = "";
 let messageColorUserStyle = "";
-let messageColorChatGPTStyle = "";
+let messageColorNonUserStyle = "";
 let textColorUserStyle = "";
 let textColorNonUserStyle = "";
 let textSizeUserStyle = "";
@@ -54,7 +54,7 @@ const settingsController = {
           [data-testid]:nth-child(even) > * > * { background-color: ${color} !important }`;
     },
     messageColorNonUserStyle: (color: string) => {
-        messageColorChatGPTStyle = `
+        messageColorNonUserStyle = `
           [data-testid]:nth-child(odd) > * > * { background-color: ${color} !important 
         }`;
     },
@@ -179,6 +179,6 @@ export const updateStyles = (
         chatMessageButtons +
         codeSnippetWidth +
         messageColorUserStyle +
-        messageColorChatGPTStyle
+        messageColorNonUserStyle
     );
 };

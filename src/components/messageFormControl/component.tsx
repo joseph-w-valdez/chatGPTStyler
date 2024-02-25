@@ -7,7 +7,7 @@ export interface MessageFormControlProps {
     liveChanges: SettingsType;
     sendMessageToRuntime: (
         action: keyof SettingsType | "restoreSettings",
-        value?: number | string | SettingsType,
+        value?: string | SettingsType,
     ) => void;
 }
 export type colorSetting = "messageColor" | "textColor";
@@ -24,19 +24,29 @@ export function MessageFormControl({
     const formatColor = (color: string) => {
         switch (colorType) {
             case "name":
-                setInputMaxLength(30);
                 return color;
             case "hex":
-                setInputMaxLength(6);
                 return `#${color}`;
             case "rgb":
-                setInputMaxLength(11);
                 return `rgb(${color})`;
             case "hsl":
-                setInputMaxLength(9);
                 return `hsl(${color})`;
             default:
                 return color;
+        }
+    };
+    const getMaxLength = () => {
+        switch (colorType) {
+            case "name":
+                return 30;
+            case "hex":
+                return 6;
+            case "rgb":
+                return 11;
+            case "hsl":
+                return 9;
+            default:
+                return 30;
         }
     };
     // creates color controls. we are making one for user and chat gpt.
@@ -101,7 +111,7 @@ export function MessageFormControl({
                 disabled={!colorType}
                 type="text"
                 id={`${settingsKey}`}
-                maxLength={inputMaxLength}
+                maxLength={getMaxLength()}
                 placeholder={liveChanges[settingsKey]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setLiveChanges({

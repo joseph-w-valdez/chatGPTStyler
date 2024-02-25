@@ -15,7 +15,7 @@ interface FormButtonsProps {
     setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
     sendMessageToRuntime: (
         action: keyof SettingsType | "restoreSettings",
-        value?: number | string | SettingsType,
+        value?: string | SettingsType,
     ) => void;
 }
 
