@@ -1,7 +1,6 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react";
 import { MessageFormControl, MessageFormControlProps } from "../index";
-import { SettingsType } from "@src/lib/utilities/googleStorage";
 
 export default {
     title: "YourComponentGroup/MessageFormControl",
@@ -14,5 +13,7 @@ const Template: Story<MessageFormControlProps> = (args) => (
 
 export const Example = Template.bind({});
 Example.args = {
-    settingsOptions: "message",
+    // section: "Example Section",
+    // colorLiveChange: (colorStyle: string) =>
+    //     console.log(`Color style changed: ${colorStyle}`),
 };

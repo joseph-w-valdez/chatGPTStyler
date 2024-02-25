@@ -1,1 +1,4 @@
-export { MessageFormControl, MessageFormControlProps } from "./component";
+export {
+    MessageFormControl as MessageFormControl,
+    MessageFormControlProps,
+} from "./component";

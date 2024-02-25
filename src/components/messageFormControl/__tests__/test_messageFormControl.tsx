@@ -4,7 +4,6 @@ import { MessageFormControl, MessageFormControlProps } from "../component";
 
 describe("MessageFormControl component", () => {
     const defaultProps: MessageFormControlProps = {
-        settingsOptions: "text",
         setLiveChanges: jest.fn(),
         liveChanges: {
             messageMaxWidthStyle: "",
@@ -20,7 +19,7 @@ describe("MessageFormControl component", () => {
             textWeightUserStyle: "",
             textWeightNonUserStyle: "",
         },
-        applyUpdates: jest.fn(),
+        sendMessageToRuntime: jest.fn(),
     };
 
     const mountComponent = (props?: Partial<MessageFormControlProps>) => {

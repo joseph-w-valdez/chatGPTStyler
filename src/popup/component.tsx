@@ -12,29 +12,12 @@ import {
 import { MessageEditor } from "@src/pages/messageEditor";
 import { TextEditor } from "@src/pages/textEditor";
 import { HomeMenu } from "@src/pages/homeMenu";
+import { defaultSettings } from "@src/shared/utils/data";
 
 export function Popup(): JSX.Element {
     const [settings, setSettings] = useState<SettingsType>({
-        messageColorUserStyle: "",
-        messageColorNonUserStyle: "",
-        messageMaxWidthStyle: "",
-        messagePaddingStyle: "",
-        messageBorderRadiusStyle: "",
-        inputBoxMaxWidthStyle: "",
-        textColorUserStyle: "",
-        textColorNonUserStyle: "",
-        textSizeUserStyle: "",
-        textSizeNonUserStyle: "",
-        textWeightUserStyle: "",
-        textWeightNonUserStyle: "",
+        ...defaultSettings,
     });
-
-    const updateLiveValues = (
-        setting: keyof SettingsType,
-        value: number | string,
-    ) => {
-        setSettings({ ...settings, [setting]: value });
-    };
 
     const [page, setPage] = useState<string>("Home Menu");
     // Sends the `popupMounted` event
@@ -49,8 +32,6 @@ export function Popup(): JSX.Element {
             console.log("loaded options from storage", savedOptions);
         });
     }, []);
-
-    // Use useEffect to save options whenever they change
 
     // Renders the component tree
     return (
