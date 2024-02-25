@@ -2,15 +2,13 @@ import React from "react";
 import { useState, useEffect } from "react";
 import browser from "webextension-polyfill";
 import css from "./styles.module.css";
-import { Header } from "@src/components/header";
-import { RenderPage } from "@src/lib/utilities/RenderPage";
+import { Header } from "@src/components/header/Header";
 import {
     SettingsType,
     getOptionsFromStorage,
     saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
 import { MessageEditor } from "@src/pages/messageEditor";
-import { TextEditor } from "@src/pages/textEditor";
 import { HomeMenu } from "@src/pages/homeMenu";
 import { defaultSettings } from "@src/shared/utils/data";
 
@@ -44,8 +42,6 @@ export function Popup(): JSX.Element {
                         settings={settings}
                         setSettings={setSettings}
                     />
-                ) : page === "Text Editor" ? (
-                    <TextEditor settings={settings} setOptions={setSettings} />
                 ) : (
                     <HomeMenu setPage={setPage} />
                 )}

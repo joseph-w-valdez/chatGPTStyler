@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { HomeButton } from "../component";
+import { HomeButton } from "../HomeButton";
 
 // // // //
 

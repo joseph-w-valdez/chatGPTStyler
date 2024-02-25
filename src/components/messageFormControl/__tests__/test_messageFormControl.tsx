@@ -1,9 +1,9 @@
 import React from "react";
 import { mount } from "enzyme";
-import { MessageFormControl, MessageFormControlProps } from "../component";
+import { ColorControls, ColorControlsProps } from "../ColorControls";
 
-describe("MessageFormControl component", () => {
-    const defaultProps: MessageFormControlProps = {
+describe("ColorControls component", () => {
+    const defaultProps: ColorControlsProps = {
         setLiveChanges: jest.fn(),
         liveChanges: {
             messageMaxWidthStyle: "",
@@ -22,9 +22,9 @@ describe("MessageFormControl component", () => {
         sendMessageToRuntime: jest.fn(),
     };
 
-    const mountComponent = (props?: Partial<MessageFormControlProps>) => {
+    const mountComponent = (props?: Partial<ColorControlsProps>) => {
         const mergedProps = { ...defaultProps, ...props };
-        return mount(<MessageFormControl {...mergedProps} />);
+        return mount(<ColorControls {...mergedProps} />);
     };
 
     it("renders correctly", () => {

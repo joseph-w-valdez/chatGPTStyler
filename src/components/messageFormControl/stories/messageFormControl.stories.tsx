@@ -1,14 +1,14 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { MessageFormControl, MessageFormControlProps } from "../index";
+import { ColorControls, ColorControlsProps } from "../ColorControls";
 
 export default {
     title: "YourComponentGroup/MessageFormControl",
-    component: MessageFormControl,
+    component: ColorControls,
 } as Meta;
 
-const Template: Story<MessageFormControlProps> = (args) => (
-    <MessageFormControl {...args} />
+const Template: Story<ColorControlsProps> = (args) => (
+    <ColorControls {...args} />
 );
 
 export const Example = Template.bind({});

@@ -1,7 +1,6 @@
 import React from "react";
 import { shallow, ShallowWrapper } from "enzyme";
 import { MessageEditor, MessageEditorProps } from "../index";
-import { MessageFormControl } from "@src/components/messageFormControl";
 
 describe("MessageEditor Component", () => {
     let wrapper: ShallowWrapper;

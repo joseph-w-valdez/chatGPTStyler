@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
-import { MessageFormControl } from "@src/components/messageFormControl";
-import { FormButtons } from "@src/components/formButtons/component";
+import { ColorControls } from "@src/components/messageFormControl/ColorControls";
+import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/MessageSliderControls";
 // import * as update from "@src/shared/utils";
 
@@ -61,7 +61,7 @@ export function MessageEditor({
                 liveChanges={liveChanges}
                 sendMessageToRuntime={sendMessageToTab}
             />
-            <MessageFormControl
+            <ColorControls
                 setLiveChanges={setLiveChanges}
                 liveChanges={liveChanges}
                 sendMessageToRuntime={sendMessageToTab}

@@ -1,7 +1,7 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 import React from "react";
 
-export interface MessageSliderControlsProps {
+export interface SliderControlsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
     liveChanges: SettingsType;
     sendMessageToRuntime: (
@@ -15,7 +15,7 @@ export function MessageSliderControls({
     setLiveChanges,
     liveChanges,
     sendMessageToRuntime,
-}: MessageSliderControlsProps): JSX.Element {
+}: SliderControlsProps): JSX.Element {
     // using this to create data we need so we can map through and have clean callback
     class InputSetting {
         name: string = "";

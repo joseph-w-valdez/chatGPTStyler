@@ -2,7 +2,7 @@ import { SettingsType } from "@src/lib/utilities/googleStorage";
 import React from "react";
 import { useState } from "react";
 
-export interface MessageFormControlProps {
+export interface ColorControlsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
     liveChanges: SettingsType;
     sendMessageToRuntime: (
@@ -12,11 +12,11 @@ export interface MessageFormControlProps {
 }
 export type colorSetting = "messageColor" | "textColor";
 
-export function MessageFormControl({
+export function ColorControls({
     setLiveChanges,
     liveChanges,
     sendMessageToRuntime,
-}: MessageFormControlProps): JSX.Element {
+}: ColorControlsProps): JSX.Element {
     const [colorType, setColorType] = useState<string>("");
     const [inputMaxLength, setInputMaxLength] = useState<number>(30);
     const colorSettings: colorSetting[] = ["messageColor", "textColor"];

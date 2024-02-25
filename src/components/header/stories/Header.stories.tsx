@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Header } from "../component";
+import { Header } from "../Header";
 import { ComponentMeta } from "@storybook/react";
 
 // // // //
