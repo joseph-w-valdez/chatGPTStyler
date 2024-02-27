@@ -20,6 +20,7 @@
     @apply focus:ring-green-500;
     @apply disabled:bg-green-600/0;
     @apply disabled:text-transparent;
+    @apply disabled:shadow-none;
     @apply duration-300;
 }
 .btnRed {
@@ -44,6 +45,7 @@
     @apply focus:ring-red-500;
     @apply disabled:bg-red-600/0;
     @apply disabled:text-transparent;
+    @apply disabled:shadow-none;
     @apply duration-300;
 }
 

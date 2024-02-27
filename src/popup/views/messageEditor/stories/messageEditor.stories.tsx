@@ -37,6 +37,7 @@ Default.args = {
         textSizeNonUserStyle: "",
         textWeightUserStyle: "",
         textWeightNonUserStyle: "",
+        messageButtonsVisibilityStyle: "",
     },
     // setSettings: (settings: SettingsType) => {};
 };

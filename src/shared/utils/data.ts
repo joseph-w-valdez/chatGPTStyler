@@ -13,4 +13,5 @@ export const defaultSettings: SettingsType = {
     textSizeNonUserStyle: "",
     textWeightUserStyle: "",
     textWeightNonUserStyle: "",
+    messageButtonsVisibilityStyle: "unset",
 };

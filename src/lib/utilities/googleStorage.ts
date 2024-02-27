@@ -1,3 +1,5 @@
+import { defaultSettings } from "@src/shared/utils/data";
+
 export interface SettingsType {
     messageMaxWidthStyle: string;
     messageColorUserStyle: string;
@@ -11,27 +13,14 @@ export interface SettingsType {
     textSizeNonUserStyle: string;
     textWeightUserStyle: string;
     textWeightNonUserStyle: string;
+    messageButtonsVisibilityStyle: string;
 }
 
 export const getOptionsFromStorage = (
     callback: (options: SettingsType) => void,
 ): void => {
     chrome.storage.sync.get(["options"], (result) => {
-        const options = result.options || {
-            messageMaxWidthStyle: 95,
-            messageColorUserStyle: "",
-            messageColorNonUserStyle: "",
-            messagePaddingStyle: 10,
-            messageBorderRadiusStyle: 5,
-            inputBoxMaxWidthStyle: 70,
-            textColorUserStyle: "",
-            textColorNonUserStyle: "",
-            textSizeUserStyle: "",
-            textSizeNonUserStyle: "",
-            textWeightUserStyle: "",
-            textWeightNonUserStyle: "",
-        };
-
+        const options = result.options || { ...defaultSettings };
         callback(options);
         console.log("GETTING OPTIONS FROM STORAGE", options);
     });

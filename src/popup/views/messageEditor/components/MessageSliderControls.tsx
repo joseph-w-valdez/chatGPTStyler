@@ -1,20 +1,18 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 
 export interface SliderControlsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
     liveChanges: SettingsType;
-    sendMessageToRuntime: (
-        action: keyof SettingsType | "restoreSettings",
-        value?: string | SettingsType,
-    ) => void;
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export type colorSetting = "messageColor" | "textColor";
 
 export function MessageSliderControls({
     setLiveChanges,
     liveChanges,
-    sendMessageToRuntime,
+    setIsEditing,
 }: SliderControlsProps): JSX.Element {
     // using this to create data we need so we can map through and have clean callback
     class InputSetting {
@@ -46,6 +44,18 @@ export function MessageSliderControls({
             "rgba(60, 7, 83",
             "rgba(3, 6, 55",
         ];
+
+        const handleOnChange = (
+            e: React.ChangeEvent<HTMLInputElement>,
+            settingKey: keyof SettingsType,
+        ) => {
+            setIsEditing(true);
+            sendMessageToTab(settingKey, e.currentTarget.value);
+            setLiveChanges({
+                ...liveChanges,
+                [settingKey]: e.currentTarget.value,
+            });
+        };
         return (
             <div className="flex justify-between items-center" key={index}>
                 <label
@@ -65,16 +75,7 @@ export function MessageSliderControls({
                         }}
                         value={liveChanges[setting.id]}
                         id={setting.id}
-                        onChange={(e) => {
-                            sendMessageToRuntime(
-                                setting.id,
-                                e.currentTarget.value,
-                            );
-                            setLiveChanges({
-                                ...liveChanges,
-                                [setting.id]: e.currentTarget.value,
-                            });
-                        }}
+                        onChange={(e) => handleOnChange(e, setting.id)}
                     ></input>
                     <input
                         type="range"
@@ -82,16 +83,7 @@ export function MessageSliderControls({
                         max="95"
                         value={liveChanges[setting.id]}
                         className="absolute w-full h-0.5 left-0 bottom-0"
-                        onChange={(e) => {
-                            sendMessageToRuntime(
-                                setting.id,
-                                e.currentTarget.value,
-                            );
-                            setLiveChanges({
-                                ...liveChanges,
-                                [setting.id]: e.currentTarget.value,
-                            });
-                        }}
+                        onChange={(e) => handleOnChange(e, setting.id)}
                         step={"1"}
                         style={{ accentColor: `${bgColors[index]})` }}
                     ></input>

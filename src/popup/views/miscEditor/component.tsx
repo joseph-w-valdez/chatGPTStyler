@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
-import { ColorControls } from "./components/ColorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
-import { MessageSliderControls } from "./components/MessageSliderControls";
 
 export interface MessageEditorProps {
     settings: SettingsType;
     setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
-export function MessageEditor({
+export function MiscEditor({
     settings,
     setSettings,
 }: MessageEditorProps): JSX.Element {
@@ -24,16 +22,19 @@ export function MessageEditor({
                 !isEditing ? "animate-fade-in" : ""
             }`}
         >
-            <MessageSliderControls
-                setLiveChanges={setLiveChanges}
-                liveChanges={liveChanges}
-                setIsEditing={setIsEditing}
-            />
-            <ColorControls
-                setLiveChanges={setLiveChanges}
-                liveChanges={liveChanges}
-                setIsEditing={setIsEditing}
-            />
+            <div className="flex justify-between group hover:bg-slate-500/20">
+                <label
+                    htmlFor="messageButtonsVisibilityStyle"
+                    className="w-full p-2 hover:cursor-pointer"
+                >
+                    Show Chat Message Buttons
+                </label>
+                <input
+                    id="messageButtonsVisibilityStyle"
+                    type="checkbox"
+                    className=" hover:cursor-pointer"
+                />
+            </div>
             <FormButtons
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}

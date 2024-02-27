@@ -14,11 +14,7 @@ let textSizeNonUserStyle = "";
 let textWeightUserStyle = "";
 let textWeightNonUserStyle = "";
 const selectionColors = "";
-const chatMessageButtons = `
-    [data-testid] button {
-      visibility: unset
-    }
-`;
+let messageButtonsVisibilityStyle = ``;
 const codeSnippetWidth = `
     [data-testid] > * > * > *:nth-child(2) {
         width: 100%;
@@ -88,6 +84,11 @@ const settingsController = {
           [data-testid]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} 
         `;
     },
+    messageButtonsVisibilityStyle: (visibility: string) => {
+        messageButtonsVisibilityStyle = `
+          [data-testid] button { visibility: ${visibility} }
+        `;
+    },
 };
 
 export const updateMessageColor = (
@@ -113,7 +114,7 @@ export const updateMessageColor = (
         } }
       }
       `;
-    return updateStyles();
+    // return updateStyles();
 };
 
 export const resetDefaultMessageColors = () => {
@@ -138,31 +139,23 @@ export const resetDefaultMessageColors = () => {
       }`;
 };
 // accepts a SettingsType object, we can update multiple settings at once here.
-export const loadSettings = (newSettings?: SettingsType) => {
-    if (!newSettings) return setDefaultSettings();
+export const loadSettings = (newSettings: SettingsType) => {
     for (const key in newSettings) {
         const setting = key as keyof SettingsType;
         if (newSettings[setting]) {
             settingsController[setting](newSettings[setting]);
         }
     }
-    return updateStyles();
-};
-
-export const setDefaultSettings = () => {
-    settingsController.messageMaxWidthStyle("95");
-    settingsController.messagePaddingStyle("10");
-    settingsController.messageBorderRadiusStyle("5");
-    settingsController.inputBoxMaxWidthStyle("70");
-    return updateStyles();
 };
 
 export const updateStyles = (
-    setting?: keyof SettingsType,
+    setting: keyof SettingsType | SettingsType,
     newValue?: string,
 ) => {
     resetDefaultMessageColors(); // need to update default settings in getOptionsFromStorage then we can remove this
-    if (setting && newValue) settingsController[setting](newValue);
+    if (typeof setting !== "string") loadSettings(setting);
+    if (typeof setting === "string" && newValue)
+        settingsController[setting](newValue);
     return (
         messageBoxColors +
         messageMaxWidthStyle +
@@ -176,9 +169,34 @@ export const updateStyles = (
         textWeightUserStyle +
         textWeightNonUserStyle +
         selectionColors +
-        chatMessageButtons +
+        messageButtonsVisibilityStyle +
         codeSnippetWidth +
         messageColorUserStyle +
         messageColorNonUserStyle
     );
+};
+
+export const sendMessageToTab = (
+    action: keyof SettingsType | "restoreSettings",
+    value: string | SettingsType,
+) => {
+    let cssTextContent = "";
+    if (action === "restoreSettings" && typeof value !== "string")
+        cssTextContent = updateStyles(value);
+    else if (action !== "restoreSettings" && typeof value === "string") {
+        //
+        // const newSettings: SettingsType = {
+        //     ...liveChanges,
+        //     [action]: value,
+        // };
+        // cssTextContent = update.updateStyles(newSettings);
+        //
+        cssTextContent = updateStyles(action, value);
+    }
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id || 0, {
+            action: "updateStyles",
+            arg: cssTextContent,
+        });
+    });
 };

@@ -2,8 +2,7 @@ import {
     SettingsType,
     getOptionsFromStorage,
 } from "./lib/utilities/googleStorage";
-import * as update from "./shared/utils";
-import { defaultSettings } from "./shared/utils/data";
+import { updateStyles } from "./shared/utils";
 console.log("Content script loaded.");
 
 // changing the background color of the page
@@ -14,7 +13,7 @@ customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
 
 getOptionsFromStorage(
-    (settings) => (customStyle.textContent = update.loadSettings(settings)),
+    (settings) => (customStyle.textContent = updateStyles(settings)),
 );
 
 const $main = document.querySelector("main");
@@ -61,19 +60,9 @@ if ($main) {
 }
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    //         if (request.action === "updateStyles")
-    //         customStyle.textContent = request.arg;
-    // });
-    if (request.action in defaultSettings) {
-        const updatedSetting: keyof SettingsType = request.action;
-        customStyle.textContent = update.updateStyles(
-            updatedSetting,
-            request.arg,
-        );
-    } else if (request.action === "restoreSettings")
-        customStyle.textContent = update.loadSettings(request.arg);
+    if (request.action === "updateStyles")
+        customStyle.textContent = request.arg;
 });
-
 // send a message to the background script if needed
 chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
     console.log(response.reply);

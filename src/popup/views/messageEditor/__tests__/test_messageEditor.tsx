@@ -1,6 +1,8 @@
 import React from "react";
 import { shallow, ShallowWrapper } from "enzyme";
 import { MessageEditor, MessageEditorProps } from "../index";
+import { MessageSliderControls } from "../components/MessageSliderControls";
+import { ColorControls } from "../components/ColorControls";
 
 describe("MessageEditor Component", () => {
     let wrapper: ShallowWrapper;
@@ -18,6 +20,7 @@ describe("MessageEditor Component", () => {
             textSizeNonUserStyle: "",
             textWeightUserStyle: "",
             textWeightNonUserStyle: "",
+            messageButtonsVisibilityStyle: "",
         },
         setSettings: jest.fn,
     };
@@ -30,31 +33,25 @@ describe("MessageEditor Component", () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    // it("calls userMessageColorLiveChange on user message color change", () => {
-    //     const colorValue = "blue";
-    //     wrapper.find(MessageFormControl).at(0).prop("colorLiveChange")(
-    //         colorValue,
-    //     );
-    //     expect(mockProps.userMessageColorLiveChange).toHaveBeenCalledWith(
-    //         colorValue,
-    //     );
-    // });
+    it("calls setLiveChanges on user message color change", () => {
+        const liveChanges = mockProps.settings;
+        wrapper.find(MessageSliderControls).at(0).prop("setLiveChanges")(
+            liveChanges,
+        );
+        expect(mockProps.setSettings).toHaveBeenCalledWith(liveChanges);
+    });
 
-    // it("calls chatMessageColorLiveChange on chat message color change", () => {
-    //     const colorValue = "green";
-    //     wrapper.find(MessageFormControl).at(1).prop("colorLiveChange")(
-    //         colorValue,
-    //     );
-    //     expect(mockProps.chatMessageColorLiveChange).toHaveBeenCalledWith(
-    //         colorValue,
-    //     );
-    // });
+    it("calls setLiveChanges on chat message color change", () => {
+        const liveChanges = mockProps.settings;
+        wrapper.find(ColorControls).at(1).prop("setLiveChanges")(liveChanges);
+        expect(mockProps.setSettings).toHaveBeenCalledWith(liveChanges);
+    });
 
-    // it("calls messageMaxWidthLiveChange on message max width change", () => {
-    //     const event = {
-    //         target: { value: "50%" },
-    //     } as React.ChangeEvent<HTMLInputElement>;
-    //     wrapper.find("#messageMaxWidthStyle").simulate("change", event);
-    //     expect(mockProps.messageMaxWidthLiveChange).toHaveBeenCalledWith(event);
-    // });
+    it("calls messageMaxWidthLiveChange on message max width change", () => {
+        const event = {
+            target: { value: "50%" },
+        } as React.ChangeEvent<HTMLInputElement>;
+        wrapper.find("#messageMaxWidthStyle").simulate("change", event);
+        expect(mockProps.setSettings).toHaveBeenCalledWith(event);
+    });
 });

@@ -5,6 +5,7 @@ import {
     saveOptionsToStorage,
 } from "@src/lib/utilities/googleStorage";
 import { defaultSettings } from "@src/shared/utils/data";
+import { sendMessageToTab } from "@src/shared/utils";
 
 interface FormButtonsProps {
     isEditing: boolean;
@@ -13,10 +14,6 @@ interface FormButtonsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
     settings: SettingsType;
     setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
-    sendMessageToRuntime: (
-        action: keyof SettingsType | "restoreSettings",
-        value?: string | SettingsType,
-    ) => void;
 }
 
 export function FormButtons({
@@ -26,7 +23,6 @@ export function FormButtons({
     setLiveChanges,
     settings,
     setSettings,
-    sendMessageToRuntime,
 }: FormButtonsProps): JSX.Element {
     return (
         <div className="grid grid-cols-4 gap-1">
@@ -34,7 +30,9 @@ export function FormButtons({
                 className={`${css.btnGrey} col-span-2`}
                 onClick={() => {
                     setLiveChanges({ ...defaultSettings });
-                    sendMessageToRuntime("restoreSettings");
+                    sendMessageToTab("restoreSettings", {
+                        ...defaultSettings,
+                    });
                     setIsEditing(true);
                 }}
             >
@@ -56,7 +54,7 @@ export function FormButtons({
                 className={`${css.btnRed}`}
                 onClick={() => {
                     setLiveChanges({ ...settings });
-                    sendMessageToRuntime("restoreSettings", settings);
+                    sendMessageToTab("restoreSettings", settings);
                     setIsEditing(false);
                 }}
             >

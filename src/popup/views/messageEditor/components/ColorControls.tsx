@@ -1,24 +1,21 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 import { useState } from "react";
 
 export interface ColorControlsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
     liveChanges: SettingsType;
-    sendMessageToRuntime: (
-        action: keyof SettingsType | "restoreSettings",
-        value?: string | SettingsType,
-    ) => void;
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export type colorSetting = "messageColor" | "textColor";
 
 export function ColorControls({
     setLiveChanges,
     liveChanges,
-    sendMessageToRuntime,
+    setIsEditing,
 }: ColorControlsProps): JSX.Element {
     const [colorType, setColorType] = useState<string>("");
-    const [inputMaxLength, setInputMaxLength] = useState<number>(30);
     const colorSettings: colorSetting[] = ["messageColor", "textColor"];
 
     const formatColor = (color: string) => {
@@ -100,6 +97,18 @@ export function ColorControls({
         const settingsKey: keyof SettingsType = `${setting}${
             isUser ? "User" : "NonUser"
         }Style`;
+
+        const handleOnChange = (
+            e: React.ChangeEvent<HTMLInputElement>,
+            settingsKey: keyof SettingsType,
+        ) => {
+            setLiveChanges({
+                ...liveChanges,
+                [settingsKey]: formatColor(e.currentTarget.value),
+            });
+            sendMessageToTab(settingsKey, formatColor(e.currentTarget.value));
+            setIsEditing(true);
+        };
         return (
             <input
                 key={index}
@@ -113,16 +122,7 @@ export function ColorControls({
                 id={`${settingsKey}`}
                 maxLength={getMaxLength()}
                 placeholder={liveChanges[settingsKey]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setLiveChanges({
-                        ...liveChanges,
-                        [settingsKey]: formatColor(e.currentTarget.value),
-                    });
-                    sendMessageToRuntime(
-                        settingsKey,
-                        formatColor(e.currentTarget.value),
-                    );
-                }}
+                onChange={(e) => handleOnChange(e, settingsKey)}
             />
         );
     };

@@ -15,7 +15,7 @@ export function HomeMenu({ setPage }: HomeMenuProps): JSX.Element {
             />
             <HomeButton
                 dataTestid="misc-editor"
-                onClick={() => setPage("Message Editor")}
+                onClick={() => setPage("Miscellaneous")}
                 btnLabel="Miscellaneous"
             />
         </div>
