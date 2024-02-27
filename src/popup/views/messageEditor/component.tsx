@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { ColorControls } from "./components/ColorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
@@ -17,6 +17,8 @@ export function MessageEditor({
     const [liveChanges, setLiveChanges] = useState<SettingsType>({
         ...settings,
     });
+
+    useEffect(() => {setSettings(liveChanges)}, [liveChanges]);
 
     return (
         <div
