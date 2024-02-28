@@ -5,20 +5,17 @@ import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/MessageSliderControls";
 
 export interface MessageEditorProps {
-    settings: SettingsType;
-    setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveSettings: SettingsType;
+    setLiveSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
-
 export function MessageEditor({
-    settings,
-    setSettings,
+    liveSettings,
+    setLiveSettings,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
-    const [liveChanges, setLiveChanges] = useState<SettingsType>({
-        ...settings,
+    const [savedSettings, setSavedSettings] = useState<SettingsType>({
+        ...liveSettings,
     });
-
-    useEffect(() => {setSettings(liveChanges)}, [liveChanges]);
 
     return (
         <div
@@ -27,22 +24,22 @@ export function MessageEditor({
             }`}
         >
             <MessageSliderControls
-                setLiveChanges={setLiveChanges}
-                liveChanges={liveChanges}
+                setLiveChanges={setLiveSettings}
+                liveChanges={liveSettings}
                 setIsEditing={setIsEditing}
             />
             <ColorControls
-                setLiveChanges={setLiveChanges}
-                liveChanges={liveChanges}
+                setLiveChanges={setLiveSettings}
+                liveChanges={liveSettings}
                 setIsEditing={setIsEditing}
             />
             <FormButtons
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
-                liveChanges={liveChanges}
-                setLiveChanges={setLiveChanges}
-                settings={settings}
-                setSettings={setSettings}
+                liveSettings={liveSettings}
+                setLiveSettings={setLiveSettings}
+                savedSettings={savedSettings}
+                setSavedSettings={setSavedSettings}
             />
         </div>
     );

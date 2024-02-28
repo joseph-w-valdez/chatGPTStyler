@@ -7,7 +7,7 @@ import { ColorControls } from "../components/ColorControls";
 describe("MessageEditor Component", () => {
     let wrapper: ShallowWrapper;
     const mockProps: MessageEditorProps = {
-        settings: {
+        liveSettings: {
             messageColorUserStyle: "",
             messageColorNonUserStyle: "",
             messageMaxWidthStyle: "",
@@ -22,7 +22,7 @@ describe("MessageEditor Component", () => {
             textWeightNonUserStyle: "",
             messageButtonsVisibilityStyle: "",
         },
-        setSettings: jest.fn,
+        setLiveSettings: jest.fn,
     };
 
     beforeEach(() => {
@@ -34,17 +34,17 @@ describe("MessageEditor Component", () => {
     });
 
     it("calls setLiveChanges on user message color change", () => {
-        const liveChanges = mockProps.settings;
+        const liveChanges = mockProps.liveSettings;
         wrapper.find(MessageSliderControls).at(0).prop("setLiveChanges")(
             liveChanges,
         );
-        expect(mockProps.setSettings).toHaveBeenCalledWith(liveChanges);
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
     });
 
     it("calls setLiveChanges on chat message color change", () => {
-        const liveChanges = mockProps.settings;
+        const liveChanges = mockProps.liveSettings;
         wrapper.find(ColorControls).at(1).prop("setLiveChanges")(liveChanges);
-        expect(mockProps.setSettings).toHaveBeenCalledWith(liveChanges);
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
     });
 
     it("calls messageMaxWidthLiveChange on message max width change", () => {
@@ -52,6 +52,6 @@ describe("MessageEditor Component", () => {
             target: { value: "50%" },
         } as React.ChangeEvent<HTMLInputElement>;
         wrapper.find("#messageMaxWidthStyle").simulate("change", event);
-        expect(mockProps.setSettings).toHaveBeenCalledWith(event);
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(event);
     });
 });

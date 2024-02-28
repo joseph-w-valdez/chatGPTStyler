@@ -1,7 +1,6 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
-import { useState } from "react";
 
 export interface ColorControlsProps {
     setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
@@ -15,73 +14,46 @@ export function ColorControls({
     liveChanges,
     setIsEditing,
 }: ColorControlsProps): JSX.Element {
-    const [colorType, setColorType] = useState<string>("");
     const colorSettings: colorSetting[] = ["messageColor", "textColor"];
 
-    const formatColor = (color: string) => {
-        switch (colorType) {
-            case "name":
-                return color;
-            case "hex":
-                return `#${color}`;
-            case "rgb":
-                return `rgb(${color})`;
-            case "hsl":
-                return `hsl(${color})`;
-            default:
-                return color;
-        }
-    };
-    const getMaxLength = () => {
-        switch (colorType) {
-            case "name":
-                return 30;
-            case "hex":
-                return 6;
-            case "rgb":
-                return 11;
-            case "hsl":
-                return 9;
-            default:
-                return 30;
-        }
-    };
     // creates color controls. we are making one for user and chat gpt.
     const mapColorSettings = (userType: string, index: number) => {
         const isUser = userType === "User";
         return (
             <div
                 key={index}
-                className="flex flex-col justify-center items-center bg-indigo-400 rounded-md p-2 gap-1 font-medium"
+                className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
             >
-                <label
-                    htmlFor={`${userType}ColorType`}
-                    className=" text-white w-full text-center"
+                <span
+                    className=" text-center p-1 w-24 rounded-md"
+                    style={{
+                        backgroundColor:
+                            liveChanges[
+                                `${
+                                    isUser
+                                        ? "messageColorUserStyle"
+                                        : "messageColorNonUserStyle"
+                                }`
+                            ],
+                        color: liveChanges[
+                            `${
+                                isUser
+                                    ? "textColorUserStyle"
+                                    : "textColorNonUserStyle"
+                            }`
+                        ],
+                    }}
                 >
-                    {`Chat Message ${userType} Color`}
-                </label>
-                <select
-                    id={`${userType}`}
-                    className="p-1 rounded-md text-center"
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setColorType(e.currentTarget.value)
-                    }
-                    value={colorType}
-                >
-                    <option value="">Select</option>
-                    <option value="name">Name</option>
-                    <option value="hex">HEX</option>
-                    <option value="rgb">RGB</option>
-                    <option value="hsl">HSL</option>
-                </select>
-                <div className="grid grid-cols-2 gap-x-1">
+                    {`${userType} Color`}
+                </span>
+                <div className="grid grid-cols-2 gap-1 w-full text-white">
                     {colorSettings.map((setting, index) =>
                         mapSettingInputs(setting, index, isUser),
                     )}
-                    <span className="text-white rounded-md font-medium text-center p-0 m-0">
+                    <span className="rounded-md font-medium text-center p-0 m-0">
                         BG
                     </span>
-                    <span className="text-white rounded-md font-medium text-center p-0 m-0">
+                    <span className="rounded-md font-medium text-center p-0 m-0">
                         Text
                     </span>
                 </div>
@@ -104,31 +76,25 @@ export function ColorControls({
         ) => {
             setLiveChanges({
                 ...liveChanges,
-                [settingsKey]: formatColor(e.currentTarget.value),
+                [settingsKey]: e.currentTarget.value,
             });
-            sendMessageToTab(settingsKey, formatColor(e.currentTarget.value));
+            sendMessageToTab(settingsKey, e.currentTarget.value);
             setIsEditing(true);
         };
         return (
             <input
                 key={index}
-                className={`text-center w-full p-1 rounded-md ${
-                    colorType
-                        ? "animate-fade-in placeholder:text-black/30"
-                        : "animate-fade-out placeholder:text-white/70 "
-                }`}
-                disabled={!colorType}
-                type="text"
+                className={`text-center w-full rounded-md h-8`}
+                type="color"
                 id={`${settingsKey}`}
-                maxLength={getMaxLength()}
-                placeholder={liveChanges[settingsKey]}
+                defaultValue={liveChanges[settingsKey]}
                 onChange={(e) => handleOnChange(e, settingsKey)}
             />
         );
     };
 
     return (
-        <div className="grid grid-cols-2 gap-2 place-items-center">
+        <div className="grid grid-cols-2 gap-2 place-items-center w-full">
             {["User", "Chat-GPT"].map(mapColorSettings)}
         </div>
     );

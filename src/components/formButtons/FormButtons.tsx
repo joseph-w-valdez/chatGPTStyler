@@ -10,26 +10,26 @@ import { sendMessageToTab } from "@src/shared/utils";
 interface FormButtonsProps {
     isEditing: boolean;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-    liveChanges: SettingsType;
-    setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
-    settings: SettingsType;
-    setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveSettings: SettingsType;
+    setLiveSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    savedSettings: SettingsType;
+    setSavedSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
 export function FormButtons({
     isEditing,
     setIsEditing,
-    liveChanges,
-    setLiveChanges,
-    settings,
-    setSettings,
+    liveSettings,
+    setLiveSettings,
+    savedSettings,
+    setSavedSettings,
 }: FormButtonsProps): JSX.Element {
     return (
         <div className="grid grid-cols-4 gap-1">
             <button
                 className={`${css.btnGrey} col-span-2`}
                 onClick={() => {
-                    setLiveChanges({ ...defaultSettings });
+                    setLiveSettings({ ...defaultSettings });
                     sendMessageToTab("restoreSettings", {
                         ...defaultSettings,
                     });
@@ -42,8 +42,8 @@ export function FormButtons({
                 disabled={!isEditing}
                 className={`${css.btn}`}
                 onClick={() => {
-                    saveOptionsToStorage(liveChanges);
-                    setSettings({ ...liveChanges });
+                    saveOptionsToStorage(liveSettings);
+                    setSavedSettings({ ...liveSettings });
                     setIsEditing(false);
                 }}
             >
@@ -53,8 +53,8 @@ export function FormButtons({
                 disabled={!isEditing}
                 className={`${css.btnRed}`}
                 onClick={() => {
-                    setLiveChanges({ ...settings });
-                    sendMessageToTab("restoreSettings", settings);
+                    setLiveSettings({ ...savedSettings });
+                    sendMessageToTab("restoreSettings", savedSettings);
                     setIsEditing(false);
                 }}
             >

@@ -20,21 +20,33 @@ export function MessageSliderControls({
         id: keyof SettingsType = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
 
-        constructor(
-            name: string,
-            id: keyof SettingsType = "messageMaxWidthStyle",
-            valueType: "px" | "%" = "px",
-        ) {
-            this.name = name;
-            this.id = id;
-            this.valueType = valueType;
+        constructor(settingsProperties: InputSetting) {
+            this.name = settingsProperties.name;
+            this.id = settingsProperties.id;
+            this.valueType = settingsProperties.valueType;
         }
     }
     const inputSettings = [
-        new InputSetting("Message Width", "messageMaxWidthStyle", "%"),
-        new InputSetting("Message Padding", "messagePaddingStyle", "px"),
-        new InputSetting("Message Border", "messageBorderRadiusStyle", "px"),
-        new InputSetting("Input Box Width", "inputBoxMaxWidthStyle", "%"),
+        new InputSetting({
+            name: "Message Width",
+            id: "messageMaxWidthStyle",
+            valueType: "%",
+        }),
+        new InputSetting({
+            name: "Message Padding",
+            id: "messagePaddingStyle",
+            valueType: "px",
+        }),
+        new InputSetting({
+            name: "Message Border",
+            id: "messageBorderRadiusStyle",
+            valueType: "px",
+        }),
+        new InputSetting({
+            name: "Input Box Width",
+            id: "inputBoxMaxWidthStyle",
+            valueType: "%",
+        }),
     ];
 
     const mapInputSettings = (setting: InputSetting, index: number) => {

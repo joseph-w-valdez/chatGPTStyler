@@ -38,10 +38,10 @@ export function MiscEditor({
             <FormButtons
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
-                liveChanges={liveChanges}
-                setLiveChanges={setLiveChanges}
-                settings={settings}
-                setSettings={setSettings}
+                liveSettings={liveChanges}
+                setLiveSettings={setLiveChanges}
+                savedSettings={settings}
+                setSavedSettings={setSettings}
             />
         </div>
     );

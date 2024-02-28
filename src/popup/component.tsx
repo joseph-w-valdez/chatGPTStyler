@@ -12,46 +12,43 @@ import { HomeMenu } from "./views/homeMenu";
 import { defaultSettings } from "@src/shared/utils/data";
 import { loadSettings } from "@src/shared/utils";
 import { MiscEditor } from "./views/miscEditor/component";
+import { error } from "console";
 
 const port = browser.runtime.connect({ name: "popup" });
 
 export function Popup(): JSX.Element {
-    const [settings, setSettings] = useState<SettingsType>({
+    const [liveSettings, setLiveSettings] = useState<SettingsType>({
         ...defaultSettings,
     });
     const [page, setPage] = useState<string>("Home");
 
+    const sendSettingsToBackground = (updatedSettings: SettingsType) => {
+        try {
+            port.postMessage({
+                type: "updateSettings",
+                settings: updatedSettings,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        sendSettingsToBackground(liveSettings);
+        console.log("sending settings to background", liveSettings);
+    }, [liveSettings]);
+
     useEffect(() => {
         port.postMessage({ popupOpened: true });
-    
-        port.onMessage.addListener((message) => {
-            if (message.action === "updateSettings") {
-                setSettings(message.settings);
-            }
-        });
-    
-        // Clean up when the popup is closed
-        return () => {
-            port.disconnect();
-        };
-    }, []);
-
-    const sendSettingsToBackground = (updatedSettings: SettingsType) => {
-        port.postMessage({ type: 'updateSettings', settings: updatedSettings });
-    };
-    
-    useEffect(() => {
-        sendSettingsToBackground(settings);
-        console.log("sending settings to background", settings);
-    }, [settings]);
-
-    useEffect(() => {
         browser.runtime.sendMessage({ popupMounted: true });
         getOptionsFromStorage((savedOptions) => {
-            setSettings(savedOptions);
+            setLiveSettings(savedOptions);
             loadSettings(savedOptions);
             console.log("loaded options from storage", savedOptions);
         });
+        return () => {
+            port.disconnect();
+        };
     }, []);
 
     // Renders the component tree
@@ -62,11 +59,14 @@ export function Popup(): JSX.Element {
                 <hr className="mb-2" />
                 {page === "Message Editor" ? (
                     <MessageEditor
-                        settings={settings}
-                        setSettings={setSettings}
+                        liveSettings={liveSettings}
+                        setLiveSettings={setLiveSettings}
                     />
                 ) : page === "Miscellaneous" ? (
-                    <MiscEditor settings={settings} setSettings={setSettings} />
+                    <MiscEditor
+                        settings={liveSettings}
+                        setSettings={setLiveSettings}
+                    />
                 ) : (
                     <HomeMenu setPage={setPage} />
                 )}

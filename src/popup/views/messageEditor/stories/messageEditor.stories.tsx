@@ -24,7 +24,7 @@ Default.args = {
     //     console.log(e.target.value),
     // inputBoxMaxWidthLiveChange: (e: React.ChangeEvent<HTMLInputElement>) =>
     //     console.log(e.target.value),
-    settings: {
+    liveSettings: {
         messageMaxWidthStyle: "",
         messageColorUserStyle: "",
         messageColorNonUserStyle: "",

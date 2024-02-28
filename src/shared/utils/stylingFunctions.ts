@@ -25,9 +25,8 @@ const codeSnippetWidth = `
 const settingsController = {
     messageMaxWidthStyle: (widthPercentage: string) => {
         messageMaxWidthStyle = `
-          @media (min-width: 1200px) {
             [data-testid] > * > * { max-width: ${widthPercentage}% } 
-          }`;
+          `;
     },
     messagePaddingStyle: (padding: string) => {
         messagePaddingStyle = `
@@ -41,9 +40,8 @@ const settingsController = {
     },
     inputBoxMaxWidthStyle: (widthPercentage: string) => {
         inputBoxMaxWidthStyle = `
-        @media (min-width: 1600px) {
           form { max-width: ${widthPercentage}% !important; }
-        }`;
+        `;
     },
     messageColorUserStyle: (color: string) => {
         messageColorUserStyle = `
@@ -62,7 +60,7 @@ const settingsController = {
     textColorNonUserStyle: (color: string) => {
         textColorNonUserStyle = `
             [data-testid]:nth-child(odd) > * > * > * > * > div p { color: ${color}}
-          `;
+        `;
     },
     textSizeUserStyle: (size: string) => {
         textSizeUserStyle = `
