@@ -24,6 +24,7 @@ export function Popup(): JSX.Element {
 
     const sendSettingsToBackground = (updatedSettings: SettingsType) => {
         try {
+            console.log("sending settings to background", liveSettings);
             port.postMessage({
                 type: "updateSettings",
                 settings: updatedSettings,
@@ -35,7 +36,6 @@ export function Popup(): JSX.Element {
 
     useEffect(() => {
         sendSettingsToBackground(liveSettings);
-        console.log("sending settings to background", liveSettings);
     }, [liveSettings]);
 
     useEffect(() => {

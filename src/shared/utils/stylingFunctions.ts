@@ -25,23 +25,25 @@ const codeSnippetWidth = `
 const settingsController = {
     messageMaxWidthStyle: (widthPercentage: string) => {
         messageMaxWidthStyle = `
-            [data-testid] > * > * { max-width: ${widthPercentage}% } 
+            [data-testid] > * > div { max-width: ${widthPercentage}% } 
           `;
     },
     messagePaddingStyle: (padding: string) => {
         messagePaddingStyle = `
-          [data-testid] > * > * { padding: ${padding}px; }
+          [data-testid] > * > div { padding: ${padding}px; }
         `;
     },
     messageBorderRadiusStyle: (borderRadius: string) => {
         messageBorderRadiusStyle = `
-          [data-testid] > * > * { border-radius: ${borderRadius}px; }
+          [data-testid] > * > div { border-radius: ${borderRadius}px; }
         `;
     },
     inputBoxMaxWidthStyle: (widthPercentage: string) => {
         inputBoxMaxWidthStyle = `
-          form { max-width: ${widthPercentage}% !important; }
-        `;
+          form { 
+            max-width: ${widthPercentage}% !important;
+            margin: auto !important
+        }`;
     },
     messageColorUserStyle: (color: string) => {
         messageColorUserStyle = `
