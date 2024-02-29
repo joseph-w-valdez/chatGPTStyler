@@ -16,48 +16,48 @@ getOptionsFromStorage(
     (settings) => (customStyle.textContent = updateStyles(settings)),
 );
 
-const $main = document.querySelector("main");
+// const $main = document.querySelector("main");
 
-if ($main) {
-    const scrollToBottom = () => {
-        const $messagesContainer = document.querySelector(
-            '[role="presentation"] > div > div > div',
-        );
-        if ($messagesContainer) {
-            setTimeout(
-                () =>
-                    ($messagesContainer.scrollTop =
-                        $messagesContainer.scrollHeight),
-                0,
-            );
-            $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
-        }
-    };
+// if ($main) {
+//     const scrollToBottom = () => {
+//         const $messagesContainer = document.querySelector(
+//             '[role="presentation"] > div > div > div',
+//         );
+//         if ($messagesContainer) {
+//             setTimeout(
+//                 () =>
+//                     ($messagesContainer.scrollTop =
+//                         $messagesContainer.scrollHeight),
+//                 0,
+//             );
+//             $messagesContainer.scrollTop = $messagesContainer.scrollHeight;
+//         }
+//     };
 
-    $main.addEventListener("keydown", (event: KeyboardEvent) => {
-        if (
-            event.target instanceof HTMLTextAreaElement &&
-            event.target.getAttribute("id") === "prompt-textarea" &&
-            event.target.textContent !== "" &&
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
-            scrollToBottom();
-        }
-    });
+//     $main.addEventListener("keydown", (event: KeyboardEvent) => {
+//         if (
+//             event.target instanceof HTMLTextAreaElement &&
+//             event.target.getAttribute("id") === "prompt-textarea" &&
+//             event.target.textContent !== "" &&
+//             event.key === "Enter" &&
+//             !event.shiftKey
+//         ) {
+//             scrollToBottom();
+//         }
+//     });
 
-    $main.addEventListener("click", (event) => {
-        if (
-            (event.target instanceof SVGElement ||
-                event.target instanceof HTMLButtonElement) &&
-            event.target
-                .closest('[data-testid="send-button"]')
-                ?.getAttribute("data-testid") === "send-button"
-        ) {
-            scrollToBottom();
-        }
-    });
-}
+//     $main.addEventListener("click", (event) => {
+//         if (
+//             (event.target instanceof SVGElement ||
+//                 event.target instanceof HTMLButtonElement) &&
+//             event.target
+//                 .closest('[data-testid="send-button"]')
+//                 ?.getAttribute("data-testid") === "send-button"
+//         ) {
+//             scrollToBottom();
+//         }
+//     });
+// }
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "updateStyles")

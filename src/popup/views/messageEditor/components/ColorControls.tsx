@@ -87,7 +87,7 @@ export function ColorControls({
                 className={`text-center w-full rounded-md h-8`}
                 type="color"
                 id={`${settingsKey}`}
-                defaultValue={liveChanges[settingsKey]}
+                value={liveChanges[settingsKey]}
                 onChange={(e) => handleOnChange(e, settingsKey)}
             />
         );

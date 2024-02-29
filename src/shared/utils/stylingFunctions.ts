@@ -56,12 +56,12 @@ const settingsController = {
     },
     textColorUserStyle: (color: string) => {
         textColorUserStyle = `
-          [data-testid]:nth-child(even) > * > * > * > * > * { color: ${color}}
+          [data-testid]:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
         `;
     },
     textColorNonUserStyle: (color: string) => {
         textColorNonUserStyle = `
-            [data-testid]:nth-child(odd) > * > * > * > * > div p { color: ${color}}
+            [data-testid]:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
         `;
     },
     textSizeUserStyle: (size: string) => {
@@ -120,7 +120,7 @@ export const updateMessageColor = (
 export const resetDefaultMessageColors = () => {
     messageBoxColors = `
       .dark {
-        [data-testid]:nth-child(even) > * > * { background-color: #EDF5FD }
+        [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
         [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
         [data-testid] textarea {
             padding: 3px;
