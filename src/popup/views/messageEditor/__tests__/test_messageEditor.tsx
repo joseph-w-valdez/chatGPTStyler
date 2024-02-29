@@ -20,7 +20,7 @@ describe("MessageEditor Component", () => {
             textSizeNonUserStyle: "",
             textWeightUserStyle: "",
             textWeightNonUserStyle: "",
-            messageButtonsVisibilityStyle: "",
+            messageButtonsVisibilityStyle: true,
         },
         setLiveSettings: jest.fn,
     };

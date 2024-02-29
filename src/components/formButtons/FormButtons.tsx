@@ -54,6 +54,7 @@ export function FormButtons({
                 className={`${css.btnRed}`}
                 onClick={() => {
                     setLiveSettings({ ...savedSettings });
+                    console.log("jdjdsad", savedSettings);
                     sendMessageToTab("restoreSettings", savedSettings);
                     setIsEditing(false);
                 }}

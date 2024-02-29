@@ -85,8 +85,9 @@ const settingsController = {
         `;
     },
     messageButtonsVisibilityStyle: (visibility: string) => {
+        const value = visibility === "true" ? "unset" : "invisible";
         messageButtonsVisibilityStyle = `
-          [data-testid] button { visibility: ${visibility} }
+          [data-testid] button { visibility: ${value} }
         `;
     },
 };
@@ -143,19 +144,19 @@ export const loadSettings = (newSettings: SettingsType) => {
     for (const key in newSettings) {
         const setting = key as keyof SettingsType;
         if (newSettings[setting]) {
-            settingsController[setting](newSettings[setting]);
+            settingsController[setting](newSettings[setting].toString());
         }
     }
 };
 
 export const updateStyles = (
     setting: keyof SettingsType | SettingsType,
-    newValue?: string,
+    newValue?: string | boolean,
 ) => {
     resetDefaultMessageColors(); // need to update default settings in getOptionsFromStorage then we can remove this
     if (typeof setting !== "string") loadSettings(setting);
-    if (typeof setting === "string" && newValue)
-        settingsController[setting](newValue);
+    if (typeof setting === "string" && newValue !== undefined)
+        settingsController[setting](newValue.toString());
     return (
         messageBoxColors +
         messageMaxWidthStyle +
@@ -178,12 +179,19 @@ export const updateStyles = (
 
 export const sendMessageToTab = (
     action: keyof SettingsType | "restoreSettings",
-    value: string | SettingsType,
+    value: string | boolean | SettingsType,
 ) => {
     let cssTextContent = "";
-    if (action === "restoreSettings" && typeof value !== "string")
+    if (
+        action === "restoreSettings" &&
+        typeof value !== "string" &&
+        typeof value !== "boolean"
+    )
         cssTextContent = updateStyles(value);
-    else if (action !== "restoreSettings" && typeof value === "string") {
+    else if (
+        action !== "restoreSettings" &&
+        (typeof value === "string" || typeof value === "boolean")
+    ) {
         //
         // const newSettings: SettingsType = {
         //     ...liveChanges,

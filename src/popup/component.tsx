@@ -64,8 +64,8 @@ export function Popup(): JSX.Element {
                     />
                 ) : page === "Miscellaneous" ? (
                     <MiscEditor
-                        settings={liveSettings}
-                        setSettings={setLiveSettings}
+                        liveSettings={liveSettings}
+                        setLiveSettings={setLiveSettings}
                     />
                 ) : (
                     <HomeMenu setPage={setPage} />

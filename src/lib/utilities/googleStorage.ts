@@ -13,7 +13,7 @@ export interface SettingsType {
     textSizeNonUserStyle: string;
     textWeightUserStyle: string;
     textWeightNonUserStyle: string;
-    messageButtonsVisibilityStyle: string;
+    messageButtonsVisibilityStyle: boolean;
 }
 
 export const getOptionsFromStorage = (

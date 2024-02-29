@@ -1,47 +1,57 @@
 import React, { useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
+import { sendMessageToTab } from "@src/shared/utils";
 
 export interface MessageEditorProps {
-    settings: SettingsType;
-    setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveSettings: SettingsType;
+    setLiveSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
 export function MiscEditor({
-    settings,
-    setSettings,
+    liveSettings,
+    setLiveSettings,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
-    const [liveChanges, setLiveChanges] = useState<SettingsType>({
-        ...settings,
+    const [savedSettings, setSavedSettings] = useState<SettingsType>({
+        ...liveSettings,
     });
 
     return (
-        <div
-            className={`grid grid-cols-1 gap-y-3 px-3 pb-2 ${
-                !isEditing ? "animate-fade-in" : ""
-            }`}
-        >
-            <div className="flex justify-between group hover:bg-slate-500/20">
-                <label
-                    htmlFor="messageButtonsVisibilityStyle"
-                    className="w-full p-2 hover:cursor-pointer"
-                >
+        <div className="flex flex-col h-full justify-between px-3 pb-2">
+            <div
+                className={`grid grid-cols-1 gap-y-3 w-full ${
+                    !isEditing ? "animate-fade-in" : ""
+                }`}
+            >
+                <label className="flex justify-between group p-2 hover:cursor-pointer hover:bg-slate-500/20 duration-100">
                     Show Chat Message Buttons
+                    <input
+                        type="checkbox"
+                        checked={liveSettings.messageButtonsVisibilityStyle}
+                        onChange={() => {
+                            setLiveSettings({
+                                ...liveSettings,
+                                messageButtonsVisibilityStyle:
+                                    !liveSettings.messageButtonsVisibilityStyle,
+                            });
+                            sendMessageToTab(
+                                "messageButtonsVisibilityStyle",
+                                !liveSettings.messageButtonsVisibilityStyle,
+                            );
+                            setIsEditing(true);
+                        }}
+                        className=" hover:cursor-pointer"
+                    />
                 </label>
-                <input
-                    id="messageButtonsVisibilityStyle"
-                    type="checkbox"
-                    className=" hover:cursor-pointer"
-                />
             </div>
             <FormButtons
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
-                liveSettings={liveChanges}
-                setLiveSettings={setLiveChanges}
-                savedSettings={settings}
-                setSavedSettings={setSettings}
+                liveSettings={liveSettings}
+                setLiveSettings={setLiveSettings}
+                savedSettings={savedSettings}
+                setSavedSettings={setSavedSettings}
             />
         </div>
     );

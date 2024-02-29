@@ -85,7 +85,7 @@ export function MessageSliderControls({
                         style={{
                             backgroundColor: `${bgColors[index]}, 0.1)`,
                         }}
-                        value={liveChanges[setting.id]}
+                        value={liveChanges[setting.id].toString()}
                         id={setting.id}
                         onChange={(e) => handleOnChange(e, setting.id)}
                     ></input>
@@ -93,7 +93,7 @@ export function MessageSliderControls({
                         type="range"
                         min="1"
                         max="95"
-                        value={liveChanges[setting.id]}
+                        value={liveChanges[setting.id].toString()}
                         className="absolute w-full h-0.5 left-0 bottom-0"
                         onChange={(e) => handleOnChange(e, setting.id)}
                         step={"1"}
