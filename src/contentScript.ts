@@ -105,6 +105,75 @@ const resetDefaultMessageColors = () => {
     updateAllStyles();
 };
 
+// Function to apply background color based on span text
+function applyBackgroundToButton($chatGPTButton: HTMLDivElement) {
+    const $span = $chatGPTButton.querySelector('span') as HTMLSpanElement;
+    let backgroundColor = '#18C37D';
+    let hoverColor = '#16A96B';
+
+    if ($span) {
+        const text = $span.textContent || '';
+        if (text.includes('3.5')) {
+            backgroundColor = '#18C37D';
+            hoverColor = '#16A96B';
+        } else if (text.includes('4')) {
+            backgroundColor = '#AB68FF';
+            hoverColor = '#9A58E6';
+        }
+    }
+
+    // Create or get the style element
+    let style = document.getElementById('staticCustomStyle') as HTMLStyleElement;
+    if (!style) {
+        style = document.createElement('style');
+        style.id = 'staticCustomStyle';
+        document.head.appendChild(style);
+    }
+
+    // Set the CSS in the style element
+    style.textContent = `
+        #chatGPTButton {
+            background: ${backgroundColor};
+        }
+        #chatGPTButton:hover {
+            background: ${hoverColor};
+        }
+        #chatGPTButton span {
+            color: white;
+        }
+        #chatGPTButton svg {
+            color: white;
+        }
+    `;
+}
+
+// Get the parent element
+const $chatGPTButtonParent = document.querySelector('[role="presentation"] > div > div > div div > .flex.items-center.gap-2') as HTMLDivElement;
+
+if ($chatGPTButtonParent) {
+    // Create a MutationObserver to watch for new children
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                const $chatGPTButton = mutation.addedNodes[0] as HTMLDivElement;
+                $chatGPTButton.id = 'chatGPTButton';
+                applyBackgroundToButton($chatGPTButton);
+
+                // Create a MutationObserver to watch for changes in the text content of the span
+                const $span = $chatGPTButton.querySelector('span');
+                if ($span) {
+                    const spanObserver = new MutationObserver(() => {
+                        applyBackgroundToButton($chatGPTButton);
+                    });
+                    spanObserver.observe($span, { characterData: true, subtree: true });
+                }
+            }
+        });
+    });
+
+    observer.observe($chatGPTButtonParent, { childList: true });
+}
+
 const $main = document.querySelector("main");
 
 if ($main) {
