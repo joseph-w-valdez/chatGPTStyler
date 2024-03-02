@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6] - 2024-03-02
+
+### Added
+
+-   Added color-coding to the ChatGPT button depending on if the user is on 3.5 or 4
+
 ## [0.1.5] - 2024-02-12
 
 ### Added
