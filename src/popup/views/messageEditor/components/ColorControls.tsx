@@ -95,7 +95,7 @@ export function ColorControls({
 
     return (
         <div className="grid grid-cols-2 gap-2 place-items-center w-full">
-            {["User", "Chat-GPT"].map(mapColorSettings)}
+            {["User", "ChatGPT"].map(mapColorSettings)}
         </div>
     );
 }

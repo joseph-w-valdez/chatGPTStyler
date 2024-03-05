@@ -12,7 +12,6 @@ import { HomeMenu } from "./views/homeMenu";
 import { defaultSettings } from "@src/shared/utils/data";
 import { loadSettings } from "@src/shared/utils";
 import { MiscEditor } from "./views/miscEditor/component";
-import { error } from "console";
 
 const port = browser.runtime.connect({ name: "popup" });
 

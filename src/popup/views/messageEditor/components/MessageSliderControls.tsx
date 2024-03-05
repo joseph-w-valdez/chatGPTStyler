@@ -19,11 +19,13 @@ export function MessageSliderControls({
         name: string = "";
         id: keyof SettingsType = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
+        bgColor: string = "";
 
         constructor(settingsProperties: InputSetting) {
             this.name = settingsProperties.name;
             this.id = settingsProperties.id;
             this.valueType = settingsProperties.valueType;
+            this.bgColor = settingsProperties.bgColor;
         }
     }
     const inputSettings = [
@@ -31,32 +33,29 @@ export function MessageSliderControls({
             name: "Message Width",
             id: "messageMaxWidthStyle",
             valueType: "%",
+            bgColor: "rgba(145, 10, 103",
         }),
         new InputSetting({
             name: "Message Padding",
             id: "messagePaddingStyle",
             valueType: "px",
+            bgColor: "rgba(114, 4, 85",
         }),
         new InputSetting({
             name: "Message Border",
             id: "messageBorderRadiusStyle",
             valueType: "px",
+            bgColor: "rgba(60, 7, 83",
         }),
         new InputSetting({
             name: "Input Box Width",
             id: "inputBoxMaxWidthStyle",
             valueType: "%",
+            bgColor: "rgba(3, 6, 55",
         }),
     ];
 
     const mapInputSettings = (setting: InputSetting, index: number) => {
-        const bgColors = [
-            "rgba(145, 10, 103",
-            "rgba(114, 4, 85",
-            "rgba(60, 7, 83",
-            "rgba(3, 6, 55",
-        ];
-
         const handleOnChange = (
             e: React.ChangeEvent<HTMLInputElement>,
             settingKey: keyof SettingsType,
@@ -74,7 +73,7 @@ export function MessageSliderControls({
                     htmlFor={setting.id}
                     className={`basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2`}
                     style={{
-                        backgroundColor: `${bgColors[index]})`,
+                        backgroundColor: `${setting.bgColor})`,
                     }}
                 >{`${setting.name}:`}</label>{" "}
                 <div className="relative flex ">
@@ -83,7 +82,7 @@ export function MessageSliderControls({
                         type="text"
                         maxLength={2}
                         style={{
-                            backgroundColor: `${bgColors[index]}, 0.1)`,
+                            backgroundColor: `${setting.bgColor}, 0.1)`,
                         }}
                         value={liveChanges[setting.id].toString()}
                         id={setting.id}
@@ -97,13 +96,13 @@ export function MessageSliderControls({
                         className="absolute w-full h-0.5 left-0 bottom-0"
                         onChange={(e) => handleOnChange(e, setting.id)}
                         step={"1"}
-                        style={{ accentColor: `${bgColors[index]})` }}
+                        style={{ accentColor: `${setting.bgColor})` }}
                     ></input>
                 </div>
                 <div
                     className={`py-2 rounded-r-sm`}
                     style={{
-                        backgroundColor: `${bgColors[index]}, 0.1)`,
+                        backgroundColor: `${setting.bgColor}, 0.1)`,
                     }}
                 >
                     {setting.valueType}

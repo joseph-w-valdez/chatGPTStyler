@@ -16,7 +16,7 @@ let textWeightNonUserStyle = "";
 const selectionColors = "";
 let messageButtonsVisibilityStyle = ``;
 const codeSnippetWidth = `
-    [data-testid] > * > * > *:nth-child(2) {
+    [data-testid^="conversation-turn-"] > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
     }
@@ -25,17 +25,17 @@ const codeSnippetWidth = `
 const settingsController = {
     messageMaxWidthStyle: (widthPercentage: string) => {
         messageMaxWidthStyle = `
-            [data-testid] > * > div { max-width: ${widthPercentage}% } 
+            [data-testid^="conversation-turn-"] > * > div { max-width: ${widthPercentage}% } 
           `;
     },
     messagePaddingStyle: (padding: string) => {
         messagePaddingStyle = `
-          [data-testid] > * > div { padding: ${padding}px; }
+          [data-testid^="conversation-turn-"] > * > div { padding: ${padding}px; }
         `;
     },
     messageBorderRadiusStyle: (borderRadius: string) => {
         messageBorderRadiusStyle = `
-          [data-testid] > * > div { border-radius: ${borderRadius}px; }
+          [data-testid^="conversation-turn-"] > * > div { border-radius: ${borderRadius}px; }
         `;
     },
     inputBoxMaxWidthStyle: (widthPercentage: string) => {
@@ -47,41 +47,41 @@ const settingsController = {
     },
     messageColorUserStyle: (color: string) => {
         messageColorUserStyle = `
-          [data-testid]:nth-child(even) > * > * { background-color: ${color} !important }`;
+          [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${color} !important }`;
     },
     messageColorNonUserStyle: (color: string) => {
         messageColorNonUserStyle = `
-          [data-testid]:nth-child(odd) > * > * { background-color: ${color} !important 
+          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${color} !important 
         }`;
     },
     textColorUserStyle: (color: string) => {
         textColorUserStyle = `
-          [data-testid]:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
+          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
         `;
     },
     textColorNonUserStyle: (color: string) => {
         textColorNonUserStyle = `
-            [data-testid]:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
+            [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
         `;
     },
     textSizeUserStyle: (size: string) => {
         textSizeUserStyle = `
-          [data-testid]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}
+          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}
         `;
     },
     textSizeNonUserStyle: (size: string) => {
         textSizeNonUserStyle = `
-          [data-testid]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}
+          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}
         `;
     },
     textWeightUserStyle: (weight: string) => {
         textWeightUserStyle = `
-          [data-testid]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} 
+          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} 
         `;
     },
     textWeightNonUserStyle: (weight: string) => {
         textWeightNonUserStyle = `
-          [data-testid]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} 
+          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} 
         `;
     },
     messageButtonsVisibilityStyle: (visibility: string) => {
@@ -91,7 +91,7 @@ const settingsController = {
         `;
     },
 };
-
+// might need for light and dark modes
 export const updateMessageColor = (
     userColor: string,
     chatGPTColor: string,
@@ -99,30 +99,29 @@ export const updateMessageColor = (
 ) => {
     messageBoxColors = `
       .dark {
-        [data-testid]:nth-child(even) > * > * { background-color: ${
+        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${
             userColor ? userColor : "#4e7645"
         } }
-        [data-testid]:nth-child(odd) > * > * { background-color: ${
+        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${
             chatGPTColor ? chatGPTColor : "#3c6083"
         } }
       }
       .light {
-        [data-testid]:nth-child(even) > * > * { background-color: ${
+        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${
             userColor ? userColor : "#62B1F6"
         } }
-        [data-testid]:nth-child(odd) > * > * { background-color: ${
+        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${
             chatGPTColor ? chatGPTColor : "#EEEEEE"
         } }
       }
       `;
-    // return updateStyles();
 };
-
+// might need for light and dark modes
 export const resetDefaultMessageColors = () => {
     messageBoxColors = `
       .dark {
-        [data-testid]:nth-child(even) > * > * { background-color: #4e7645 }
-        [data-testid]:nth-child(odd) > * > * { background-color: #3c6083 }
+        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: #4e7645 }
+        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: #3c6083 }
         [data-testid] textarea {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);
@@ -130,8 +129,8 @@ export const resetDefaultMessageColors = () => {
         }
       }
       .light {
-        [data-testid]:nth-child(even) > * > * { background-color: #62B1F6 }
-        [data-testid]:nth-child(odd) > * > * { background-color: #EEEEEE }
+        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: #62B1F6 }
+        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: #EEEEEE }
         [data-testid] textarea {
             padding: 3px;
             background-color: rgba(255, 255, 255, 0.4);
@@ -153,7 +152,6 @@ export const updateStyles = (
     setting: keyof SettingsType | SettingsType,
     newValue?: string | boolean,
 ) => {
-    resetDefaultMessageColors(); // need to update default settings in getOptionsFromStorage then we can remove this
     if (typeof setting !== "string") loadSettings(setting);
     if (typeof setting === "string" && newValue !== undefined)
         settingsController[setting](newValue.toString());
