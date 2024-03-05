@@ -60,12 +60,15 @@ export function MessageSliderControls({
             e: React.ChangeEvent<HTMLInputElement>,
             settingKey: keyof SettingsType,
         ) => {
-            setIsEditing(true);
-            sendMessageToTab(settingKey, e.currentTarget.value);
-            setLiveChanges({
-                ...liveChanges,
-                [settingKey]: e.currentTarget.value,
-            });
+            const regex = /^\d+$/;
+            if (regex.test(e.target.value)) {
+                setIsEditing(true);
+                sendMessageToTab(settingKey, e.currentTarget.value);
+                setLiveChanges({
+                    ...liveChanges,
+                    [settingKey]: e.currentTarget.value,
+                });
+            }
         };
         return (
             <div className="flex justify-between items-center" key={index}>
@@ -76,9 +79,9 @@ export function MessageSliderControls({
                         backgroundColor: `${setting.bgColor})`,
                     }}
                 >{`${setting.name}:`}</label>{" "}
-                <div className="relative flex ">
+                <div className="relative flex">
                     <input
-                        className={`outline-none px-2 py-2 text-right w-full rounded-l-sm`}
+                        className={`outline-none px-2 py-2 w-full text-right rounded-l-sm `}
                         type="text"
                         maxLength={2}
                         style={{
