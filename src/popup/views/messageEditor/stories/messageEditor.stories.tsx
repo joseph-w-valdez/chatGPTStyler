@@ -18,10 +18,6 @@ const Template: Story<MessageEditorProps> = (args) => {
         inputBoxMaxWidthStyle: "",
         textColorUserStyle: "",
         textColorNonUserStyle: "",
-        textSizeUserStyle: "",
-        textSizeNonUserStyle: "",
-        textWeightUserStyle: "",
-        textWeightNonUserStyle: "",
         messageButtonsVisibilityStyle: true,
     });
     return (

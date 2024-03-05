@@ -38,7 +38,8 @@ const settingsController = {
         inputBoxMaxWidthStyle = `
           form { 
             max-width: ${widthPercentage}% !important;
-            margin: auto !important
+            margin: auto !important;
+            min-width: 300px
         }`;
     },
     messageColorUserStyle: (color: string) => {
