@@ -9,9 +9,5 @@ export const defaultSettings: SettingsType = {
     inputBoxMaxWidthStyle: "70",
     textColorUserStyle: "#FFFFFF",
     textColorNonUserStyle: "#FFFFFF",
-    textSizeUserStyle: "",
-    textSizeNonUserStyle: "",
-    textWeightUserStyle: "",
-    textWeightNonUserStyle: "",
     messageButtonsVisibilityStyle: true,
 };

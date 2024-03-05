@@ -9,10 +9,6 @@ let messageColorUserStyle = "";
 let messageColorNonUserStyle = "";
 let textColorUserStyle = "";
 let textColorNonUserStyle = "";
-let textSizeUserStyle = "";
-let textSizeNonUserStyle = "";
-let textWeightUserStyle = "";
-let textWeightNonUserStyle = "";
 const selectionColors = "";
 let messageButtonsVisibilityStyle = ``;
 const codeSnippetWidth = `
@@ -62,26 +58,6 @@ const settingsController = {
     textColorNonUserStyle: (color: string) => {
         textColorNonUserStyle = `
             [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
-        `;
-    },
-    textSizeUserStyle: (size: string) => {
-        textSizeUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > * > * > * { font-size: ${size}px}
-        `;
-    },
-    textSizeNonUserStyle: (size: string) => {
-        textSizeNonUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > div p { font-size: ${size}px}
-        `;
-    },
-    textWeightUserStyle: (weight: string) => {
-        textWeightUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > * > * > * { font-weight: ${weight}} 
-        `;
-    },
-    textWeightNonUserStyle: (weight: string) => {
-        textWeightNonUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > div p { font-weight: ${weight}} 
         `;
     },
     messageButtonsVisibilityStyle: (visibility: string) => {
@@ -163,10 +139,6 @@ export const updateStyles = (
         inputBoxMaxWidthStyle +
         textColorUserStyle +
         textColorNonUserStyle +
-        textSizeUserStyle +
-        textSizeNonUserStyle +
-        textWeightUserStyle +
-        textWeightNonUserStyle +
         selectionColors +
         messageButtonsVisibilityStyle +
         codeSnippetWidth +
@@ -190,13 +162,6 @@ export const sendMessageToTab = (
         action !== "restoreSettings" &&
         (typeof value === "string" || typeof value === "boolean")
     ) {
-        //
-        // const newSettings: SettingsType = {
-        //     ...liveChanges,
-        //     [action]: value,
-        // };
-        // cssTextContent = update.updateStyles(newSettings);
-        //
         cssTextContent = updateStyles(action, value);
     }
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

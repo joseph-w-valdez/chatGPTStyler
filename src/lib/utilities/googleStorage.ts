@@ -9,10 +9,6 @@ export interface SettingsType {
     inputBoxMaxWidthStyle: string;
     textColorUserStyle: string;
     textColorNonUserStyle: string;
-    textSizeUserStyle: string;
-    textSizeNonUserStyle: string;
-    textWeightUserStyle: string;
-    textWeightNonUserStyle: string;
     messageButtonsVisibilityStyle: boolean;
 }
 
