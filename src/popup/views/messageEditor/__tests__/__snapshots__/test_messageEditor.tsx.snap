@@ -1,51 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Components/MessageEditor Default 1`] = `
-<div>
-  <label>
-    Message Width:
-    <input
-      id="messageMaxWidthStyle"
-      onChange={[Function]}
-      placeholder="percentage"
-      type="text"
-    />
-  </label>
-  <label>
-    Message Padding:
-    <input
-      id="messagePaddingStyle"
-      onChange={[Function]}
-      placeholder="percentage"
-      type="text"
-    />
-  </label>
-  <label>
-    Message Border:
-    <input
-      id="messageBorderStyle"
-      onChange={[Function]}
-      placeholder="percentage"
-      type="text"
-    />
-  </label>
-  <label>
-    Input Box Width:
-    <input
-      id="inputBoxMaxWidth"
-      onChange={[Function]}
-      placeholder="percentage"
-      type="text"
-    />
-  </label>
-  <hr />
-  <MessageFormControl
-    colorLiveChange={[Function]}
-    section="User"
+exports[`Component MessageEditor renders correctly 1`] = `
+<div class="grid grid-cols-1 gap-y-3 px-3 pb-2 animate-fade-in">
+  <MessageSliderControls
+    liveChanges={[Object]}
+    setLiveChanges={[Function]}
+    setIsEditing={[Function]}
   />
-  <MessageFormControl
-    colorLiveChange={[Function]}
-    section="Chat"
+  <ColorControls
+    liveChanges={[Object]}
+    setLiveChanges={[Function]}
+    setIsEditing={[Function]}
+  />
+  <FormButtons
+    isEditing={false}
+    liveSettings={[Object]}
+    savedSettings={[Object]}
+    setLiveSettings={[Function]}
+    setSavedSettings={[Function]}
+    setIsEditing={[Function]}
   />
 </div>
 `;

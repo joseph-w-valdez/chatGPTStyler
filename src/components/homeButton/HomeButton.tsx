@@ -1,7 +1,7 @@
 import React from "react";
 import css from "./styles.module.css";
 
-interface HomeButtonProps {
+export interface HomeButtonProps {
     dataTestid: string;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
     btnLabel: string;

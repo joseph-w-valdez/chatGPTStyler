@@ -1,19 +1,13 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { HomeButton } from "../HomeButton";
-
-// // // //
+import { Meta, Story } from "@storybook/react";
+import { HomeButton, HomeButtonProps } from "../HomeButton";
 
 export default {
     title: "Components/HomeButton",
     component: HomeButton,
-} as ComponentMeta<typeof HomeButton>;
+} as Meta;
 
-const Template: ComponentStory<typeof HomeButton> = (args) => (
-    <HomeButton {...args} />
-);
-
-// // // //
+const Template: Story<HomeButtonProps> = (args) => <HomeButton {...args} />;
 
 export const Render = Template.bind({});
 Render.args = {

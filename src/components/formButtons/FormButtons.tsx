@@ -7,7 +7,7 @@ import {
 import { defaultSettings } from "@src/shared/utils/data";
 import { sendMessageToTab } from "@src/shared/utils";
 
-interface FormButtonsProps {
+export interface FormButtonsProps {
     isEditing: boolean;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
     liveSettings: SettingsType;
@@ -54,7 +54,6 @@ export function FormButtons({
                 className={`${css.btnRed}`}
                 onClick={() => {
                     setLiveSettings({ ...savedSettings });
-                    console.log("jdjdsad", savedSettings);
                     sendMessageToTab("restoreSettings", savedSettings);
                     setIsEditing(false);
                 }}

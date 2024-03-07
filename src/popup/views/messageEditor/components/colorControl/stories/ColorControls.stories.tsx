@@ -1,19 +1,20 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { MessageEditor, MessageEditorProps } from "../index";
+import { Meta, Story } from "@storybook/react";
+import { ColorControls, ColorControlsProps } from "../component";
 
 export default {
-    title: "Components/MessageEditor",
-    component: MessageEditor,
-} as ComponentMeta<typeof MessageEditor>;
+    title: "Components/ColorControls",
+    component: ColorControls,
+} as Meta;
 
-const Template: ComponentStory<typeof MessageEditor> = (
-    args: MessageEditorProps,
-) => <MessageEditor {...args} />;
+const Template: Story<ColorControlsProps> = (args) => (
+    <ColorControls {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
-    liveSettings: {
+    setLiveChanges: () => alert("seting live changes"),
+    liveChanges: {
         messageMaxWidthStyle: "95",
         messagePaddingStyle: "10",
         messageBorderRadiusStyle: "5",
@@ -24,5 +25,5 @@ Default.args = {
         textColorUserStyle: "#FFFFFF",
         textColorNonUserStyle: "#FFFFFF",
     },
-    setLiveSettings: () => alert("live changes"),
+    setIsEditing: () => alert("is editing is set"),
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { HomeButton } from "@src/components/homeButton/HomeButton";
 
-interface HomeMenuProps {
+export interface HomeMenuProps {
     setPage: React.Dispatch<React.SetStateAction<string>>;
 }
 

@@ -1,12 +1,12 @@
 import * as React from "react";
+import { Meta } from "@storybook/react";
 import { Header } from "../Header";
-import { ComponentMeta } from "@storybook/react";
-
-// // // //
 
 export default {
     title: "Components/Header",
     component: Header,
-} as ComponentMeta<typeof Header>;
+} as Meta;
 
-export const Render = () => <Header page="string" setPage={() => {}} />;
+export const Render: React.FC = () => (
+    <Header page="string" setPage={() => alert("clicked")} />
+);

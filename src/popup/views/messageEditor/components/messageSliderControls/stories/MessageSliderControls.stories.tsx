@@ -1,19 +1,20 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { MessageEditor, MessageEditorProps } from "../index";
+import { Story, Meta } from "@storybook/react";
+import { MessageSliderControls, SliderControlsProps } from "../component";
 
 export default {
-    title: "Components/MessageEditor",
-    component: MessageEditor,
-} as ComponentMeta<typeof MessageEditor>;
+    title: "Components/MessageSliderControls",
+    component: MessageSliderControls,
+} as Meta;
 
-const Template: ComponentStory<typeof MessageEditor> = (
-    args: MessageEditorProps,
-) => <MessageEditor {...args} />;
+const Template: Story<SliderControlsProps> = (args) => (
+    <MessageSliderControls {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
-    liveSettings: {
+    setLiveChanges: () => alert("Live changes settings"),
+    liveChanges: {
         messageMaxWidthStyle: "95",
         messagePaddingStyle: "10",
         messageBorderRadiusStyle: "5",
@@ -24,5 +25,5 @@ Default.args = {
         textColorUserStyle: "#FFFFFF",
         textColorNonUserStyle: "#FFFFFF",
     },
-    setLiveSettings: () => alert("live changes"),
+    setIsEditing: () => alert("is editing settings"),
 };

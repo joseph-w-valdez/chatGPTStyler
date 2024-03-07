@@ -16,7 +16,6 @@ export function ColorControls({
 }: ColorControlsProps): JSX.Element {
     const colorSettings: colorSetting[] = ["messageColor", "textColor"];
 
-    // creates color controls. we are making one for user and chat gpt.
     const mapColorSettings = (userType: string, index: number) => {
         const isUser = userType === "User";
         return (
@@ -60,7 +59,7 @@ export function ColorControls({
             </div>
         );
     };
-    // creates input elements for color controls. we currently have text color, and bg color
+
     const mapSettingInputs = (
         setting: colorSetting,
         index: number,

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
-import { ColorControls } from "./components/ColorControls";
+import { ColorControls } from "./components/colorControl/component";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
-import { MessageSliderControls } from "./components/MessageSliderControls";
+import { MessageSliderControls } from "./components/messageSliderControls";
 
 export interface MessageEditorProps {
     liveSettings: SettingsType;

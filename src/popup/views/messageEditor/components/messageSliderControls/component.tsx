@@ -16,10 +16,10 @@ export function MessageSliderControls({
 }: SliderControlsProps): JSX.Element {
     // using this to create data we need so we can map through and have clean callback
     class InputSetting {
-        name: string = "";
+        name = "";
         id: keyof SettingsType = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
-        bgColor: string = "";
+        bgColor = "";
 
         constructor(settingsProperties: InputSetting) {
             this.name = settingsProperties.name;
