@@ -62,11 +62,13 @@ export function MessageSliderControls({
         ) => {
             const regex = /^\d+$/;
             if (regex.test(e.target.value)) {
+                let currValue = e.target.value;
+                if (Number(currValue) > 100) currValue = "100";
                 setIsEditing(true);
-                sendMessageToTab(settingKey, e.currentTarget.value);
+                sendMessageToTab(settingKey, currValue);
                 setLiveChanges({
                     ...liveChanges,
-                    [settingKey]: e.currentTarget.value,
+                    [settingKey]: currValue,
                 });
             }
         };
@@ -83,7 +85,7 @@ export function MessageSliderControls({
                     <input
                         className={`outline-none px-2 py-2 w-full text-right rounded-l-sm `}
                         type="text"
-                        maxLength={2}
+                        maxLength={3}
                         style={{
                             backgroundColor: `${setting.bgColor}, 0.1)`,
                         }}
@@ -94,7 +96,7 @@ export function MessageSliderControls({
                     <input
                         type="range"
                         min="1"
-                        max="95"
+                        max="100"
                         value={liveChanges[setting.id].toString()}
                         className="absolute w-full h-0.5 left-0 bottom-0"
                         onChange={(e) => handleOnChange(e, setting.id)}

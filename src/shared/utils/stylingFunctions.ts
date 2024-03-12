@@ -17,21 +17,22 @@ const codeSnippetWidth = `
         max-width: calc(100% - 72px);
     }
 `;
+const messageBubbles = '[data-testid^="conversation-turn-"]';
 
 const settingsController = {
     messageMaxWidthStyle: (widthPercentage: string) => {
         messageMaxWidthStyle = `
-            [data-testid^="conversation-turn-"] > * > div { max-width: ${widthPercentage}% } 
+            ${messageBubbles} > * > div { max-width: ${widthPercentage}% } 
           `;
     },
     messagePaddingStyle: (padding: string) => {
         messagePaddingStyle = `
-          [data-testid^="conversation-turn-"] > * > div { padding: ${padding}px; }
+          ${messageBubbles} > * > div { padding: ${padding}px; }
         `;
     },
     messageBorderRadiusStyle: (borderRadius: string) => {
         messageBorderRadiusStyle = `
-          [data-testid^="conversation-turn-"] > * > div { border-radius: ${borderRadius}px; }
+          ${messageBubbles} > * > div { border-radius: ${borderRadius}px; }
         `;
     },
     inputBoxMaxWidthStyle: (widthPercentage: string) => {
@@ -44,27 +45,27 @@ const settingsController = {
     },
     messageColorUserStyle: (color: string) => {
         messageColorUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${color} !important }`;
+          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }`;
     },
     messageColorNonUserStyle: (color: string) => {
         messageColorNonUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${color} !important 
+          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important 
         }`;
     },
     textColorUserStyle: (color: string) => {
         textColorUserStyle = `
-          [data-testid^="conversation-turn-"]:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
+          ${messageBubbles}:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
         `;
     },
     textColorNonUserStyle: (color: string) => {
         textColorNonUserStyle = `
-            [data-testid^="conversation-turn-"]:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
+            ${messageBubbles}:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
         `;
     },
     messageButtonsVisibilityStyle: (visibility: string) => {
         const value = visibility === "true" ? "unset" : "invisible";
         messageButtonsVisibilityStyle = `
-          [data-testid] button { visibility: ${value} }
+          ${messageBubbles} button { visibility: ${value} }
         `;
     },
 };

@@ -18,13 +18,13 @@ export function MiscEditor({
     });
 
     return (
-        <div className="flex flex-col h-full justify-between px-3 pb-2">
+        <div className="flex flex-col h-full justify-between px-3 pb-2 select-none">
             <div
                 className={`grid grid-cols-1 gap-y-3 w-full ${
                     !isEditing ? "animate-fade-in" : ""
                 }`}
             >
-                <label className="flex justify-between group p-2 hover:cursor-pointer hover:bg-slate-500/20 duration-100">
+                <label className="flex justify-between group p-2 hover:cursor-pointer hover:bg-slate-400 hover:text-white bg-slate-500/20 duration-100 select-none rounded">
                     Show Chat Message Buttons
                     <input
                         type="checkbox"

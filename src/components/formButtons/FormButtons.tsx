@@ -36,7 +36,7 @@ export function FormButtons({
                     setIsEditing(true);
                 }}
             >
-                Restore Default
+                Restore Defaults
             </button>
             <button
                 disabled={!isEditing}
