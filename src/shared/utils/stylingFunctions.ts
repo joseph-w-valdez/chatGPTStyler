@@ -1,5 +1,7 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 
+const messageBubbles = '[data-testid^="conversation-turn-"]';
+
 let messageMaxWidthStyle = "";
 let messagePaddingStyle = "";
 let messageBorderRadiusStyle = "";
@@ -12,12 +14,11 @@ let textColorNonUserStyle = "";
 const selectionColors = "";
 let messageButtonsVisibilityStyle = ``;
 const codeSnippetWidth = `
-    [data-testid^="conversation-turn-"] > * > * > *:nth-child(2) {
+    ${messageBubbles} > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
     }
 `;
-const messageBubbles = '[data-testid^="conversation-turn-"]';
 
 const settingsController = {
     messageMaxWidthStyle: (widthPercentage: string) => {
@@ -77,20 +78,20 @@ export const updateMessageColor = (
 ) => {
     messageBoxColors = `
       .dark {
-        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${
-            userColor ? userColor : "#4e7645"
-        } }
-        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${
-            chatGPTColor ? chatGPTColor : "#3c6083"
-        } }
+        ${messageBubbles}:nth-child(even) > * > * { background-color: ${
+        userColor ? userColor : "#4e7645"
+    } }
+        ${messageBubbles}:nth-child(odd) > * > * { background-color: ${
+        chatGPTColor ? chatGPTColor : "#3c6083"
+    } }
       }
       .light {
-        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: ${
-            userColor ? userColor : "#62B1F6"
-        } }
-        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: ${
-            chatGPTColor ? chatGPTColor : "#EEEEEE"
-        } }
+        ${messageBubbles}:nth-child(even) > * > * { background-color: ${
+        userColor ? userColor : "#62B1F6"
+    } }
+        ${messageBubbles}:nth-child(odd) > * > * { background-color: ${
+        chatGPTColor ? chatGPTColor : "#EEEEEE"
+    } }
       }
       `;
 };
@@ -98,8 +99,8 @@ export const updateMessageColor = (
 export const resetDefaultMessageColors = () => {
     messageBoxColors = `
       .dark {
-        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: #4e7645 }
-        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: #3c6083 }
+        ${messageBubbles}:nth-child(even) > * > * { background-color: #4e7645 }
+        ${messageBubbles}:nth-child(odd) > * > * { background-color: #3c6083 }
         [data-testid] textarea {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);
@@ -107,8 +108,8 @@ export const resetDefaultMessageColors = () => {
         }
       }
       .light {
-        [data-testid^="conversation-turn-"]:nth-child(even) > * > * { background-color: #62B1F6 }
-        [data-testid^="conversation-turn-"]:nth-child(odd) > * > * { background-color: #EEEEEE }
+        ${messageBubbles}:nth-child(even) > * > * { background-color: #62B1F6 }
+        ${messageBubbles}:nth-child(odd) > * > * { background-color: #EEEEEE }
         [data-testid] textarea {
             padding: 3px;
             background-color: rgba(255, 255, 255, 0.4);
