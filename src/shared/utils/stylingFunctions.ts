@@ -19,24 +19,23 @@ const codeSnippetWidth = `
         max-width: calc(100% - 72px);
     }
 `;
-
 const settingsController = {
-    messageMaxWidthStyle: (widthPercentage: string) => {
+    messageMaxWidthStyle: <T>(widthPercentage: T) => {
         messageMaxWidthStyle = `
             ${messageBubbles} > * > div { max-width: ${widthPercentage}% } 
           `;
     },
-    messagePaddingStyle: (padding: string) => {
+    messagePaddingStyle: <T>(padding: T) => {
         messagePaddingStyle = `
           ${messageBubbles} > * > div { padding: ${padding}px; }
         `;
     },
-    messageBorderRadiusStyle: (borderRadius: string) => {
+    messageBorderRadiusStyle: <T>(borderRadius: T) => {
         messageBorderRadiusStyle = `
           ${messageBubbles} > * > div { border-radius: ${borderRadius}px; }
         `;
     },
-    inputBoxMaxWidthStyle: (widthPercentage: string) => {
+    inputBoxMaxWidthStyle: <T>(widthPercentage: T) => {
         inputBoxMaxWidthStyle = `
           form { 
             max-width: ${widthPercentage}% !important;
@@ -44,27 +43,34 @@ const settingsController = {
             min-width: 300px
         }`;
     },
-    messageColorUserStyle: (color: string) => {
-        messageColorUserStyle = `
-          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }`;
+    messageColorUserStyle: <T>(color: T) => {
+        if (typeof color === "string")
+            messageColorUserStyle = `
+          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }
+          ${messageBubbles} textarea {
+            padding: 3px;
+            background-color: rgba(0, 0, 0, 0.4);;
+            border-radius: 5px
+        }
+        `;
     },
-    messageColorNonUserStyle: (color: string) => {
+    messageColorNonUserStyle: <T>(color: T) => {
         messageColorNonUserStyle = `
-          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important 
-        }`;
+          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important }
+        `;
     },
-    textColorUserStyle: (color: string) => {
+    textColorUserStyle: <T>(color: T) => {
         textColorUserStyle = `
           ${messageBubbles}:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
         `;
     },
-    textColorNonUserStyle: (color: string) => {
+    textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
             ${messageBubbles}:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
         `;
     },
-    messageButtonsVisibilityStyle: (visibility: string) => {
-        const value = visibility === "true" ? "unset" : "invisible";
+    messageButtonsVisibilityStyle: <T>(visibility: T) => {
+        const value = visibility ? "unset" : "invisible";
         messageButtonsVisibilityStyle = `
           ${messageBubbles} button { visibility: ${value} }
         `;
@@ -101,7 +107,7 @@ export const resetDefaultMessageColors = () => {
       .dark {
         ${messageBubbles}:nth-child(even) > * > * { background-color: #4e7645 }
         ${messageBubbles}:nth-child(odd) > * > * { background-color: #3c6083 }
-        [data-testid] textarea {
+        ${messageBubbles} textarea {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 5px
@@ -110,7 +116,7 @@ export const resetDefaultMessageColors = () => {
       .light {
         ${messageBubbles}:nth-child(even) > * > * { background-color: #62B1F6 }
         ${messageBubbles}:nth-child(odd) > * > * { background-color: #EEEEEE }
-        [data-testid] textarea {
+        ${messageBubbles} textarea {
             padding: 3px;
             background-color: rgba(255, 255, 255, 0.4);
             border-radius: 5px
@@ -122,7 +128,7 @@ export const loadSettings = (newSettings: SettingsType) => {
     for (const key in newSettings) {
         const setting = key as keyof SettingsType;
         if (newSettings[setting]) {
-            settingsController[setting](newSettings[setting].toString());
+            settingsController[setting](newSettings[setting]);
         }
     }
 };
@@ -133,7 +139,7 @@ export const updateStyles = (
 ) => {
     if (typeof setting !== "string") loadSettings(setting);
     if (typeof setting === "string" && newValue !== undefined)
-        settingsController[setting](newValue.toString());
+        settingsController[setting](newValue);
     return (
         messageBoxColors +
         messageMaxWidthStyle +
