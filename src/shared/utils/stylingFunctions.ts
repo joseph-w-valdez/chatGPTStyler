@@ -64,9 +64,21 @@ const settingsController = {
           ${messageBubbles}:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
         `;
     },
+    // textColorNonUserStyle: <T>(color: T) => {
+    //     textColorNonUserStyle = `
+    //         ${messageBubbles}:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
+    //     `;
+    // },
+    // textColorNonUserStyle: <T>(color: T) => {
+    //     textColorNonUserStyle = `
+    //         ${messageBubbles}:nth-child(odd) [data-message-id] > * > * > * { color: ${color}; }
+    //     `;
+    // },
     textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
-            ${messageBubbles}:nth-child(odd) > * > * > *:nth-child(2)  { color: ${color}; p {color: ${color}}}
+            ${messageBubbles}:nth-child(odd) { 
+                div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 { 
+                    color: ${color};}}
         `;
     },
     messageButtonsVisibilityStyle: <T>(visibility: T) => {

@@ -37,7 +37,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
-        max="95"
+        max="100"
         min="1"
         onChange={[Function]}
         step="1"
@@ -94,7 +94,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
-        max="95"
+        max="100"
         min="1"
         onChange={[Function]}
         step="1"
@@ -151,7 +151,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
-        max="95"
+        max="100"
         min="1"
         onChange={[Function]}
         step="1"
@@ -208,7 +208,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
-        max="95"
+        max="100"
         min="1"
         onChange={[Function]}
         step="1"
