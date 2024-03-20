@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6] - 2024-03-20
+
+### Added
+
+-   Added Scroll To Top Button functionality
+-   Updated README file
+
 ## [0.1.5] - 2024-02-12
 
 ### Added
