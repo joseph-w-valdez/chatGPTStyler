@@ -40,14 +40,6 @@
 
 -   Added CSS to chat message buttons to unset visibility.
 
-### Changed
-
--   No changes in this release.
-
-### Fixed
-
--   No bug fixes in this release.
-
 ## [0.1.1] - 2024-01-17
 
 ### Added
@@ -90,11 +82,3 @@
         -   `updateMessageBorderRadius(borderRadius: string)`: Updates the border radius of messages.
         -   `updateInputBoxMaxWidth(widthPercentage: number)`: Updates the maximum width of the input box.
     -   Created `setDefaultSettings()` function to set default styles on script load.
-
-### Changed
-
--   No changes in this release.
-
-### Fixed
-
--   No bug fixes in this release.
