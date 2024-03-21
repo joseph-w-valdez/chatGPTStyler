@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MiscEditor Component renders correctly 1`] = `
+<div
+  className="flex flex-col h-full justify-between px-3 pb-2"
+>
+  <div
+    className="grid grid-cols-1 gap-y-3 w-full "
+  >
+    <label
+      className="flex justify-between group p-2 hover:cursor-pointer hover:bg-slate-500/20 duration-100"
+    >
+      Show Chat Message Buttons
+      <input
+        checked={true}
+        className=" hover:cursor-pointer"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+  </div>
+  <FormButtons
+    isEditing={false}
+    liveSettings={
+      Object {
+        "inputBoxMaxWidthStyle": "",
+        "messageBorderRadiusStyle": "",
+        "messageButtonsVisibilityStyle": true,
+        "messageColorNonUserStyle": "",
+        "messageColorUserStyle": "",
+        "messageMaxWidthStyle": "",
+        "messagePaddingStyle": "",
+        "textColorNonUserStyle": "",
+        "textColorUserStyle": "",
+      }
+    }
+    savedSettings={
+      Object {
+        "inputBoxMaxWidthStyle": "",
+        "messageBorderRadiusStyle": "",
+        "messageButtonsVisibilityStyle": true,
+        "messageColorNonUserStyle": "",
+        "messageColorUserStyle": "",
+        "messageMaxWidthStyle": "",
+        "messagePaddingStyle": "",
+        "textColorNonUserStyle": "",
+        "textColorUserStyle": "",
+      }
+    }
+    setLiveSettings={[Function]}
+    setSavedSettings={[Function]}
+  />
+</div>
+`;
+
+exports[`MiscEditor Component handles checkbox change correctly 1`] = `
+<div
+  className="flex flex-col h-full justify-between px-3 pb-2"
+>
+  <div
+    className="grid grid-cols-1 gap-y-3 w-full "
+  >
+    <label
+      className="flex justify-between group p-2 hover:cursor-pointer hover:bg-slate-500/20 duration-100"
+    >
+      Show Chat Message Buttons
+      <input
+        checked={true}
+        className=" hover:cursor-pointer"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+  </div>
+  <FormButtons
+    isEditing={true}
+    liveSettings={
+      Object {
+        "inputBoxMaxWidthStyle": "",
+        "messageBorderRadiusStyle": "",
+        "messageButtonsVisibilityStyle": true,
+        "messageColorNonUserStyle": "",
+        "messageColorUserStyle": "",
+        "messageMaxWidthStyle": "",
+        "messagePaddingStyle": "",
+        "textColorNonUserStyle": "",
+        "textColorUserStyle": "",
+      }
+    }
+    savedSettings={
+      Object {
+        "inputBoxMaxWidthStyle": "",
+        "messageBorderRadiusStyle": "",
+        "messageButtonsVisibilityStyle": true,
+        "messageColorNonUserStyle": "",
+        "messageColorUserStyle": "",
+        "messageMaxWidthStyle": "",
+        "messagePaddingStyle": "",
+        "textColorNonUserStyle": "",
+        "textColorUserStyle": "",
+      }
+    }
+    setLiveSettings={[Function]}
+    setSavedSettings={[Function]}
+  />
+</div>
+`;

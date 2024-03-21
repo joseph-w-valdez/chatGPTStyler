@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageSliderControls renders correctly 1`] = `
+<div
+  className="grid grid-cols-1 gap-y-3 "
+>
+  <div
+    className="flex justify-between items-center"
+    key="0"
+  >
+    <label
+      className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
+      htmlFor="messageMaxWidthStyle"
+      style={
+        Object {
+          "backgroundColor": "rgba(145, 10, 103)",
+        }
+      }
+    >
+      Message Width:
+    </label>
+    <div
+      className="relative flex"
+    >
+      <input
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        id="messageMaxWidthStyle"
+        maxLength={2}
+        onChange={[Function]}
+        style={
+          Object {
+            "backgroundColor": "rgba(145, 10, 103, 0.1)",
+          }
+        }
+        type="text"
+        value="50"
+      />
+      <input
+        className="absolute w-full h-0.5 left-0 bottom-0"
+        max="100"
+        min="1"
+        onChange={[Function]}
+        step="1"
+        style={
+          Object {
+            "accentColor": "rgba(145, 10, 103)",
+          }
+        }
+        type="range"
+        value="50"
+      />
+    </div>
+    <div
+      className="py-2 rounded-r-sm"
+      style={
+        Object {
+          "backgroundColor": "rgba(145, 10, 103, 0.1)",
+        }
+      }
+    >
+      %
+    </div>
+  </div>
+  <div
+    className="flex justify-between items-center"
+    key="1"
+  >
+    <label
+      className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
+      htmlFor="messagePaddingStyle"
+      style={
+        Object {
+          "backgroundColor": "rgba(114, 4, 85)",
+        }
+      }
+    >
+      Message Padding:
+    </label>
+    <div
+      className="relative flex"
+    >
+      <input
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        id="messagePaddingStyle"
+        maxLength={2}
+        onChange={[Function]}
+        style={
+          Object {
+            "backgroundColor": "rgba(114, 4, 85, 0.1)",
+          }
+        }
+        type="text"
+        value="20"
+      />
+      <input
+        className="absolute w-full h-0.5 left-0 bottom-0"
+        max="100"
+        min="1"
+        onChange={[Function]}
+        step="1"
+        style={
+          Object {
+            "accentColor": "rgba(114, 4, 85)",
+          }
+        }
+        type="range"
+        value="20"
+      />
+    </div>
+    <div
+      className="py-2 rounded-r-sm"
+      style={
+        Object {
+          "backgroundColor": "rgba(114, 4, 85, 0.1)",
+        }
+      }
+    >
+      px
+    </div>
+  </div>
+  <div
+    className="flex justify-between items-center"
+    key="2"
+  >
+    <label
+      className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
+      htmlFor="messageBorderRadiusStyle"
+      style={
+        Object {
+          "backgroundColor": "rgba(60, 7, 83)",
+        }
+      }
+    >
+      Message Border:
+    </label>
+    <div
+      className="relative flex"
+    >
+      <input
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        id="messageBorderRadiusStyle"
+        maxLength={2}
+        onChange={[Function]}
+        style={
+          Object {
+            "backgroundColor": "rgba(60, 7, 83, 0.1)",
+          }
+        }
+        type="text"
+        value="10"
+      />
+      <input
+        className="absolute w-full h-0.5 left-0 bottom-0"
+        max="100"
+        min="1"
+        onChange={[Function]}
+        step="1"
+        style={
+          Object {
+            "accentColor": "rgba(60, 7, 83)",
+          }
+        }
+        type="range"
+        value="10"
+      />
+    </div>
+    <div
+      className="py-2 rounded-r-sm"
+      style={
+        Object {
+          "backgroundColor": "rgba(60, 7, 83, 0.1)",
+        }
+      }
+    >
+      px
+    </div>
+  </div>
+  <div
+    className="flex justify-between items-center"
+    key="3"
+  >
+    <label
+      className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
+      htmlFor="inputBoxMaxWidthStyle"
+      style={
+        Object {
+          "backgroundColor": "rgba(3, 6, 55)",
+        }
+      }
+    >
+      Input Box Width:
+    </label>
+    <div
+      className="relative flex"
+    >
+      <input
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        id="inputBoxMaxWidthStyle"
+        maxLength={2}
+        onChange={[Function]}
+        style={
+          Object {
+            "backgroundColor": "rgba(3, 6, 55, 0.1)",
+          }
+        }
+        type="text"
+        value="80"
+      />
+      <input
+        className="absolute w-full h-0.5 left-0 bottom-0"
+        max="100"
+        min="1"
+        onChange={[Function]}
+        step="1"
+        style={
+          Object {
+            "accentColor": "rgba(3, 6, 55)",
+          }
+        }
+        type="range"
+        value="80"
+      />
+    </div>
+    <div
+      className="py-2 rounded-r-sm"
+      style={
+        Object {
+          "backgroundColor": "rgba(3, 6, 55, 0.1)",
+        }
+      }
+    >
+      %
+    </div>
+  </div>
+</div>
+`;

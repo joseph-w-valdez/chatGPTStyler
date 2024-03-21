@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ColorControls component renders correctly 1`] = `
+<div
+  className="grid grid-cols-2 gap-2 place-items-center w-full"
+>
+  <div
+    className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
+    key="0"
+  >
+    <span
+      className=" text-center p-1 w-24 rounded-md"
+      style="background-color: #FFFFFF; color: #000000;"
+    >
+      User Color
+    </span>
+    <div
+      className="grid grid-cols-2 gap-1 w-full text-white"
+    >
+      <input
+        className="text-center w-full rounded-md h-8"
+        id="messageColorUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#FFFFFF"
+      />
+      <input
+        className="text-center w-full rounded-md h-8"
+        id="textColorUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#000000"
+      />
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
+      >
+        BG
+      </span>
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
+      >
+        Text
+      </span>
+    </div>
+  </div>
+  <div
+    className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
+    key="1"
+  >
+    <span
+      className=" text-center p-1 w-24 rounded-md"
+      style="background-color: #FF0000; color: #00FF00;"
+    >
+      ChatGPT Color
+    </span>
+    <div
+      className="grid grid-cols-2 gap-1 w-full text-white"
+    >
+      <input
+        className="text-center w-full rounded-md h-8"
+        id="messageColorNonUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#FF0000"
+      />
+      <input
+        className="text-center w-full rounded-md h-8"
+        id="textColorNonUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#00FF00"
+      />
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
+      >
+        BG
+      </span>
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
+      >
+        Text
+      </span>
+    </div>
+  </div>
+</div>
+`;
