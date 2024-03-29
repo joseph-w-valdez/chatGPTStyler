@@ -1,0 +1,17 @@
+#!/bin/bash
+
+while read oldrev newrev refname; do
+
+    for commit in $(git rev-list $oldrev..$newrev); do
+        authorEmail=$(git show -s --format='%ae' $commit)
+        committerEmail=$(git show -s --format='%ce' $commit)
+
+        if ["$authorEmail" != "$commiterEmail"]; then
+            echo "Error: Commit $commit has different author and commiter emails."
+            exit 1
+
+        fi
+    done
+done
+
+exit 0
