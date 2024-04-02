@@ -1,12 +1,13 @@
-import * as React from "react";
+import React from "react";
+import { Meta, Story } from "@storybook/react";
 import { Popup } from "../component";
-import { ComponentMeta } from "@storybook/react";
-
-// // // //
 
 export default {
     title: "Components/Popup",
     component: Popup,
-} as ComponentMeta<typeof Popup>;
+} as Meta;
 
-export const Render = () => <Popup />;
+const Template: Story = () => <Popup />;
+
+export const Default = Template.bind({});
+Default.args = {};
