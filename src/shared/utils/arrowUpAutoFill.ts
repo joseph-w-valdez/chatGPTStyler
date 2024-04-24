@@ -1,28 +1,32 @@
+import { messageBubbles } from "./stylingFunctions";
+
 export const arrowUpAutoFill = () => {
-    window.onload = () => {
-        const $inputBox = document.getElementById("prompt-textarea");
-        let $lastMessage: string | null = "";
+    const $main = document.querySelector("main");
 
-        const updateDivs = () => {
-            const $divs = document.querySelectorAll(
-                'div[data-message-author-role="user"]',
-            );
-            $lastMessage = $divs[$divs.length - 1].firstChild.textContent;
-        };
+    $main?.addEventListener("keydown", (e) => {
+        const $inputBox = document.getElementById(
+            "prompt-textarea",
+        ) as HTMLTextAreaElement | null;
 
-        updateDivs();
-        setInterval(updateDivs, 1000);
+        if (e.target === $inputBox && e.key === "ArrowUp") {
+            e.preventDefault();
 
-        if (
-            $lastMessage &&
-            $inputBox === document.activeElement &&
-            $inputBox.textContent === ""
-        ) {
-            document.onkeydown = (e) => {
-                if (e.key === "ArrowUp") {
-                    $inputBox.textContent = $lastMessage;
+            if ($inputBox) {
+                const $lastMessageContainer = document.querySelector(
+                    `:nth-last-child(2 of ${messageBubbles}) [data-message-author-role="user"] > div`,
+                );
+
+                if ($lastMessageContainer) {
+                    const $lastMessage = ($lastMessageContainer as HTMLElement)
+                        .textContent;
+
+                    if ($lastMessage !== null && $lastMessage !== undefined) {
+                        $inputBox.value = $lastMessage;
+                        $inputBox.scrollTop = $inputBox.scrollHeight;
+                        $inputBox.style.overflow = "unset";
+                    }
                 }
-            };
+            }
         }
-    };
+    });
 };
