@@ -3,7 +3,7 @@ import { messageBubbles } from "./stylingFunctions";
 export const arrowUpAutoFill = () => {
     const $main = document.querySelector("main");
 
-    $main?.addEventListener("keydown", (e) => {
+    $main?.addEventListener("keydown", (e: KeyboardEvent) => {
         const $inputBox = document.getElementById(
             "prompt-textarea",
         ) as HTMLTextAreaElement | null;
@@ -14,13 +14,12 @@ export const arrowUpAutoFill = () => {
             if ($inputBox) {
                 const $lastMessageContainer = document.querySelector(
                     `:nth-last-child(2 of ${messageBubbles}) [data-message-author-role="user"] > div`,
-                );
+                ) as HTMLElement | null;
 
                 if ($lastMessageContainer) {
-                    const $lastMessage = ($lastMessageContainer as HTMLElement)
-                        .textContent;
+                    const $lastMessage = $lastMessageContainer.textContent;
 
-                    if ($lastMessage !== null && $lastMessage !== undefined) {
+                    if ($lastMessage) {
                         $inputBox.value = $lastMessage;
                         $inputBox.scrollTop = $inputBox.scrollHeight;
                         $inputBox.style.overflow = "unset";
