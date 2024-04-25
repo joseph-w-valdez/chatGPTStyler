@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2024-04-25
+
+### Added
+
+-   Created function that fills text area with last user repsonse when up arrow is pressed.
+
 ## [1.0.1] - 2024-04-02
 
 ### Added
@@ -97,9 +103,3 @@
         -   `updateMessageBorderRadius(borderRadius: string)`: Updates the border radius of messages.
         -   `updateInputBoxMaxWidth(widthPercentage: number)`: Updates the maximum width of the input box.
     -   Created `setDefaultSettings()` function to set default styles on script load.
-
-## [1.0.2] - 2024-04-25
-
-### Added
-
--   Created function that fills text area with last user repsonse when up arrow is pressed.
