@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 export const ScrollToTop = () => {
-    const [isShowingScrollToTopButton, setIsShowingScrollToTopButton] =
-        useState<boolean | null>(null);
-    const [isScrollingToTop, setIsScrollingToTop] = useState<boolean | null>(
-        false,
-    );
-    const parentDiv = document.querySelector(
-        'div[role="presentation"] > div > div > div',
-    );
+    const [isShowingScrollToTopButton, setIsShowingScrollToTopButton] = useState<boolean | null>(null);
+    const [isScrollingToTop, setIsScrollingToTop] = useState<boolean | null>(false);
+    const parentDiv = document.querySelector('div[role="presentation"] > div > div > div');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -30,11 +25,11 @@ export const ScrollToTop = () => {
         // Initial check for scrollTop when the component mounts and when the user changes conversation threads
         handleScroll();
 
-        parentDiv.addEventListener("scroll", handleScroll);
-        parentDiv.addEventListener("scrollend", handleScrollEnd); // Event listener for the end of the scroll
+        parentDiv.addEventListener('scroll', handleScroll);
+        parentDiv.addEventListener('scrollend', handleScrollEnd); // Event listener for the end of the scroll
         return () => {
-            parentDiv.removeEventListener("scroll", handleScroll);
-            parentDiv.removeEventListener("scrollend", handleScrollEnd);
+            parentDiv.removeEventListener('scroll', handleScroll);
+            parentDiv.removeEventListener('scrollend', handleScrollEnd); 
         };
     }, []);
 
@@ -59,6 +54,7 @@ export const ScrollToTop = () => {
         </>
     );
 };
+
 
 const UpArrow = () => {
     return (
