@@ -1,12 +1,12 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 
-const messageBubbles = '[data-testid^="conversation-turn-"]';
+export const messageBubbles = '[data-testid^="conversation-turn-"]';
 
 let messageMaxWidthStyle = "";
 let messagePaddingStyle = "";
 let messageBorderRadiusStyle = "";
 let inputBoxMaxWidthStyle = "";
-let messageBoxColors = "";
+const messageBoxColors = "";
 let messageColorUserStyle = "";
 let messageColorNonUserStyle = "";
 let textColorUserStyle = "";
@@ -22,7 +22,7 @@ const codeSnippetWidth = `
 const settingsController = {
     messageMaxWidthStyle: <T>(widthPercentage: T) => {
         messageMaxWidthStyle = `
-            ${messageBubbles} > * > div { max-width: ${widthPercentage}% } 
+            ${messageBubbles} > * > div { max-width: ${widthPercentage}% }
           `;
     },
     messagePaddingStyle: <T>(padding: T) => {
@@ -37,7 +37,7 @@ const settingsController = {
     },
     inputBoxMaxWidthStyle: <T>(widthPercentage: T) => {
         inputBoxMaxWidthStyle = `
-          form { 
+          form {
             max-width: ${widthPercentage}% !important;
             margin: auto !important;
             min-width: 300px
@@ -66,8 +66,8 @@ const settingsController = {
     },
     textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
-            ${messageBubbles}:nth-child(odd) { 
-                div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 { 
+            ${messageBubbles}:nth-child(odd) {
+                div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 {
                     color: ${color};}}
         `;
     },
