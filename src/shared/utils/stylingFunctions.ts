@@ -74,7 +74,7 @@ const settingsController = {
     messageButtonsVisibilityStyle: <T>(visibility: T) => {
         const value = visibility ? "unset" : "invisible";
         messageButtonsVisibilityStyle = `
-          ${messageBubbles} button { visibility: ${value} }
+          ${messageBubbles} div:has(button) { visibility: ${value} }
         `;
     },
 };
@@ -82,7 +82,7 @@ const settingsController = {
 export const loadSettings = (newSettings: SettingsType) => {
     for (const key in newSettings) {
         const setting = key as keyof SettingsType;
-        if (newSettings[setting]) {
+        if (newSettings[setting] !== undefined) {
             settingsController[setting](newSettings[setting]);
         }
     }

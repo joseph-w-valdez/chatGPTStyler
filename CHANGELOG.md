@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2] - 2024-04-25
+
+### Added
+
+-   Updated CSS selector for message buttons.
+-   Updated functionality to fix cancel button bugs involving message button visibility.
+
 ## [1.0.1] - 2024-04-02
 
 ### Added
