@@ -1,6 +1,6 @@
 import { messageBubbles } from "./stylingFunctions";
 
-export const arrowUpAutoFill = () => {
+export const arrowUpAutoFill = (): void => {
     const $main = document.querySelector("main");
 
     $main?.addEventListener("keydown", (e: KeyboardEvent) => {
