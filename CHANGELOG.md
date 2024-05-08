@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2024-05-07
+
+### Changed
+
+-   Updated `manifest.json` values from `chat.openai.com` to `chatgpt.com`
+
 ## [1.0.1] - 2024-04-02
 
 ### Added
