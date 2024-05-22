@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.0] - 2024-05-021
+
+### Changed
+
+-   Updated the extension for all broken changes due to their recent big updates.
+
 ## [1.0.2] - 2024-05-07
 
 ### Changed
