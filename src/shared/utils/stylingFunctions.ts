@@ -71,10 +71,13 @@ const settingsController = {
                     color: ${color};}}
         `;
     },
-    messageButtonsVisibilityStyle: <T>(visibility: T) => {
-        const value = visibility ? "unset" : "invisible";
+
+    messageButtonsVisibilityStyle: <T>(display: T) => {
+        const value = display ? "unset" : "invisible";
+
         messageButtonsVisibilityStyle = `
-          ${messageBubbles} button { visibility: ${value} }
+          ${messageBubbles} > div > div > div > div > div > div > div > div > div { display: ${value}}
+          ${messageBubbles}:nth-child(odd) > div > div > div > div > div > div { display: ${value}}
         `;
     },
 };
