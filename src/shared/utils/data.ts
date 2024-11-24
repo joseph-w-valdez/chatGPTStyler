@@ -6,7 +6,7 @@ export const defaultSettings: SettingsType = {
     messageColorNonUserStyle: "#333333",
     messagePaddingStyle: "10",
     messageBorderRadiusStyle: "5",
-    inputBoxMaxWidthStyle: "70",
+    inputBoxMaxWidthStyle: "94",
     textColorUserStyle: "#FFFFFF",
     textColorNonUserStyle: "#FFFFFF",
     messageButtonsVisibilityStyle: true,

@@ -22,7 +22,7 @@ describe("MessageSliderControls component", () => {
                         messageColorUserStyle: "#386d9f",
                         messageColorNonUserStyle: "#333333",
                         messageButtonsVisibilityStyle: false,
-                        inputBoxMaxWidthStyle: "70",
+                        inputBoxMaxWidthStyle: "94",
                         textColorUserStyle: "#FFFFFF",
                         textColorNonUserStyle: "#FFFFFF",
                     }}

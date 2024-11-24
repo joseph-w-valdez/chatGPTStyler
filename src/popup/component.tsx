@@ -52,23 +52,14 @@ export function Popup(): JSX.Element {
 
     // Renders the component tree
     return (
-        <div className={css.popupContainer}>
+            <div className={css.popupContainer}>
             <div className="w-full">
                 <Header page={page} setPage={setPage} />
                 <hr className="mb-2" />
-                {page === "Message Editor" ? (
-                    <MessageEditor
-                        liveSettings={liveSettings}
-                        setLiveSettings={setLiveSettings}
-                    />
-                ) : page === "Miscellaneous" ? (
-                    <MiscEditor
-                        liveSettings={liveSettings}
-                        setLiveSettings={setLiveSettings}
-                    />
-                ) : (
-                    <HomeMenu setPage={setPage} />
-                )}
+                <MessageEditor
+                    liveSettings={liveSettings}
+                    setLiveSettings={setLiveSettings}
+                />
             </div>
         </div>
     );
