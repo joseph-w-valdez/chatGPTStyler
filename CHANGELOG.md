@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0] - 2024-11-24
+
+### Changed
+
+-   Fixed broken media queries for the user text colors
+-   Removed home menu and misc page references so that the default view is the message editor
+-   Added extra default message styling to revert to original ChatGPT Styler css
+-   Updated default input box message width from 70% to 94%
+
 ## [1.0.2] - 2024-05-07
 
 ### Changed

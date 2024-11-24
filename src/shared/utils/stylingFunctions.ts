@@ -19,6 +19,25 @@ const codeSnippetWidth = `
         max-width: calc(100% - 72px);
     }
 `;
+const hideBackgroundColorStyle = `${messageBubbles} .bg-token-message-surface {
+    background-color: unset;
+}`;
+const showEditButtonStyle = `${messageBubbles} .hidden {
+    display: block !important;
+}`;
+const maxMessageBubbleWidth = `${messageBubbles} .bg-token-message-surface { 
+    max-width: calc(100% - 40px);
+    width: calc(100% - 40px);
+}`;
+const haveTransparentEditBox = `${messageBubbles} .bg-token-main-surface-tertiary {
+    background: transparent;
+}`;
+const removeInputBoxPadding = `main > [role="presentation"] > div:nth-child(2) > div > div {
+    padding-left: 0;
+}`;
+const unsetInputBoxMaxWidth = `main > [role="presentation"] > div:nth-child(2) > div > div > div {
+    max-width: unset;
+}`;
 const settingsController = {
     messageMaxWidthStyle: <T>(widthPercentage: T) => {
         messageMaxWidthStyle = `
@@ -61,7 +80,7 @@ const settingsController = {
     },
     textColorUserStyle: <T>(color: T) => {
         textColorUserStyle = `
-          ${messageBubbles}:nth-child(even) > * > * > *:nth-child(2) { color: ${color}}
+          ${messageBubbles}:nth-child(even) .bg-token-message-surface > div { color: ${color}}
         `;
     },
     textColorNonUserStyle: <T>(color: T) => {
@@ -107,7 +126,13 @@ export const updateStyles = (
         messageButtonsVisibilityStyle +
         codeSnippetWidth +
         messageColorUserStyle +
-        messageColorNonUserStyle
+        messageColorNonUserStyle + 
+        hideBackgroundColorStyle +
+        showEditButtonStyle + 
+        maxMessageBubbleWidth + 
+        haveTransparentEditBox + 
+        removeInputBoxPadding + 
+        unsetInputBoxMaxWidth
     );
 };
 

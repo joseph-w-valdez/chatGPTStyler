@@ -13,11 +13,6 @@ export function HomeMenu({ setPage }: HomeMenuProps): JSX.Element {
                 onClick={() => setPage("Message Editor")}
                 btnLabel="Message Editor"
             />
-            <HomeButton
-                dataTestid="misc-editor"
-                onClick={() => setPage("Miscellaneous")}
-                btnLabel="Miscellaneous"
-            />
         </div>
     );
 }
