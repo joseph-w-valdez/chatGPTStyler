@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1] - 2024-11-25
+
+### Added
+
+-   Restored `dist` files:
+    -   `manifest.json`
+    -   `popup.html`
+    -   `comparison.png`
+    -   `icon-16.png`
+    -   `icon-48.png`
+    -   `icon-128.png`
+
 ## [1.1.0] - 2024-11-24
 
 ### Changed
