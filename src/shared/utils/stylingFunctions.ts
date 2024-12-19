@@ -126,12 +126,12 @@ export const updateStyles = (
         messageButtonsVisibilityStyle +
         codeSnippetWidth +
         messageColorUserStyle +
-        messageColorNonUserStyle + 
+        messageColorNonUserStyle +
         hideBackgroundColorStyle +
-        showEditButtonStyle + 
-        maxMessageBubbleWidth + 
-        haveTransparentEditBox + 
-        removeInputBoxPadding + 
+        showEditButtonStyle +
+        maxMessageBubbleWidth +
+        haveTransparentEditBox +
+        removeInputBoxPadding +
         unsetInputBoxMaxWidth
     );
 };
