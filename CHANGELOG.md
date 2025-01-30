@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.2] - 2025-01-29
+
+### Fixed
+
+-   Fixed selector to append button to proper element.
+
 ## [1.1.1] - 2024-11-25
 
 ### Added
