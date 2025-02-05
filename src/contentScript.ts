@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
-import { getOptionsFromStorage } from "./lib/utilities/googleStorage";
+import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { updateStyles } from "./shared/utils";
 console.log("Content script loaded.");
 
@@ -15,30 +15,43 @@ getOptionsFromStorage(
 
 // listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "updateStyles")
+    if (request.action === "updateStyles") {
         customStyle.textContent = request.arg;
+    } else if (request.action === "deleteMessages") {
+        console.log("Received Message From Popup: Deleting All Messages");
+        const deleteChats = deleteAllChats();
+        if (deleteChats && deleteChats.message === "No chat history found") {
+            sendResponse({ status: "FAILURE", message: deleteChats.message });
+        } else {
+            sendResponse({ status: "SUCCESS" });
+        }
+    }
+    return true;
 });
+
 // send a message to the background script if needed
 chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
     console.log(response.reply);
 });
 const mountComponent = () => {
-    const mountPoint = document.createElement('div');
-    mountPoint.id = 'scroll-to-top-mount';
-  
-    if (!document.getElementById('scroll-to-top-mount')) {
-      const $parentDiv = document.querySelector('div[role="presentation"] > div > div > div > div ');
-      if ($parentDiv) {
-        $parentDiv.appendChild(mountPoint);
-        ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
-      }
+    const mountPoint = document.createElement("div");
+    mountPoint.id = "scroll-to-top-mount";
+
+    if (!document.getElementById("scroll-to-top-mount")) {
+        const $parentDiv = document.querySelector(
+            'div[role="presentation"] > div > div > div > div ',
+        );
+        if ($parentDiv) {
+            $parentDiv.appendChild(mountPoint);
+            ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
+        }
     }
-  };
-  
-  const checkAndMountComponent = () => {
+};
+
+const checkAndMountComponent = () => {
     mountComponent();
-  };
-  
-  checkAndMountComponent();
-  
-  setInterval(checkAndMountComponent, 1000);
+};
+
+checkAndMountComponent();
+
+setInterval(checkAndMountComponent, 1000);

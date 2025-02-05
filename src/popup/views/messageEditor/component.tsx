@@ -3,6 +3,7 @@ import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { ColorControls } from "./components/colorControl/component";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/messageSliderControls";
+import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
 
 export interface MessageEditorProps {
     liveSettings: SettingsType;
@@ -41,6 +42,7 @@ export function MessageEditor({
                 savedSettings={savedSettings}
                 setSavedSettings={setSavedSettings}
             />
+            <DeleteAllChatsButton />
         </div>
     );
 }

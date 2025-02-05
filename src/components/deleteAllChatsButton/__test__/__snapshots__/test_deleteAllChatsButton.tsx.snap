@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteAllChatsButton renders 1`] = `
+<div>
+  <button
+    className="bigRedBtn"
+    onClick={[Function]}
+  >
+    Delete All Conversations
+  </button>
+  <div
+    className="hidden"
+  />
+</div>
+`;
+
+exports[`DeleteAllChatsButton renders with confirmation 2`] = `
+<div>
+  <button
+    className="hidden"
+    onClick={[Function]}
+  >
+    Delete All Conversations
+  </button>
+  <div
+    className="grid place-items-center gap-2"
+  >
+    <h1
+      className="text-base"
+    >
+      Are you sure?
+    </h1>
+    <div
+      className="w-full grid grid-cols-2 gap-2"
+    >
+      <button
+        className="yesBtn"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Yes
+      </button>
+      <button
+        className="noBtn"
+        disabled={false}
+        onClick={[Function]}
+      >
+        No
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DeleteAllChatsButton renders with error message 3`] = `
+<div>
+  <button
+    className="bigRedBtn"
+    onClick={[Function]}
+  >
+    Delete All Conversations
+  </button>
+  <h1
+    className="errorMsg"
+  >
+    Error message here
+  </h1>
+  <div
+    className="hidden"
+  />
+</div>
+`;
