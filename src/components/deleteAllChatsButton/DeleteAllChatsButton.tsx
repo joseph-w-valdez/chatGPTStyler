@@ -5,7 +5,9 @@ export function DeleteAllChatsButton(): JSX.Element {
     const [showConfirmButtons, setShowConfirmButtons] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccessful] = useState<string | null>(null);
     const handleClick = (): void => {
+        setError(null);
         setShowConfirmButtons(!showConfirmButtons);
     };
 
@@ -18,29 +20,23 @@ export function DeleteAllChatsButton(): JSX.Element {
         console.log("Sending Message to Content Script: Deleting All Messages");
 
         setIsLoading(true);
-
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs[0].title === "ChatGPT") {
-                console.log("activeTab", tabs[0]);
+            if (tabs[0].url?.slice(8, 19) === "chatgpt.com") {
                 chrome.tabs.sendMessage(
                     tabs[0].id || 0,
                     { action: "deleteMessages" },
                     (response) => {
                         console.log("Response from content script:", response);
-                        if (response.status === "FAILURE") {
-                            setError(response.message);
-                            setTimeout(() => {
-                                setError(null);
-                            }, 5000);
-                        }
                     },
                 );
-            } else {
-                console.error("Active tab is not ChatGPT");
-                setError("Active tab is not ChatGPT");
+                setSuccessful("All chats have been deleted!");
                 setTimeout(() => {
                     setError(null);
                 }, 5000);
+            } else {
+                console.error("Active tab is not ChatGPT");
+                setError("Active tab is not ChatGPT");
+                setSuccessful(null);
             }
             setIsLoading(false);
             setShowConfirmButtons(false);
@@ -50,11 +46,20 @@ export function DeleteAllChatsButton(): JSX.Element {
         <div>
             <button
                 className={showConfirmButtons ? "hidden" : css.bigRedBtn}
+                disabled={isLoading || !!error || !!success}
                 onClick={handleClick}
             >
                 Delete All Conversations
             </button>
-            {error && <h1 className={css.errorMsg}>{error}</h1>}
+            {(error || success) && (
+                <h1
+                    className={
+                        (error && css.errorMsg) || (success && css.successMsg)
+                    }
+                >
+                    {error || success}
+                </h1>
+            )}
             <div
                 className={
                     showConfirmButtons
@@ -62,7 +67,6 @@ export function DeleteAllChatsButton(): JSX.Element {
                         : "hidden"
                 }
             >
-                <h1 className="text-base">Are you sure?</h1>
                 <div className="w-full grid grid-cols-2 gap-2">
                     <button
                         className={css.yesBtn}
@@ -79,6 +83,7 @@ export function DeleteAllChatsButton(): JSX.Element {
                         No
                     </button>
                 </div>
+                <h1 className="text-base">Are you sure?</h1>
             </div>
         </div>
     );

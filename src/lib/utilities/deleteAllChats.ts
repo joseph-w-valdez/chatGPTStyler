@@ -2,10 +2,11 @@ export const deleteAllChats = (): Error | void => {
     try {
         //querySelector may need to be updated if the domain updates their html
         const chatHistory = document.querySelector(
-            "div.group\\/sidebar> div.flex.flex-col.gap-2.text-token-text-primary.text-sm.false.mt-5.pb-2",
+            "div.group\\/sidebar > div:nth-child(3)",
         );
 
-        if (!chatHistory) throw new Error("No chat history found");
+        if (!chatHistory || chatHistory?.children.length === 0)
+            throw new Error("No chat history found");
 
         //querySelector may need to be updated if the domain updates their html
         const profileButton = document.querySelector(

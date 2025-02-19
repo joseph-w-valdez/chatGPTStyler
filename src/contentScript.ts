@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { updateStyles } from "./shared/utils";
+
 console.log("Content script loaded.");
 
 const customStyle = document.createElement("style");
