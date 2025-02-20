@@ -11,6 +11,8 @@
     @apply hover:bg-red-800;
     @apply active:shadow-lg;
     @apply active:shadow-red-400/50;
+    @apply disabled:bg-red-800/50;
+    @apply disabled:pointer-events-none;
 }
 
 .yesBtn {
@@ -48,5 +50,13 @@
     @apply text-base;
     @apply font-medium;
     @apply text-red-600;
+    @apply text-center;
+}
+
+.successMsg {
+    @apply py-2;
+    @apply text-base;
+    @apply font-medium;
+    @apply text-green-600;
     @apply text-center;
 }

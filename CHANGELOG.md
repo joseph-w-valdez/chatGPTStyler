@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1] - 2025-02-19
+
+### Fixed
+
+-   Fixed checking active tab's URL
+-   Fixed chatHistory querySelect not targetting the correct div element
+
 ## [1.1.2] - 2025-01-29
 
 ### Fixed
