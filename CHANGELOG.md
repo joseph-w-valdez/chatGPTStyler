@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.2] - 2025-03-09
+
+### Added
+
+-   Created function that fills text area with last user repsonse when up arrow is pressed.
+
 ## [1.2.1] - 2025-02-19
 
 ### Fixed

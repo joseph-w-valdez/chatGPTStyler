@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { updateStyles } from "./shared/utils";
+import { arrowUpAutoFill } from "./shared/utils/arrowUpAutoFill";
 
 console.log("Content script loaded.");
 
@@ -37,12 +38,12 @@ chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
 const mountComponent = () => {
     const mountPoint = document.createElement("div");
     mountPoint.id = "scroll-to-top-mount";
-
     if (!document.getElementById("scroll-to-top-mount")) {
         const $parentDiv = document.querySelector(
             'div[role="presentation"] > div > div > div > div ',
         );
         if ($parentDiv) {
+            arrowUpAutoFill();
             $parentDiv.appendChild(mountPoint);
             ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
         }
