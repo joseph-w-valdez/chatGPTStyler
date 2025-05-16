@@ -65,7 +65,7 @@ const settingsController = {
     messageColorUserStyle: <T>(color: T) => {
         if (typeof color === "string")
             messageColorUserStyle = `
-          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }
+          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important }
           ${messageBubbles} textarea {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);;
@@ -75,17 +75,17 @@ const settingsController = {
     },
     messageColorNonUserStyle: <T>(color: T) => {
         messageColorNonUserStyle = `
-          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important }
+          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }
         `;
     },
     textColorUserStyle: <T>(color: T) => {
         textColorUserStyle = `
-          ${messageBubbles}:nth-child(even) .bg-token-message-surface > div { color: ${color}}
+          :nth-child(odd) .bg-token-message-surface { color: ${color}}
         `;
     },
     textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
-            ${messageBubbles}:nth-child(odd) { 
+            :nth-child(even) { 
                 div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 { 
                     color: ${color};}}
         `;

@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.2] - 2025-05-16
+
+### Fixed
+
+-   Fixed chat message colors being switched
+-   Fixed chat colors from not working
+-   Input box now takes up the full container width
+-   Removed unecessary white space from user message bubbles
+
 ## [1.2.1] - 2025-02-19
 
 ### Fixed
