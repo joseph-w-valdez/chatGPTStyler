@@ -1,0 +1,22 @@
+name: Check Committer
+
+on: [push]
+
+jobs: 
+  check-committer:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+        - name: Check committer
+            run: |
+                for commit in $(git rev-list ${{ github.event.before }}..${{ github.sha }}); do
+                    authorEmail=$(git show -s --format='%ae' $commit)
+                    committerEmail=$(git show -s --format='%ce' $commit)
+                    if [ "$authorEmail" != "$committerEmail" ]; then
+                        echo "Error: Commit $commit has different author and committer emails."
+                        exit 1
+                    fi
+                done
