@@ -17,7 +17,8 @@ const codeSnippetWidth = `
     ${messageBubbles} > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
-    }
+    } 
+        html.light #composer-submit-button { color:white }
 `;
 const hideBackgroundColorStyle = `${messageBubbles} .bg-token-message-surface {
     background-color: unset;
@@ -85,7 +86,7 @@ const settingsController = {
     },
     textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
-            :nth-child(even) { 
+            ${messageBubbles}:nth-child(even) { 
                 div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 { 
                     color: ${color};}}
         `;
