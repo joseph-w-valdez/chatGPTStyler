@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3] - 2025-06-25
+
+### Fixed
+
+-   Fixed leaking text color in non-nmessage elements in light mode
+-   Fixed submit button svg color in light mode
+
 ## [1.2.2] - 2025-05-16
 
 ### Fixed
