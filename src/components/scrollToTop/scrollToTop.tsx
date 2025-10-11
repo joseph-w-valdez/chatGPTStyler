@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-export const ScrollToTop = () => {
+export const ScrollToTop = (parentDiv: HTMLElement) => {
     const [isShowingScrollToTopButton, setIsShowingScrollToTopButton] =
         useState<boolean | null>(null);
     const [isScrollingToTop, setIsScrollingToTop] = useState<boolean | null>(
         false,
     );
-    const parentDiv = document.querySelector(
-        'div[role="presentation"] > div > div > div > div',
-    );
 
     useEffect(() => {
         const handleScroll = () => {
-            if (!parentDiv) return;
+            if (!parentDiv) {
+                return;
+            }
             // If the scrollTop is 0, the user is at the top of the page
             if (!parentDiv.scrollTop) {
                 setIsScrollingToTop(false);

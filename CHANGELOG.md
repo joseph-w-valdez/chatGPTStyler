@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0] - 2025-10-2
+
+### Fixed
+
+-   Fixed delete all chats button to work with ChatGPT-5
+-   Corrected querySelector for custom user text color
+-   Removed unecesary styles from user text box
+-   Fixed scroll arrow up functionality
+-   Re-added arrow up to fill in text box with last user message
+-   Added selelctors object in data file
+
 ## [1.2.3] - 2025-06-25
 
 ### Fixed
