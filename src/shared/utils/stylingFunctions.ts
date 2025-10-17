@@ -1,6 +1,5 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
-
-const messageBubbles = '[data-testid^="conversation-turn-"]';
+import { selectors } from "./data";
 
 let messageMaxWidthStyle = "";
 let messagePaddingStyle = "";
@@ -14,45 +13,45 @@ let textColorNonUserStyle = "";
 const selectionColors = "";
 let messageButtonsVisibilityStyle = ``;
 const codeSnippetWidth = `
-    ${messageBubbles} > * > * > *:nth-child(2) {
+    ${selectors.codeSnippet} {
         width: 100%;
         max-width: calc(100% - 72px);
     } 
         html.light #composer-submit-button { color:white }
 `;
-const hideBackgroundColorStyle = `${messageBubbles} .bg-token-message-surface {
+const hideBackgroundColorStyle = `${selectors.hideBackgroundColorStyle} {
     background-color: unset;
 }`;
-const showEditButtonStyle = `${messageBubbles} .hidden {
+const showEditButtonStyle = `${selectors.showEditButtonStyle} {
     display: block !important;
 }`;
-const maxMessageBubbleWidth = `${messageBubbles} .bg-token-message-surface { 
+const maxMessageBubbleWidth = `${selectors.maxMessageBubbleWidth} { 
     max-width: calc(100% - 40px);
     width: calc(100% - 40px);
 }`;
-const haveTransparentEditBox = `${messageBubbles} .bg-token-main-surface-tertiary {
+const haveTransparentEditBox = `${selectors.haveTransparentEditBox} {
     background: transparent;
 }`;
-const removeInputBoxPadding = `main > [role="presentation"] > div:nth-child(2) > div > div {
+const removeInputBoxPadding = `${selectors.removeInputBoxPadding} {
     padding-left: 0;
 }`;
-const unsetInputBoxMaxWidth = `main > [role="presentation"] > div:nth-child(2) > div > div > div {
+const unsetInputBoxMaxWidth = `${selectors.unsetInputBoxMaxWidth} {
     max-width: unset;
 }`;
 const settingsController = {
     messageMaxWidthStyle: <T>(widthPercentage: T) => {
         messageMaxWidthStyle = `
-            ${messageBubbles} > * > div { max-width: ${widthPercentage}% } 
+            ${selectors.messageMaxWidthStyle} { max-width: ${widthPercentage}% } 
           `;
     },
     messagePaddingStyle: <T>(padding: T) => {
         messagePaddingStyle = `
-          ${messageBubbles} > * > div { padding: ${padding}px; }
+          ${selectors.messagePaddingStyle} { padding: ${padding}px; }
         `;
     },
     messageBorderRadiusStyle: <T>(borderRadius: T) => {
         messageBorderRadiusStyle = `
-          ${messageBubbles} > * > div { border-radius: ${borderRadius}px; }
+          ${selectors.messageBorderRadiusStyle}{ border-radius: ${borderRadius}px; }
         `;
     },
     inputBoxMaxWidthStyle: <T>(widthPercentage: T) => {
@@ -66,8 +65,8 @@ const settingsController = {
     messageColorUserStyle: <T>(color: T) => {
         if (typeof color === "string")
             messageColorUserStyle = `
-          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${color} !important }
-          ${messageBubbles} textarea {
+          ${selectors.userMessage} { background-color: ${color} !important }
+          ${selectors.textArea} {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);;
             border-radius: 5px
@@ -76,17 +75,17 @@ const settingsController = {
     },
     messageColorNonUserStyle: <T>(color: T) => {
         messageColorNonUserStyle = `
-          ${messageBubbles}:nth-child(even) > * > * { background-color: ${color} !important }
+          ${selectors.nonUserMessage} { background-color: ${color} !important }
         `;
     },
     textColorUserStyle: <T>(color: T) => {
         textColorUserStyle = `
-          :nth-child(odd) .bg-token-message-surface { color: ${color}}
+          ${selectors.userText} { color: ${color} }
         `;
     },
     textColorNonUserStyle: <T>(color: T) => {
         textColorNonUserStyle = `
-            ${messageBubbles}:nth-child(even) { 
+            ${selectors.nonUserText} { color: ${color};
                 div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 { 
                     color: ${color};}}
         `;
@@ -94,7 +93,7 @@ const settingsController = {
     messageButtonsVisibilityStyle: <T>(visibility: T) => {
         const value = visibility ? "unset" : "invisible";
         messageButtonsVisibilityStyle = `
-          ${messageBubbles} button { visibility: ${value} }
+          ${selectors.messageBubbles} button { visibility: ${value} }
         `;
     },
 };

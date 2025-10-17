@@ -1,16 +1,14 @@
 export const deleteAllChats = (): Error | void => {
     try {
         //querySelector may need to be updated if the domain updates their html
-        const chatHistory = document.querySelector(
-            "div.group\\/sidebar > div:nth-child(3)",
-        );
+        const chatHistory = document.querySelector("#history");
 
         if (!chatHistory || chatHistory?.children.length === 0)
             throw new Error("No chat history found");
 
         //querySelector may need to be updated if the domain updates their html
         const profileButton = document.querySelector(
-            '[aria-label="Open Profile Menu"]',
+            '[aria-label="Open profile menu"]',
         ) as HTMLButtonElement;
 
         if (!profileButton) throw new Error("Profile button not found!");
@@ -36,22 +34,13 @@ export const deleteAllChats = (): Error | void => {
             }),
         );
 
-        //querySelector may need to be updated if the domain updates their html
-        const settingsMenuItem = document.querySelector(
-            '[data-testid="settings-menu-item"]',
-        ) as HTMLButtonElement;
-
-        if (!settingsMenuItem) throw new Error("Settings menu item not found!");
-
-        settingsMenuItem.click();
-
-        const checkDeleteAllChatsButton = setInterval(() => {
+        const checkSettingsMenuItem = setInterval(() => {
             //querySelector may need to be updated if the domain updates their html
-            const deleteAllChatsButton = document.querySelector(
-                '[data-testid="delete-all-chats-button"]',
-            ) as HTMLButtonElement;
-            if (deleteAllChatsButton) {
-                deleteAllChatsButton.dispatchEvent(
+            const settingsMenuItem = document.querySelector(
+                '[data-testid="settings-menu-item"]',
+            ) as HTMLDivElement;
+            if (settingsMenuItem) {
+                settingsMenuItem.dispatchEvent(
                     new MouseEvent("click", {
                         bubbles: true,
                         cancelable: true,
@@ -59,6 +48,42 @@ export const deleteAllChats = (): Error | void => {
                         button: 0,
                     }),
                 );
+                clearInterval(checkSettingsMenuItem);
+            } else {
+                throw new Error("Settings menu not found!");
+            }
+        }, 100);
+
+        const checkDataControlsButton = setInterval(() => {
+            //querySelector may need to be updated if the domain updates their html
+            const dataControlsButton = document.querySelector(
+                '[data-testid="data-controls-tab"]',
+            ) as HTMLButtonElement;
+
+            if (dataControlsButton) {
+                dataControlsButton.focus();
+                dataControlsButton.dispatchEvent(
+                    new KeyboardEvent("keydown", {
+                        key: "Enter",
+                        bubbles: true,
+                    }),
+                );
+                dataControlsButton.dispatchEvent(
+                    new KeyboardEvent("keyup", { key: "Enter", bubbles: true }),
+                );
+                clearInterval(checkDataControlsButton);
+            } else {
+                throw new Error("Data controls button not found!");
+            }
+        }, 100);
+
+        const checkDeleteAllChatsButton = setInterval(() => {
+            //querySelector may need to be updated if the domain updates their html
+            const deleteAllChatsButton = document.querySelector(
+                "button.btn-danger-outline",
+            ) as HTMLButtonElement;
+            if (deleteAllChatsButton) {
+                deleteAllChatsButton.click();
                 clearInterval(checkDeleteAllChatsButton);
             } else {
                 throw new Error("Delete all chats button not found!");

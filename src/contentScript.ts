@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { updateStyles } from "./shared/utils";
+import { arrowUpAutoFill } from "./lib/utilities/arrowUpAutoFill";
 import { removeUnnecessarySpace } from "@src/lib/utilities";
+import { selectors } from "./shared/utils/data";
 
 console.log("Content script loaded.");
 
@@ -40,7 +42,7 @@ const mountComponent = () => {
     mountPoint.id = "scroll-to-top-mount";
 
     const userTextContainer: any = document.querySelectorAll(
-        '[data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > * > * > div',
+        `${selectors.messageBubbles}:nth-child(odd) > * > * > * > * > * > div`,
     );
 
     const inputBoxContainer: any = document.querySelector(
@@ -50,10 +52,9 @@ const mountComponent = () => {
     removeUnnecessarySpace({ userTextContainer, inputBoxContainer });
 
     if (!document.getElementById("scroll-to-top-mount")) {
-        const $parentDiv = document.querySelector(
-            'div[role="presentation"] > div > div > div > div ',
-        );
+        const $parentDiv = document.querySelector(selectors.scrollContainer);
         if ($parentDiv) {
+            arrowUpAutoFill();
             $parentDiv.appendChild(mountPoint);
             ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
         }
