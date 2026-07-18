@@ -4,9 +4,9 @@ Local setup, scripts, testing, and release packaging for ChatGPT Styler.
 
 ## Prerequisites
 
-- **Node.js 24.x** — [`.nvmrc`](../.nvmrc) pins `24.18.0` (Active LTS). `engines` in [`package.json`](../package.json) require `node >=24 <25` and `npm >=11`.
-- **npm** — only package manager. Exact versions via [`.npmrc`](../.npmrc) (`save-exact=true`, `engine-strict=true`). Do not add Yarn/pnpm lockfiles.
-- **Chromium browser** (Chrome, Edge, Brave, etc.) for loading the unpacked extension.
+-   **Node.js 24.x** — [`.nvmrc`](../.nvmrc) pins `24.18.0` (Active LTS). `engines` in [`package.json`](../package.json) require `node >=24 <25` and `npm >=11`.
+-   **npm** — only package manager. Exact versions via [`.npmrc`](../.npmrc) (`save-exact=true`, `engine-strict=true`). Do not add Yarn/pnpm lockfiles.
+-   **Chromium browser** (Chrome, Edge, Brave, etc.) for loading the unpacked extension.
 
 ## Install
 
@@ -21,17 +21,18 @@ npm install
 
 From [`package.json`](../package.json):
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Webpack watch with [`webpack.dev.js`](../webpack.dev.js) (inline source maps) → updates `dist/js/` |
-| `npm run build` | Production Webpack via [`webpack.prod.js`](../webpack.prod.js) |
-| `npm test` | Jest with [`jest.config.js`](../jest.config.js) |
-| `npm run typecheck` | `tsc --noEmit` (check only) |
-| `npm run lint:check` | ESLint on `src/**/*.ts*` (check only) |
-| `npm run format:check` | Prettier `--check` on `src/**/*.ts*` |
-| `npm run validate` | `typecheck` + `lint:check` + `format:check` |
-| `npm run lint` | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files) |
-| `npm run prettify` | Prettier **write** on `src/**/*.ts*` (mutates files) |
+| Command                | Purpose                                                                                            |
+| ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `npm run dev`          | Webpack watch with [`webpack.dev.js`](../webpack.dev.js) (inline source maps) → updates `dist/js/` |
+| `npm run build`        | Production Webpack via [`webpack.prod.js`](../webpack.prod.js)                                     |
+| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                    |
+| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                          |
+| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                        |
+| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                              |
+| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                               |
+| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                        |
+| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                          |
+| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                               |
 
 Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf"` keep LF in the repo so Windows clones don’t drown lint in CRLF noise.
 
@@ -51,28 +52,28 @@ After JS changes with `npm run dev`, use the extensions page **Reload** on ChatG
 
 Static assets that Webpack does **not** emit (edit by hand when needed):
 
-- `dist/manifest.json`
-- `dist/popup.html`
-- Icons (`icon-16.png`, `icon-48.png`, `icon-128.png`)
-- Marketing image `dist/comparison.png`
+-   `dist/manifest.json`
+-   `dist/popup.html`
+-   Icons (`icon-16.png`, `icon-48.png`, `icon-128.png`)
+-   Marketing image `dist/comparison.png`
 
 Keep `version` in sync between `package.json`, top-level `package-lock.json`, and `dist/manifest.json`. These have drifted from each other (and from git tags) in the past — verify before tagging.
 
 ## Project conventions for contributors
 
-- Colocate components with `component.tsx` / `index.tsx`, optional `styles.module.css`, and `__tests__` or `__test__`.
-- Prefer `@src/...` imports over deep relative paths across packages.
-- Do not commit secrets; this extension has no backend API keys by design.
-- Human process / CoC: [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md).
-- Agent-oriented conventions: [`CLAUDE.md`](../CLAUDE.md).
+-   Colocate components with `component.tsx` / `index.tsx`, optional `styles.module.css`, and `__tests__` or `__test__`.
+-   Prefer `@src/...` imports over deep relative paths across packages.
+-   Do not commit secrets; this extension has no backend API keys by design.
+-   Human process / CoC: [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md).
+-   Agent-oriented conventions: [`CLAUDE.md`](../CLAUDE.md).
 
 ## Tests
 
-- Runner: **Jest** + **ts-jest**.
-- Roots: `src/`.
-- Module maps: `@src/(.*)` → `src/$1`; `webextension-polyfill` → [`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts); CSS → `jest-css-modules`.
-- Setup: [`src/setupTests.ts`](../src/setupTests.ts) stubs `chrome.storage` / `chrome.tabs` / `chrome.runtime`.
-- Common patterns: `react-test-renderer` snapshots and prop wiring (no Enzyme).
+-   Runner: **Jest** + **ts-jest**.
+-   Roots: `src/`.
+-   Module maps: `@src/(.*)` → `src/$1`; `webextension-polyfill` → [`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts); CSS → `jest-css-modules`.
+-   Setup: [`src/setupTests.ts`](../src/setupTests.ts) stubs `chrome.storage` / `chrome.tabs` / `chrome.runtime`.
+-   Common patterns: `react-test-renderer` snapshots and prop wiring (no Enzyme).
 
 Run:
 
@@ -84,30 +85,39 @@ Update snapshots intentionally when UI output changes (`jest -u` / accept in you
 
 ## Release / CI
 
+### Pull request / push CI
+
+Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+
+-   **Trigger:** push to `main`, and all pull requests.
+-   **Steps:** checkout → Node from `.nvmrc` → `npm ci` → `typecheck` → `lint:check` → `format:check` → `test:ci`.
+-   Local equivalent: `npm run validate && npm run test:ci`.
+
+### Tag release artifacts
+
 Workflow: [`.github/workflows/release-artifacts.yml`](../.github/workflows/release-artifacts.yml).
 
-- **Trigger:** push of any git tag (`*`).
-- **Steps:** checkout → Node from `.nvmrc` (24.x) with npm cache → `npm ci` → `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.
-- Action versions: `actions/checkout@v4`, `actions/setup-node@v4`, `actions/upload-artifact@v4`.
-- Uploads a build artifact only; it does **not** create a GitHub Release or publish to the Chrome Web Store.
-- There is **no** pull-request CI for test/lint/typecheck today.
+-   **Trigger:** push of any git tag (`*`).
+-   **Steps:** same validation gates as PR CI, then `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.
+-   Action versions: `actions/checkout@v4`, `actions/setup-node@v4`, `actions/upload-artifact@v4`.
+-   Uploads a build artifact only; it does **not** create a GitHub Release or publish to the Chrome Web Store.
 
 Suggested release checklist:
 
 1. Update [`CHANGELOG.md`](../CHANGELOG.md).
 2. Bump version in `package.json`, `package-lock.json`, and `dist/manifest.json`.
 3. `npm run build` and smoke-test unpacked `dist/` on chatgpt.com (confirm static assets still present).
-4. Run `npm test` and check-only lint/prettier/tsc; fix or knowingly accept known test gaps.
+4. Run `npm run validate && npm run test:ci` locally (CI also enforces this on the tag).
 5. Commit, tag, push tag → download CI zip for store upload if needed.
 
 Issue / PR templates: [`.github/ISSUE_TEMPLATE.md`](../.github/ISSUE_TEMPLATE.md), [`.github/PULL_REQUEST_TEMPLATE.md`](../.github/PULL_REQUEST_TEMPLATE.md).
 
 ## Editor hints
 
-- [`.vscode/settings.json`](../.vscode/settings.json) / [`.vscode/extensions.json`](../.vscode/extensions.json) — recommended VS Code / Cursor workspace settings.
+-   [`.vscode/settings.json`](../.vscode/settings.json) / [`.vscode/extensions.json`](../.vscode/extensions.json) — recommended VS Code / Cursor workspace settings.
 
 ## Related docs
 
-- [architecture.md](architecture.md)
-- [dom-integration.md](dom-integration.md)
-- [../CLAUDE.md](../CLAUDE.md)
+-   [architecture.md](architecture.md)
+-   [dom-integration.md](dom-integration.md)
+-   [../CLAUDE.md](../CLAUDE.md)
