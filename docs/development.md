@@ -26,10 +26,14 @@ From [`package.json`](../package.json):
 | `npm run dev` | Webpack watch with [`webpack.dev.js`](../webpack.dev.js) (inline source maps) → updates `dist/js/` |
 | `npm run build` | Production Webpack via [`webpack.prod.js`](../webpack.prod.js) |
 | `npm test` | Jest with [`jest.config.js`](../jest.config.js) |
+| `npm run typecheck` | `tsc --noEmit` (check only) |
+| `npm run lint:check` | ESLint on `src/**/*.ts*` (check only) |
+| `npm run format:check` | Prettier `--check` on `src/**/*.ts*` |
+| `npm run validate` | `typecheck` + `lint:check` + `format:check` |
 | `npm run lint` | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files) |
 | `npm run prettify` | Prettier **write** on `src/**/*.ts*` (mutates files) |
 
-Check-only alternatives: `npx eslint -c ./.eslintrc.js "src/**/*.ts*"`, `npx prettier --check "src/**/*.ts*"`, `npx tsc --noEmit`.
+Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf"` keep LF in the repo so Windows clones don’t drown lint in CRLF noise.
 
 TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`, `skipLibCheck`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
 
