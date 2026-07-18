@@ -1,8 +1,9 @@
 import React from "react";
-import renderer, { ReactTestRenderer } from "react-test-renderer";
+import renderer, { act, ReactTestRenderer } from "react-test-renderer";
 import { MessageEditor, MessageEditorProps } from "../index";
 import { MessageSliderControls } from "../components/messageSliderControls";
 import { ColorControls } from "../components/colorControl/component";
+import { FormButtons } from "@src/components/formButtons/FormButtons";
 
 jest.mock("@src/shared/utils", () => ({
     sendMessageToTab: jest.fn(),
@@ -57,5 +58,38 @@ describe("MessageEditor Component", () => {
 
         expect(slider.props.liveChanges).toEqual(mockProps.liveSettings);
         expect(slider.props.setLiveChanges).toBe(mockProps.setLiveSettings);
+    });
+
+    it("restores storage-loaded settings when Cancel is clicked", () => {
+        const loadedSettings = {
+            ...mockProps.liveSettings,
+            messageMaxWidthStyle: "72",
+            messageColorUserStyle: "#123456",
+        };
+
+        act(() => {
+            component.update(
+                <MessageEditor
+                    liveSettings={loadedSettings}
+                    setLiveSettings={mockProps.setLiveSettings}
+                />,
+            );
+        });
+
+        act(() => {
+            component.root.findByType(FormButtons).props.setIsEditing(true);
+        });
+
+        const cancelButton = component.root
+            .findAllByType("button")
+            .find((button) => button.children.includes("Cancel"));
+
+        if (!cancelButton) throw new Error("Cancel button not found");
+
+        act(() => {
+            cancelButton.props.onClick();
+        });
+
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(loadedSettings);
     });
 });

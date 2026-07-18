@@ -4,24 +4,24 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 
 ## Active features
 
-| Feature | Where | Behavior |
-|---------|-------|----------|
-| Message width | MessageEditor sliders | `%` max-width on conversation turns |
-| Message padding | MessageEditor sliders | `px` padding on message containers |
-| Message border radius | MessageEditor sliders | `px` border-radius |
-| Input box width | MessageEditor sliders | `%` max-width on `form` |
-| User / ChatGPT bubble colors | ColorControls | Background colors for odd/even turns |
-| User / ChatGPT text colors | ColorControls | Text colors for user vs assistant content |
-| Restore defaults / Save / Cancel | FormButtons | Reset preview, persist, or revert unsaved edits |
-| Delete all conversations | DeleteAllChatsButton | DOM automation on the active ChatGPT tab |
-| Scroll to top | Content script + ScrollToTop | Floating button when the thread is scrolled |
-| Layout cleanup | `removeUnnecessarySpace` | Removes classes that constrain width / alignment |
-| Fixed CSS helpers | `stylingFunctions` | Code-snippet width, transparent edit box, hide default message surface, etc. |
+| Feature                          | Where                        | Behavior                                                                      |
+| -------------------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
+| Message width                    | MessageEditor sliders        | `%` max-width on conversation turns                                           |
+| Message padding                  | MessageEditor sliders        | `px` padding on message containers                                            |
+| Message border radius            | MessageEditor sliders        | `px` border-radius                                                            |
+| Input box width                  | MessageEditor sliders        | `%` max-width on `form`                                                       |
+| User / ChatGPT bubble colors     | ColorControls                | Background colors for odd/even turns                                          |
+| User / ChatGPT text colors       | ColorControls                | Text colors for user vs assistant content                                     |
+| Restore defaults / Save / Cancel | FormButtons                  | Reset preview, persist immediately, or restore the last saved/loaded settings |
+| Delete all conversations         | DeleteAllChatsButton         | DOM automation on the active ChatGPT tab                                      |
+| Scroll to top                    | Content script + ScrollToTop | Floating button when the thread is scrolled                                   |
+| Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
+| Fixed CSS helpers                | `stylingFunctions`           | Code-snippet width, transparent edit box, hide default message surface, etc.  |
 
 ### Retained but inactive UI
 
-- **HomeMenu** — button to open “Message Editor” (multi-page shell no longer used).
-- **MiscEditor** — checkbox for `messageButtonsVisibilityStyle` (show/hide chat message buttons). The setting still exists in `SettingsType` / CSS generation, but MiscEditor is not mounted in the live popup.
+-   **HomeMenu** — button to open “Message Editor” (multi-page shell no longer used).
+-   **MiscEditor** — checkbox for `messageButtonsVisibilityStyle` (show/hide chat message buttons). The setting still exists in `SettingsType` / CSS generation, but MiscEditor is not mounted in the live popup.
 
 Changelog `1.1.0` removed home/misc as the default navigation so MessageEditor is the sole popup view.
 
@@ -31,33 +31,33 @@ Defined in [`src/lib/utilities/googleStorage.ts`](../src/lib/utilities/googleSto
 
 ```ts
 interface SettingsType {
-  messageMaxWidthStyle: string;
-  messageColorUserStyle: string;
-  messageColorNonUserStyle: string;
-  messagePaddingStyle: string;
-  messageBorderRadiusStyle: string;
-  inputBoxMaxWidthStyle: string;
-  textColorUserStyle: string;
-  textColorNonUserStyle: string;
-  messageButtonsVisibilityStyle: boolean;
+    messageMaxWidthStyle: string;
+    messageColorUserStyle: string;
+    messageColorNonUserStyle: string;
+    messagePaddingStyle: string;
+    messageBorderRadiusStyle: string;
+    inputBoxMaxWidthStyle: string;
+    textColorUserStyle: string;
+    textColorNonUserStyle: string;
+    messageButtonsVisibilityStyle: boolean;
 }
 ```
 
 Defaults in [`src/shared/utils/data.ts`](../src/shared/utils/data.ts):
 
-| Key | Default |
-|-----|---------|
-| `messageMaxWidthStyle` | `"95"` |
-| `messageColorUserStyle` | `"#0084FF"` |
-| `messageColorNonUserStyle` | `"#333333"` |
-| `messagePaddingStyle` | `"10"` |
-| `messageBorderRadiusStyle` | `"5"` |
-| `inputBoxMaxWidthStyle` | `"94"` |
-| `textColorUserStyle` | `"#FFFFFF"` |
-| `textColorNonUserStyle` | `"#FFFFFF"` |
-| `messageButtonsVisibilityStyle` | `true` |
+| Key                             | Default     |
+| ------------------------------- | ----------- |
+| `messageMaxWidthStyle`          | `"95"`      |
+| `messageColorUserStyle`         | `"#0084FF"` |
+| `messageColorNonUserStyle`      | `"#333333"` |
+| `messagePaddingStyle`           | `"10"`      |
+| `messageBorderRadiusStyle`      | `"5"`       |
+| `inputBoxMaxWidthStyle`         | `"94"`      |
+| `textColorUserStyle`            | `"#FFFFFF"` |
+| `textColorNonUserStyle`         | `"#FFFFFF"` |
+| `messageButtonsVisibilityStyle` | `true`      |
 
-Storage key: `options` in `chrome.storage.sync`. Missing storage → clone of `defaultSettings`.
+Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
 ## Live preview vs Save / Cancel / Defaults
 
@@ -75,15 +75,15 @@ flowchart TD
 
 ### Control behavior
 
-- **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/component.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
-- **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControl/component.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
-- **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
-  - **Restore Defaults** — set live state to `defaultSettings`, preview via `restoreSettings`, leave `isEditing` true.
-  - **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.
-  - **Cancel** — restore `savedSettings` into live state and preview; clear editing.
-- **Background disconnect** — even without clicking Save, closing the popup can persist the last `updateSettings` payload received by the background worker (see architecture caveats).
+-   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/component.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
+-   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControl/component.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
+-   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
+    -   **Restore Defaults** — set live state to `defaultSettings`, preview via `restoreSettings`, leave `isEditing` true.
+    -   **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.
+    -   **Cancel** — restore the settings last loaded from storage or explicitly saved, preview them, and clear editing.
+-   **Background disconnect** — closing the popup intentionally persists the latest live settings, even without clicking Save. The Save button provides an immediate persistence option while the popup remains open.
 
-`savedSettings` inside MessageEditor is initialized from the `liveSettings` prop at first render (defaults) and is only refreshed when the user clicks Save — it is **not** updated when storage finishes loading into `Popup`. Cancel before an explicit Save can therefore restore defaults rather than the previously persisted options (see [architecture caveats](architecture.md#known-implementation-caveats)).
+The popup does not forward its initial defaults to the background until storage finishes loading. This prevents a quick open/close from overwriting stored settings with defaults.
 
 ## CSS generation
 
@@ -93,20 +93,20 @@ flowchart TD
 2. `loadSettings(settings)` walks the settings object and invokes each controller (truthy values only — note that `false` for `messageButtonsVisibilityStyle` is skipped by `if (newSettings[setting])`).
 3. `updateStyles(setting, newValue?)` either loads a full object or updates one key, then concatenates:
 
-   - Dynamic fragments (width, padding, radius, colors, button visibility, …)
-   - Fixed fragments (code snippet width, hide default surface background, show edit button, max bubble width, transparent edit box, input padding/max-width resets)
+    - Dynamic fragments (width, padding, radius, colors, button visibility, …)
+    - Fixed fragments (code snippet width, hide default surface background, show edit button, max bubble width, transparent edit box, input padding/max-width resets)
 
 4. Primary selector root: `[data-testid^="conversation-turn-"]`.
-   - User turns: `:nth-child(odd)`
-   - Assistant turns: `:nth-child(even)`
+    - User turns: `:nth-child(odd)`
+    - Assistant turns: `:nth-child(even)`
 
 ### Messaging helper
 
 `sendMessageToTab(action, value)`:
 
-- `action === "restoreSettings"` + settings object → full CSS from that object.
-- Otherwise treats `action` as a `keyof SettingsType` and updates that key before sending.
-- Always sends `{ action: "updateStyles", arg: cssString }` to the active tab.
+-   `action === "restoreSettings"` + settings object → full CSS from that object.
+-   Otherwise treats `action` as a `keyof SettingsType` and updates that key before sending.
+-   Always sends `{ action: "updateStyles", arg: cssString }` to the active tab.
 
 Content script applies `arg` as `customStyle.textContent` — it does not re-parse settings for live updates.
 
@@ -114,9 +114,9 @@ Content script applies `arg` as `customStyle.textContent` — it does not re-par
 
 [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx), mounted by the content script:
 
-- Finds ChatGPT’s scroll container under `div[role="presentation"] > ...`.
-- Shows a circular button when `scrollTop !== 0`.
-- Smooth-scrolls to top; hides the button while scrolling.
+-   Finds ChatGPT’s scroll container under `div[role="presentation"] > ...`.
+-   Shows a circular button when `scrollTop !== 0`.
+-   Smooth-scrolls to top; hides the button while scrolling.
 
 Remount logic runs on a 1s interval so SPA navigations between chats still get the button.
 
@@ -141,6 +141,6 @@ Treat this feature as **fragile**; selector failures are expected after ChatGPT 
 
 ## Related docs
 
-- [architecture.md](architecture.md)
-- [dom-integration.md](dom-integration.md)
-- [../CLAUDE.md](../CLAUDE.md)
+-   [architecture.md](architecture.md)
+-   [dom-integration.md](dom-integration.md)
+-   [../CLAUDE.md](../CLAUDE.md)

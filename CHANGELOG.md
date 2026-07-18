@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.4] - 2026-07-18
+
+### Fixed
+
+-   Cancel now restores the last saved settings instead of built-in defaults
+-   Prevented a race where closing the popup before settings finished loading could overwrite saved options with defaults
+-   Merged stored settings with defaults so missing keys from older installs are filled in
+
 ## [1.2.3] - 2025-06-25
 
 ### Fixed

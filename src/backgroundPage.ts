@@ -1,28 +1,42 @@
-import { saveOptionsToStorage } from "./lib/utilities/googleStorage";
-import { defaultSettings } from "./shared/utils/data";
+import {
+    getOptionsFromStorage,
+    saveOptionsToStorage,
+    SettingsType,
+} from "./lib/utilities/googleStorage";
 
-let currentSettings = defaultSettings;
+let currentSettings: SettingsType | null = null;
+let receivedFromPopup = false;
 
 chrome.runtime.onConnect.addListener((port) => {
     console.assert(port.name === "popup");
+
+    // Seed from storage so a quick close before the popup sends updates
+    // does not persist in-memory defaults over the user's saved options.
+    getOptionsFromStorage((savedOptions) => {
+        if (!receivedFromPopup) {
+            currentSettings = savedOptions;
+        }
+    });
+
     port.onMessage.addListener((message) => {
         if (message.popupOpened) {
             console.log("Popup opened");
-            // Optionally, initialize or send current settings to the popup
         } else if (message.type === "updateSettings") {
             console.log(
                 "Received updated settings from popup:",
                 message.settings,
             );
             currentSettings = message.settings;
+            receivedFromPopup = true;
         }
-        // You can also respond or send messages to the popup here
     });
 
     port.onDisconnect.addListener(() => {
         console.log("Popup closed. Settings are now:", currentSettings);
-        // Call saveOptionsToStorage with the most recent settings state
-        saveOptionsToStorage(currentSettings);
-        // Note: Ensure `saveOptionsToStorage` is properly adapted to handle Promises if asynchronous
+        // Intentional autosave-on-close. Skip only if we never learned any settings.
+        if (currentSettings !== null) {
+            saveOptionsToStorage(currentSettings);
+        }
+        receivedFromPopup = false;
     });
 });
