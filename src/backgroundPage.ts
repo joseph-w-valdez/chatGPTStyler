@@ -3,12 +3,13 @@ import {
     saveOptionsToStorage,
     SettingsType,
 } from "./lib/utilities/googleStorage";
+import { POPUP_PORT_NAME, PopupPortMessage } from "./shared/messaging";
 
 let currentSettings: SettingsType | null = null;
 let receivedFromPopup = false;
 
 chrome.runtime.onConnect.addListener((port) => {
-    console.assert(port.name === "popup");
+    console.assert(port.name === POPUP_PORT_NAME);
 
     // Seed from storage so a quick close before the popup sends updates
     // does not persist in-memory defaults over the user's saved options.
@@ -18,10 +19,8 @@ chrome.runtime.onConnect.addListener((port) => {
         }
     });
 
-    port.onMessage.addListener((message) => {
-        if (message.popupOpened) {
-            console.log("Popup opened");
-        } else if (message.type === "updateSettings") {
+    port.onMessage.addListener((message: PopupPortMessage) => {
+        if (message.type === "updateSettings") {
             console.log(
                 "Received updated settings from popup:",
                 message.settings,

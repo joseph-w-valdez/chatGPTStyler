@@ -1,4 +1,5 @@
 import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { UpdateStylesMessage } from "@src/shared/messaging";
 
 const messageBubbles = '[data-testid^="conversation-turn-"]';
 
@@ -69,13 +70,24 @@ export const updateStyles = (settings: SettingsType): string => {
 };
 
 export const sendMessageToTab = (settings: SettingsType): void => {
-    const cssTextContent = buildCss(settings);
+    const message: UpdateStylesMessage = {
+        action: "updateStyles",
+        arg: buildCss(settings),
+    };
+
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (chrome.runtime.lastError) {
+            return;
+        }
+
         const tabId = tabs[0]?.id;
-        if (tabId === undefined) return;
-        chrome.tabs.sendMessage(tabId, {
-            action: "updateStyles",
-            arg: cssTextContent,
+        if (tabId === undefined) {
+            return;
+        }
+
+        chrome.tabs.sendMessage(tabId, message, () => {
+            // Active tab may not be chatgpt.com / have no content script.
+            void chrome.runtime.lastError;
         });
     });
 };

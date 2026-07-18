@@ -22,6 +22,10 @@
 -   Delete-all now awaits the content-script result and uses a hostname-based ChatGPT tab check
 -   Removed unused HomeMenu / MiscEditor / HomeButton multi-page shell; popup is MessageEditor-only
 -   Simplified Header (title only; no vestigial Back / page state)
+-   Standardized extension messaging on typed `chrome.*` contracts; removed `webextension-polyfill`
+-   Removed unused popup handshakes and the unused `SETTINGS_CHANGED` storage broadcast
+-   Hardened live-preview tab messaging against missing tabs / `runtime.lastError`
+-   Fixed popup mount so React waits for `#popup` (script no longer races ahead of the DOM)
 
 ## [1.2.3] - 2025-06-25
 

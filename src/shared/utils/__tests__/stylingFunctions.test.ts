@@ -1,4 +1,4 @@
-import { buildCss, updateStyles } from "../stylingFunctions";
+import { buildCss, updateStyles, sendMessageToTab } from "../stylingFunctions";
 import { defaultSettings } from "../data";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 
@@ -71,5 +71,55 @@ describe("buildCss", () => {
 
     it("keeps updateStyles as a buildCss alias", () => {
         expect(updateStyles(defaultSettings)).toBe(buildCss(defaultSettings));
+    });
+});
+
+describe("sendMessageToTab", () => {
+    beforeEach(() => {
+        (chrome.runtime as { lastError?: chrome.runtime.LastError }).lastError =
+            undefined;
+        (chrome.tabs.query as jest.Mock).mockImplementation(
+            (
+                _queryInfo: chrome.tabs.QueryInfo,
+                callback: (tabs: Array<{ id: number; url: string }>) => void,
+            ) => {
+                callback([{ id: 7, url: "https://chatgpt.com/" }]);
+            },
+        );
+        (chrome.tabs.sendMessage as jest.Mock).mockImplementation(
+            (_tabId: number, _message: unknown, callback?: () => void) => {
+                if (callback) callback();
+            },
+        );
+    });
+
+    it("sends updateStyles to the active tab", () => {
+        sendMessageToTab(defaultSettings);
+
+        expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(
+            7,
+            {
+                action: "updateStyles",
+                arg: expect.stringContaining(
+                    `max-width: ${defaultSettings.messageMaxWidthStyle}%`,
+                ),
+            },
+            expect.any(Function),
+        );
+    });
+
+    it("skips sendMessage when there is no active tab id", () => {
+        (chrome.tabs.query as jest.Mock).mockImplementation(
+            (
+                _queryInfo: chrome.tabs.QueryInfo,
+                callback: (tabs: Array<{ id?: number }>) => void,
+            ) => {
+                callback([{}]);
+            },
+        );
+
+        sendMessageToTab(defaultSettings);
+
+        expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
     });
 });

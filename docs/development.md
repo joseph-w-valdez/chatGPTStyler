@@ -71,8 +71,9 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 
 -   Runner: **Jest** + **ts-jest**.
 -   Roots: `src/`.
--   Module maps: `@src/(.*)` → `src/$1`; `webextension-polyfill` → [`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts); CSS → `jest-css-modules`.
+-   Module maps: `@src/(.*)` → `src/$1`; CSS → `jest-css-modules`.
 -   Setup: [`src/setupTests.ts`](../src/setupTests.ts) stubs `chrome.storage` / `chrome.tabs` / `chrome.runtime`.
+-   Extension APIs in product code use raw `chrome.*` (no `webextension-polyfill`).
 -   Common patterns: `react-test-renderer` snapshots and prop wiring (no Enzyme).
 
 Run:

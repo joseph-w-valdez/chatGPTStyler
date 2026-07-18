@@ -91,13 +91,12 @@ Popup gate: active tab hostname is `chatgpt.com` / `*.chatgpt.com` ([`DeleteAllC
 
 ## Message contracts that affect the page
 
-| Message                                   | Direction         | Content script effect                                               |
-| ----------------------------------------- | ----------------- | ------------------------------------------------------------------- |
-| `{ action: "updateStyles", arg: string }` | Popup → CS        | Replace `#custom-style` text                                        |
-| `{ action: "deleteMessages" }`            | Popup → CS        | Run async `deleteAllChats()`; respond SUCCESS/FAILURE when finished |
-| `{ type: "SETTINGS_CHANGED", payload }`   | Background → tabs | **Not handled** by content script today                             |
+| Message                                   | Direction  | Content script effect                                               |
+| ----------------------------------------- | ---------- | ------------------------------------------------------------------- |
+| `{ action: "updateStyles", arg: string }` | Popup → CS | Replace `#custom-style` text                                        |
+| `{ action: "deleteMessages" }`            | Popup → CS | Run async `deleteAllChats()`; respond SUCCESS/FAILURE when finished |
 
-On load, CS still applies styles from `getOptionsFromStorage` → `buildCss(settings)`.
+Typed contracts live in [`src/shared/messaging/`](../src/shared/messaging/). On load, CS still applies styles from `getOptionsFromStorage` → `buildCss(settings)`.
 
 ## Selector-update verification checklist
 
