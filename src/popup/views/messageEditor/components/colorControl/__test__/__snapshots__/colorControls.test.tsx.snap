@@ -6,11 +6,15 @@ exports[`ColorControls component renders correctly 1`] = `
 >
   <div
     className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
-    key="0"
   >
     <span
       className=" text-center p-1 w-24 rounded-md"
-      style="background-color: #FFFFFF; color: #000000;"
+      style={
+        Object {
+          "backgroundColor": "#386d9f",
+          "color": "#FFFFFF",
+        }
+      }
     >
       User Color
     </span>
@@ -22,14 +26,14 @@ exports[`ColorControls component renders correctly 1`] = `
         id="messageColorUserStyle"
         onChange={[Function]}
         type="color"
-        value="#FFFFFF"
+        value="#386d9f"
       />
       <input
         className="text-center w-full rounded-md h-8"
         id="textColorUserStyle"
         onChange={[Function]}
         type="color"
-        value="#000000"
+        value="#FFFFFF"
       />
       <span
         className="rounded-md font-medium text-center p-0 m-0"
@@ -45,11 +49,15 @@ exports[`ColorControls component renders correctly 1`] = `
   </div>
   <div
     className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
-    key="1"
   >
     <span
       className=" text-center p-1 w-24 rounded-md"
-      style="background-color: #FF0000; color: #00FF00;"
+      style={
+        Object {
+          "backgroundColor": "#333333",
+          "color": "#FFFFFF",
+        }
+      }
     >
       ChatGPT Color
     </span>
@@ -61,14 +69,14 @@ exports[`ColorControls component renders correctly 1`] = `
         id="messageColorNonUserStyle"
         onChange={[Function]}
         type="color"
-        value="#FF0000"
+        value="#333333"
       />
       <input
         className="text-center w-full rounded-md h-8"
         id="textColorNonUserStyle"
         onChange={[Function]}
         type="color"
-        value="#00FF00"
+        value="#FFFFFF"
       />
       <span
         className="rounded-md font-medium text-center p-0 m-0"

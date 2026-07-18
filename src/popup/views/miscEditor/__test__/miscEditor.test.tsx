@@ -1,12 +1,16 @@
 import React from "react";
-import { shallow, ShallowWrapper } from "enzyme";
+import renderer, { act, ReactTestRenderer } from "react-test-renderer";
 import { MiscEditor, MessageEditorProps } from "../component";
+import { sendMessageToTab } from "@src/shared/utils";
+
+jest.mock("@src/shared/utils", () => ({
+    sendMessageToTab: jest.fn(),
+}));
 
 describe("MiscEditor Component", () => {
-    let wrapper: ShallowWrapper<MessageEditorProps>;
+    let component: ReactTestRenderer;
 
     const mockSetLiveSettings = jest.fn();
-    const mockSendMessageToTab = jest.fn();
 
     const defaultProps: MessageEditorProps = {
         liveSettings: {
@@ -24,16 +28,19 @@ describe("MiscEditor Component", () => {
     };
 
     beforeEach(() => {
-        wrapper = shallow(<MiscEditor {...defaultProps} />);
+        component = renderer.create(<MiscEditor {...defaultProps} />);
     });
 
     it("renders correctly", () => {
-        expect(wrapper.debug()).toMatchSnapshot();
+        expect(component.toJSON()).toMatchSnapshot();
     });
 
     it("handles checkbox change correctly", () => {
-        const checkbox = wrapper.find("input[type='checkbox']");
-        checkbox.simulate("change");
+        const checkbox = component.root.findByProps({ type: "checkbox" });
+
+        act(() => {
+            checkbox.props.onChange();
+        });
 
         expect(mockSetLiveSettings).toHaveBeenCalledWith({
             ...defaultProps.liveSettings,
@@ -41,7 +48,7 @@ describe("MiscEditor Component", () => {
                 !defaultProps.liveSettings.messageButtonsVisibilityStyle,
         });
 
-        expect(mockSendMessageToTab).toHaveBeenCalledWith(
+        expect(sendMessageToTab).toHaveBeenCalledWith(
             "messageButtonsVisibilityStyle",
             !defaultProps.liveSettings.messageButtonsVisibilityStyle,
         );

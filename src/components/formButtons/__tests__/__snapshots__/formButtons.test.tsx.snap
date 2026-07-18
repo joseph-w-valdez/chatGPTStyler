@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`component renders 1`] = `
-<div className="grid grid-cols-4 gap-1">
+exports[`FormButtons renders correctly 1`] = `
+<div
+  className="grid grid-cols-4 gap-1"
+>
   <button
     className="btnGrey col-span-2"
     onClick={[Function]}
   >
-    Restore Default
+    Restore Defaults
   </button>
   <button
     className="btn"

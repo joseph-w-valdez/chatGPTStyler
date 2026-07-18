@@ -1,17 +1,28 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import renderer, { act, ReactTestInstance } from "react-test-renderer";
 import { DeleteAllChatsButton } from "../DeleteAllChatsButton";
-import { act } from "react-dom/test-utils";
 
-// Mocking chrome.tabs.sendMessage to avoid side effects in testing
-global.chrome = {
-    tabs: {
-        query: jest.fn((_, callback) => callback([{ id: 1 }])),
-        sendMessage: jest.fn(),
-    },
-} as any;
+const findButtonByText = (
+    instance: ReactTestInstance,
+    text: string,
+): ReactTestInstance => {
+    return instance
+        .findAllByType("button")
+        .find((button) => button.children.includes(text)) as ReactTestInstance;
+};
 
 describe("DeleteAllChatsButton", () => {
+    beforeEach(() => {
+        (chrome.tabs.query as jest.Mock).mockImplementation(
+            (
+                _queryInfo: chrome.tabs.QueryInfo,
+                callback: (tabs: Array<{ id: number; url: string }>) => void,
+            ) => {
+                callback([{ id: 1, url: "https://chatgpt.com/" }]);
+            },
+        );
+    });
+
     it("should render the initial button", () => {
         const tree = renderer.create(<DeleteAllChatsButton />).toJSON();
         expect(tree).toMatchSnapshot();
@@ -21,26 +32,24 @@ describe("DeleteAllChatsButton", () => {
         const component = renderer.create(<DeleteAllChatsButton />);
         const instance = component.root;
 
-        // Find the "Delete All Conversations" button
-        const deleteButton = instance.findByType("button");
+        const deleteButton = findButtonByText(
+            instance,
+            "Delete All Conversations",
+        );
 
-        // Simulate the click on the delete button to toggle the state
         act(() => {
             deleteButton.props.onClick();
         });
 
-        // Check if the confirmation section is now visible
         const confirmationSection = instance.findByProps({
             className: "grid place-items-center gap-2",
         });
         expect(confirmationSection).toBeTruthy();
 
-        // Simulate the click to toggle back
         act(() => {
             deleteButton.props.onClick();
         });
 
-        // Ensure the confirmation section is hidden again
         expect(() => {
             instance.findByProps({
                 className: "grid place-items-center gap-2",
@@ -52,41 +61,43 @@ describe("DeleteAllChatsButton", () => {
         const component = renderer.create(<DeleteAllChatsButton />);
         const instance = component.root;
 
-        // Simulate clicking the 'Delete All Conversations' button to show the confirmation
-        const deleteButton = instance.findByType("button");
+        const deleteButton = findButtonByText(
+            instance,
+            "Delete All Conversations",
+        );
         act(() => {
             deleteButton.props.onClick();
         });
 
-        // Find the 'Yes' button and simulate click
-        const yesButton = instance.findByProps({ className: "yesBtn" });
+        const yesButton = findButtonByText(instance, "Yes");
         act(() => {
             yesButton.props.onClick();
         });
 
-        // Check if chrome.tabs.sendMessage was called
-        expect(global.chrome.tabs.sendMessage).toHaveBeenCalledWith(1, {
-            action: "deleteMessages",
-        });
+        expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(
+            1,
+            { action: "deleteMessages" },
+            expect.any(Function),
+        );
     });
 
     it("should close the confirmation when 'No' is clicked", () => {
         const component = renderer.create(<DeleteAllChatsButton />);
         const instance = component.root;
 
-        // Simulate clicking the 'Delete All Conversations' button to show the confirmation
-        const deleteButton = instance.findByType("button");
+        const deleteButton = findButtonByText(
+            instance,
+            "Delete All Conversations",
+        );
         act(() => {
             deleteButton.props.onClick();
         });
 
-        // Find the 'No' button and simulate click
-        const noButton = instance.findByProps({ className: "noBtn" });
+        const noButton = findButtonByText(instance, "No");
         act(() => {
             noButton.props.onClick();
         });
 
-        // Ensure the confirmation section is hidden again
         expect(() => {
             instance.findByProps({
                 className: "grid place-items-center gap-2",

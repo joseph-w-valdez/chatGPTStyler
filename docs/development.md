@@ -70,9 +70,9 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 
 - Runner: **Jest** + **ts-jest**.
 - Roots: `src/`.
-- Module maps: `@src/(.*)` → `src/$1`; CSS → `jest-css-modules`.
-- Common patterns: `react-test-renderer` snapshots; some Enzyme `shallow` tests (MiscEditor).
-- Browser APIs: mock `webextension-polyfill` ([`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts)); tests that hit `chrome.*` typically stub globals.
+- Module maps: `@src/(.*)` → `src/$1`; `webextension-polyfill` → [`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts); CSS → `jest-css-modules`.
+- Setup: [`src/setupTests.ts`](../src/setupTests.ts) stubs `chrome.storage` / `chrome.tabs` / `chrome.runtime`.
+- Common patterns: `react-test-renderer` snapshots and prop wiring (no Enzyme).
 
 Run:
 
@@ -81,8 +81,6 @@ npm test
 ```
 
 Update snapshots intentionally when UI output changes (`jest -u` / accept in your workflow). Snapshot paths live next to tests under `__snapshots__/`.
-
-**Note:** Some suites currently fail without docs changes (missing Enzyme adapter for shallow tests, incomplete `webextension-polyfill` mock for `runtime.connect`, and brittle `findByType("button")` assumptions in DeleteAllChatsButton tests). Treat a green suite as a goal when touching those areas; do not assume `npm test` is fully green on a fresh clone.
 
 ## Release / CI
 
