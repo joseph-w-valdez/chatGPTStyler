@@ -33,13 +33,15 @@ Path alias: `@src/*` → `src/*` (TypeScript + Webpack + Jest).
 
 ## Commands
 
-Prefer **npm** (CI and `package-lock.json` are authoritative; `yarn.lock` also exists — avoid editing both unless intentionally standardizing).
+Prefer **npm** (`package-lock.json` + [`packageManager`](package.json) field). Exact versions are enforced via [`.npmrc`](.npmrc) (`save-exact=true`, `engine-strict=true`).
 
 ```bash
-npm install          # setup
-npm run dev          # webpack watch (development)
-npm run build        # production webpack → dist/js only
-npm test             # Jest
+nvm use            # or: nvm use $(cat .nvmrc)
+npm ci             # preferred when lockfile is trusted
+npm install        # only when intentionally changing deps
+npm run dev        # webpack watch (development)
+npm run build      # production webpack → dist/js only
+npm test           # Jest
 ```
 
 Check-only validation (preferred during reviews — the package scripts below **mutate**):
@@ -57,7 +59,7 @@ npm run lint         # ESLint --fix on src/**/*.ts*
 npm run prettify     # Prettier --write on src/**/*.ts*
 ```
 
-Node version hint: [`.nvmrc`](.nvmrc) → `16.13.0`. CI release workflow currently uses Node 14 ([`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)).
+Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. Release CI reads `.nvmrc` and runs `npm ci` ([`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)). `@types/node` stays on a TypeScript **4.5**-compatible pin until TypeScript itself is upgraded (newer `@types/node` use syntax TS 4.5 cannot parse).
 
 ## Architecture (short)
 
@@ -124,7 +126,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 - Do not treat `HomeMenu` / `MiscEditor` as the current UX; the popup renders **MessageEditor** directly.
 - Do not assume OpenAI will keep `data-testid` / class names stable — document selector changes in the changelog when you fix them.
 - Do not use `npm run lint` / `npm run prettify` as read-only checks.
-- Do not edit `yarn.lock` unless deliberately changing package-manager policy; prefer npm.
+- Do not introduce a second package manager lockfile (`yarn.lock`, `pnpm-lock.yaml`); stick to npm.
 - Do not add exploit-style or broad DOM scraping beyond existing feature needs.
 - Do not rewrite the build to a new bundler or broadly upgrade React/Jest/Node without an explicit request.
 

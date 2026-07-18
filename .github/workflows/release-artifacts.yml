@@ -11,15 +11,16 @@ jobs:
 
         steps:
             - name: Checkout Repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Set up Node.js
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
-                  node-version: "14"
+                  node-version-file: ".nvmrc"
+                  cache: "npm"
 
             - name: Install Dependencies
-              run: npm install
+              run: npm ci
 
             - name: Build Project
               run: npm run build
@@ -28,7 +29,7 @@ jobs:
               run: zip -r dist-${{ github.ref_name }}.zip dist
 
             - name: Upload Artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
-                  name: dist-${{ github.ref_name }}.zip
+                  name: dist-${{ github.ref_name }}
                   path: dist-${{ github.ref_name }}.zip
