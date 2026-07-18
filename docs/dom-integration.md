@@ -102,7 +102,8 @@ Typed contracts live in [`src/shared/messaging/`](../src/shared/messaging/). On 
 
 Use this after ChatGPT UI changes or when touching any file above.
 
-1. **Build & reload** — `npm run build` or `npm run dev`; reload extension; hard-refresh chatgpt.com.
+0. **Dev probe (optional)** — `npm run build:dev` or `npm run dev`, reload the extension, open a chatgpt.com chat, click **Check ChatGPT Selectors** in the popup. Required probes should be ok; optional ones may be 0 until menus are open.
+1. **Build & reload** — `npm run build:prod` / `npm run build` (or a development flavor); reload extension; hard-refresh chatgpt.com.
 2. **Styles on load** — With saved settings, confirm bubble colors, widths, padding, radius, and input width apply without opening the popup.
 3. **Live preview** — Focus the ChatGPT tab, open the popup, drag sliders / change colors; page should update immediately.
 4. **Odd/even correctness** — User messages vs assistant messages must not be color-swapped; check a multi-turn thread.

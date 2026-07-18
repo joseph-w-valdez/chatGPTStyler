@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint:check
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Test
+        run: npm run test:ci
+
+  build-and-archive:
+    name: build ${{ matrix.flavor }}
+    needs: validate
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Production: minified store build (Chrome Web Store deliverable).
+          - flavor: prod
+            script: build:prod
+            suffix: ""
+          # Development: unminified bundle with source maps and dev-only
+          # tooling (e.g. selector health check). For sideloading / debugging.
+          - flavor: dev
+            script: build:dev
+            suffix: "-dev"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run ${{ matrix.script }}
+
+      - name: Zip dist folder
+        run: zip -r dist-${{ github.ref_name }}${{ matrix.suffix }}.zip dist
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.ref_name }}${{ matrix.suffix }}
+          path: dist-${{ github.ref_name }}${{ matrix.suffix }}.zip
+
+  release:
+    needs: build-and-archive
+    runs-on: ubuntu-latest
+
+    # Creating a release + uploading assets needs contents:write; downloading
+    # this run's artifacts needs actions:read.
+    permissions:
+      contents: write
+      actions: read
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.zip
+          # Treat tags containing a hyphen (e.g. 1.2.4-RC1) as pre-releases.
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true

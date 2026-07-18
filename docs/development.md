@@ -21,18 +21,20 @@ npm install
 
 From [`package.json`](../package.json):
 
-| Command                | Purpose                                                                                            |
-| ---------------------- | -------------------------------------------------------------------------------------------------- |
-| `npm run dev`          | Webpack watch with [`webpack.dev.js`](../webpack.dev.js) (inline source maps) → updates `dist/js/` |
-| `npm run build`        | Production Webpack via [`webpack.prod.js`](../webpack.prod.js)                                     |
-| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                    |
-| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                          |
-| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                        |
-| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                              |
-| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                               |
-| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                        |
-| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                          |
-| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                               |
+| Command                | Purpose                                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`          | Webpack watch with [`webpack.config.js`](../webpack.config.js) and `--mode development` → updates `dist/js/`          |
+| `npm run build:dev`    | One-off development Webpack build (same flavor as `dev`, no watch)                                                   |
+| `npm run build`        | Alias for `build:prod`                                                                                               |
+| `npm run build:prod`   | Production Webpack via [`webpack.config.js`](../webpack.config.js) and `--mode production`                            |
+| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                                      |
+| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                                            |
+| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                                          |
+| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                                                |
+| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                                                 |
+| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                                          |
+| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                                            |
+| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                                                 |
 
 Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf"` keep LF in the repo so Windows clones don’t drown lint in CRLF noise.
 
@@ -42,13 +44,24 @@ TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, pat
 
 ## Loading the unpacked extension
 
-1. Run `npm run build` (or keep `npm run dev` running while iterating).
+1. Run `npm run build:prod` / `npm run build` (or `npm run build:dev` / keep `npm run dev` running while iterating).
 2. Open `chrome://extensions` (or your browser’s equivalent).
 3. Enable **Developer mode**.
 4. **Load unpacked** → select the repo’s [`dist/`](../dist/) directory (not the repo root).
 5. Open [https://chatgpt.com](https://chatgpt.com), then open the extension popup from the toolbar.
 
-After JS changes with `npm run dev`, use the extensions page **Reload** on ChatGPT Styler, then refresh the ChatGPT tab so the content script picks up the new bundle.
+After JS changes with `npm run dev` or `npm run build:dev`, use the extensions page **Reload** on ChatGPT Styler, then refresh the ChatGPT tab so the content script picks up the new bundle.
+
+### Build flavors
+
+| Flavor | Commands | Behavior |
+| ------ | -------- | -------- |
+| Development | `npm run build:dev`, `npm run dev` | Source maps; keeps debug logging; includes tools like **Check ChatGPT Selectors** |
+| Production | `npm run build:prod`, `npm run build` | Minified; strips `console.log` / `info` / `debug` / `table`; omits dev-only UI; keeps `console.warn` / `console.error` |
+
+### Dev-only selector health check
+
+With a **development** build (`npm run build:dev` or `npm run dev`), the popup shows **Check ChatGPT Selectors**. Focus a chatgpt.com tab, click it, and the content script returns match counts for critical DOM probes (also `console.table` in the page DevTools). Production builds omit the control.
 
 Static assets that Webpack does **not** emit (edit by hand when needed):
 
@@ -92,25 +105,23 @@ Update snapshots intentionally when UI output changes (`jest -u` / accept in you
 Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 -   **Trigger:** push to `main`, and all pull requests.
--   **Steps:** checkout → Node from `.nvmrc` → `npm ci` → `typecheck` → `lint:check` → `format:check` → `test:ci`.
--   Local equivalent: `npm run validate && npm run test:ci`.
+-   **Validation:** typecheck, lint, format check, and tests run once.
+-   **Build smoke tests:** production and development flavors build concurrently after validation.
+-   Local equivalent: `npm run validate && npm run test:ci && npm run build:prod && npm run build:dev`.
 
-### Tag release artifacts
+### Tagged releases
 
-Workflow: [`.github/workflows/release-artifacts.yml`](../.github/workflows/release-artifacts.yml).
+Workflow: [`.github/workflows/release.yml`](../.github/workflows/release.yml).
 
 -   **Trigger:** push of any git tag (`*`).
--   **Steps:** same validation gates as PR CI, then `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.
--   Action versions: `actions/checkout@v4`, `actions/setup-node@v4`, `actions/upload-artifact@v4`.
--   Uploads a build artifact only; it does **not** create a GitHub Release or publish to the Chrome Web Store.
+-   **Validation:** typecheck, lint, format check, and tests run once.
+-   **Builds:** production and development flavors build concurrently.
+-   **Outputs:** both zips are retained as workflow artifacts and attached to an automatically created GitHub Release.
+-   Tags containing a hyphen (for example, `1.2.4-RC1`) become pre-releases; final tags such as `1.2.4` become normal releases.
+-   The production zip is the Chrome Web Store deliverable. The development zip is for sideloading and diagnostics.
+-   The workflow does **not** publish to the Chrome Web Store.
 
-Suggested release checklist:
-
-1. Update [`CHANGELOG.md`](../CHANGELOG.md).
-2. Bump version in `package.json`, `package-lock.json`, and `dist/manifest.json`.
-3. `npm run build` and smoke-test unpacked `dist/` on chatgpt.com (confirm static assets still present).
-4. Run `npm run validate && npm run test:ci` locally (CI also enforces this on the tag).
-5. Commit, tag, push tag → download CI zip for store upload if needed.
+See [releases.md](releases.md) for the RC commands, final-release checklist, artifact names, and tag guidance.
 
 Issue / PR templates: [`.github/ISSUE_TEMPLATE.md`](../.github/ISSUE_TEMPLATE.md), [`.github/PULL_REQUEST_TEMPLATE.md`](../.github/PULL_REQUEST_TEMPLATE.md).
 
