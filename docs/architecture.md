@@ -56,7 +56,7 @@ Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) 
 ### Popup
 
 -   [`src/popup/index.tsx`](../src/popup/index.tsx) — mounts `<Popup />` into `#popup`, imports global CSS.
--   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, connects a `chrome.runtime` port (`name: "popup"`) on mount, loads storage, and posts `updateSettings` when live settings change after load. Renders Header + **MessageEditor** only.
+-   [`src/popup/Popup.tsx`](../src/popup/Popup.tsx) — owns `liveSettings` state, connects a `chrome.runtime` port (`name: "popup"`) on mount, loads storage, and posts `updateSettings` when live settings change after load. Renders Header + **MessageEditor** only.
 -   Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
 -   Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 

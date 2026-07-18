@@ -20,7 +20,7 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)               | CSS selectors for conversation turns, form, composer      |
 | [`src/lib/utilities/removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | ClassList removals on message / input containers          |
 | [`src/lib/utilities/deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → delete-all automation                |
-| [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx)   | Scroll container + injected button                        |
+| [`src/components/scrollToTop/ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx)   | Scroll container + injected button                        |
 
 ## Selector catalog
 
@@ -66,7 +66,7 @@ Odd/even turn indexing assumes ChatGPT’s conversation list order; if that orde
 
 If ChatGPT renames these utilities, cleanup becomes a no-op and widths may look constrained again.
 
-### Scroll to top ([`scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx))
+### Scroll to top ([`ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx))
 
 | Purpose            | Selector                                                                                      |
 | ------------------ | --------------------------------------------------------------------------------------------- |

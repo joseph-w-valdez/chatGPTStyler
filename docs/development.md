@@ -61,7 +61,8 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 
 ## Project conventions for contributors
 
--   Colocate components with `component.tsx` / `index.tsx`, optional `styles.module.css`, and `__tests__` or `__test__`.
+-   Popup views/controls use named implementation files (`MessageEditor.tsx`, `ColorControls.tsx`) plus a barrel `index.ts`. Shared UI under `src/components/` uses PascalCase filenames. Colocate optional `styles.module.css` and tests under `__tests__/`.
+-   `src/shared/` holds cross-entry domain/helpers; `src/lib/utilities/` holds Chrome/DOM adapters. Prefer documenting that boundary over merging folders.
 -   Prefer `@src/...` imports over deep relative paths across packages.
 -   Do not commit secrets; this extension has no backend API keys by design.
 -   Human process / CoC: [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md).

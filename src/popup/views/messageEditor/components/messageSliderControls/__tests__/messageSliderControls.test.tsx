@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { MessageSliderControls } from "../component";
+import { MessageSliderControls } from "../MessageSliderControls";
 
 jest.mock("@src/shared/utils", () => ({
     sendMessageToTab: jest.fn(),
@@ -8,14 +8,14 @@ jest.mock("@src/shared/utils", () => ({
 
 describe("MessageSliderControls component", () => {
     it("renders correctly", () => {
-        const setLiveChangesMock = jest.fn();
+        const setLiveSettingsMock = jest.fn();
         const setIsEditingMock = jest.fn();
 
         const tree = renderer
             .create(
                 <MessageSliderControls
-                    setLiveChanges={setLiveChangesMock}
-                    liveChanges={{
+                    setLiveSettings={setLiveSettingsMock}
+                    liveSettings={{
                         messageMaxWidthStyle: "95",
                         messagePaddingStyle: "10",
                         messageBorderRadiusStyle: "5",

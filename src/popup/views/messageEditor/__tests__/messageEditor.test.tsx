@@ -2,7 +2,7 @@ import React from "react";
 import renderer, { act, ReactTestRenderer } from "react-test-renderer";
 import { MessageEditor, MessageEditorProps } from "../index";
 import { MessageSliderControls } from "../components/messageSliderControls";
-import { ColorControls } from "../components/colorControl/component";
+import { ColorControls } from "../components/colorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 
 jest.mock("@src/shared/utils", () => ({
@@ -36,27 +36,29 @@ describe("MessageEditor Component", () => {
 
     it("passes setLiveSettings through MessageSliderControls", () => {
         const slider = component.root.findByType(MessageSliderControls);
-        const liveChanges = mockProps.liveSettings;
 
-        slider.props.setLiveChanges(liveChanges);
+        slider.props.setLiveSettings(mockProps.liveSettings);
 
-        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(
+            mockProps.liveSettings,
+        );
     });
 
     it("passes setLiveSettings through ColorControls", () => {
         const colors = component.root.findByType(ColorControls);
-        const liveChanges = mockProps.liveSettings;
 
-        colors.props.setLiveChanges(liveChanges);
+        colors.props.setLiveSettings(mockProps.liveSettings);
 
-        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(
+            mockProps.liveSettings,
+        );
     });
 
     it("wires live settings into MessageSliderControls", () => {
         const slider = component.root.findByType(MessageSliderControls);
 
-        expect(slider.props.liveChanges).toEqual(mockProps.liveSettings);
-        expect(slider.props.setLiveChanges).toBe(mockProps.setLiveSettings);
+        expect(slider.props.liveSettings).toEqual(mockProps.liveSettings);
+        expect(slider.props.setLiveSettings).toBe(mockProps.setLiveSettings);
     });
 
     it("restores storage-loaded settings when Cancel is clicked", () => {

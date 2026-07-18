@@ -1,10 +1,10 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { ColorControls } from "../component";
+import { ColorControls } from "../ColorControls";
 
 test("ColorControls component renders correctly", () => {
-    const setLiveChanges = jest.fn();
-    const liveChanges = {
+    const setLiveSettings = jest.fn();
+    const liveSettings = {
         messageMaxWidthStyle: "95",
         messagePaddingStyle: "10",
         messageBorderRadiusStyle: "5",
@@ -19,8 +19,8 @@ test("ColorControls component renders correctly", () => {
 
     const component = renderer.create(
         <ColorControls
-            setLiveChanges={setLiveChanges}
-            liveChanges={liveChanges}
+            setLiveSettings={setLiveSettings}
+            liveSettings={liveSettings}
             setIsEditing={setIsEditing}
         />,
     );

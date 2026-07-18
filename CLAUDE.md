@@ -14,7 +14,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 
 | Path                                                                                         | Role                                                                                                                                                              |
 | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`src/popup/`](src/popup/)                                                                   | Extension popup UI (React). Entry: [`src/popup/index.tsx`](src/popup/index.tsx). Root: [`src/popup/component.tsx`](src/popup/component.tsx).                      |
+| [`src/popup/`](src/popup/)                                                                   | Extension popup UI (React). Entry: [`src/popup/index.tsx`](src/popup/index.tsx). Root: [`src/popup/Popup.tsx`](src/popup/Popup.tsx).                              |
 | [`src/popup/views/messageEditor/`](src/popup/views/messageEditor/)                           | **Active** settings UI: sliders, color pickers, save/cancel/defaults, delete-all button.                                                                          |
 | [`src/contentScript.ts`](src/contentScript.ts)                                               | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
 | [`src/backgroundPage.ts`](src/backgroundPage.ts)                                             | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
@@ -79,11 +79,12 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ## Conventions
 
--   **Language / UI**: TypeScript + React 17. Prefer functional components and existing folder layout (`component.tsx` + `index.tsx` + `__tests__` / `__test__`).
+-   **Language / UI**: TypeScript + React 17. Prefer functional components. Popup views/controls use named implementation files (`MessageEditor.tsx`) plus a barrel `index.ts`; shared UI under `src/components/` uses PascalCase filenames (`FormButtons.tsx`). Tests live under `__tests__/`.
+-   **Folder roles**: `src/shared/` = cross-entry domain model, messaging contracts, and pure helpers. `src/lib/utilities/` = Chrome/DOM runtime adapters (storage, selectors, page automation). Do not merge these trees casually.
 -   **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
 -   **Extension APIs**: Use raw `chrome.*` everywhere (popup, background, content, storage). Do not reintroduce `webextension-polyfill` without an explicit product need.
 -   **Lint / format**: ESLint + Prettier ([`.eslintrc.js`](.eslintrc.js), [`.prettierrc.js`](.prettierrc.js)). Prefer check-only commands for validation; `npm run lint` / `npm run prettify` fix/write files.
--   **Tests**: Jest + `react-test-renderer` snapshots under `__tests__` / `__test__`. Shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts). Message shapes live in [`src/shared/messaging/`](src/shared/messaging/).
+-   **Tests**: Jest + `react-test-renderer` snapshots under `__tests__/`. Shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts). Message shapes live in [`src/shared/messaging/`](src/shared/messaging/).
 
 ## Extension constraints (do not ignore)
 

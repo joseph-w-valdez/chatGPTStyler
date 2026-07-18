@@ -3,18 +3,19 @@ import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 
 export interface ColorControlsProps {
-    setLiveChanges: React.Dispatch<React.SetStateAction<Settings>>;
-    liveChanges: Settings;
+    setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
+    liveSettings: Settings;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export type colorSetting = "messageColor" | "textColor";
+
+export type ColorSetting = "messageColor" | "textColor";
 
 export function ColorControls({
-    setLiveChanges,
-    liveChanges,
+    setLiveSettings,
+    liveSettings,
     setIsEditing,
 }: ColorControlsProps): JSX.Element {
-    const colorSettings: colorSetting[] = ["messageColor", "textColor"];
+    const colorSettings: ColorSetting[] = ["messageColor", "textColor"];
 
     const mapColorSettings = (userType: string, index: number) => {
         const isUser = userType === "User";
@@ -27,14 +28,14 @@ export function ColorControls({
                     className=" text-center p-1 w-24 rounded-md"
                     style={{
                         backgroundColor:
-                            liveChanges[
+                            liveSettings[
                                 `${
                                     isUser
                                         ? "messageColorUserStyle"
                                         : "messageColorNonUserStyle"
                                 }`
                             ],
-                        color: liveChanges[
+                        color: liveSettings[
                             `${
                                 isUser
                                     ? "textColorUserStyle"
@@ -61,7 +62,7 @@ export function ColorControls({
     };
 
     const mapSettingInputs = (
-        setting: colorSetting,
+        setting: ColorSetting,
         index: number,
         isUser: boolean,
     ) => {
@@ -74,10 +75,10 @@ export function ColorControls({
             settingsKey: keyof Settings,
         ) => {
             const nextSettings = {
-                ...liveChanges,
+                ...liveSettings,
                 [settingsKey]: e.currentTarget.value,
             };
-            setLiveChanges(nextSettings);
+            setLiveSettings(nextSettings);
             sendMessageToTab(nextSettings);
             setIsEditing(true);
         };
@@ -87,7 +88,7 @@ export function ColorControls({
                 className={`text-center w-full rounded-md h-8`}
                 type="color"
                 id={`${settingsKey}`}
-                value={liveChanges[settingsKey]}
+                value={liveSettings[settingsKey]}
                 onChange={(e) => handleOnChange(e, settingsKey)}
             />
         );
