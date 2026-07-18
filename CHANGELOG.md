@@ -12,6 +12,8 @@
 -   Made scroll-to-top remount correctly when ChatGPT replaces its scroll container
 -   Made delete-all report success only after the ChatGPT UI flow completes
 -   Stopped delete-all polling from throwing forever when buttons never appear
+-   Restored the color controls' original visual layout while preserving their accessible names
+-   Restored popup button backgrounds after `type="button"` lost to Tailwind preflight specificity
 
 ### Changed
 
@@ -33,6 +35,7 @@
 -   Standardized test folders on `__tests__`; removed unused MessageEditor CSS and Tailwind tokens
 -   Improved popup control labeling and delete-all status announcements for assistive tech
 -   Stopped logging user settings and other noisy console messages in production paths
+-   Upgraded TypeScript to 4.9.5 and aligned `@types/node` to 24.x; bumped `ts-loader` for compatibility
 
 ## [1.2.3] - 2025-06-25
 

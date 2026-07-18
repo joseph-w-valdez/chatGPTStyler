@@ -1,4 +1,4 @@
-.bigRedBtn {
+button.bigRedBtn {
     @apply px-4;
     @apply py-2;
     @apply font-medium;
@@ -15,7 +15,7 @@
     @apply disabled:pointer-events-none;
 }
 
-.yesBtn {
+button.yesBtn {
     @apply px-4;
     @apply py-2;
     @apply font-medium;
@@ -30,7 +30,7 @@
     @apply disabled:bg-green-800/50;
 }
 
-.noBtn {
+button.noBtn {
     @apply px-4;
     @apply py-2;
     @apply font-medium;
