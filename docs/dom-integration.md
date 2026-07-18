@@ -79,23 +79,23 @@ Uses site design tokens in button classes (`border-token-border-light`, `bg-toke
 
 Comments in source note that selectors may need updates after domain HTML changes.
 
-| Step                   | Selector / action                                             |
-| ---------------------- | ------------------------------------------------------------- |
-| Detect history present | `div.group\\/sidebar > div:nth-child(3)` (must have children) |
-| Open profile           | `[aria-label="Open Profile Menu"]` via pointerdown/pointerup  |
-| Open settings          | `[data-testid="settings-menu-item"]` click                    |
-| Delete all             | `[data-testid="delete-all-chats-button"]` (polled)            |
-| Confirm                | `[data-testid="confirm-delete-all-chats-button"]` (polled)    |
+| Step                   | Selector / action                                              |
+| ---------------------- | -------------------------------------------------------------- |
+| Detect history present | `div.group\\/sidebar > div:nth-child(3)` (must have children)  |
+| Open profile           | `[aria-label="Open Profile Menu"]` via pointerdown/pointerup   |
+| Open settings          | `[data-testid="settings-menu-item"]` click                     |
+| Delete all             | `[data-testid="delete-all-chats-button"]` (awaited, timed out) |
+| Confirm                | `[data-testid="confirm-delete-all-chats-button"]` (awaited)    |
 
-Popup gate: active tab URL slice must equal `chatgpt.com` ([`DeleteAllChatsButton.tsx`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx)).
+Popup gate: active tab hostname is `chatgpt.com` / `*.chatgpt.com` ([`DeleteAllChatsButton.tsx`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx)). Automation uses bounded waits and always clears timers; SUCCESS is only returned after the confirm click.
 
 ## Message contracts that affect the page
 
-| Message                                   | Direction         | Content script effect                           |
-| ----------------------------------------- | ----------------- | ----------------------------------------------- |
-| `{ action: "updateStyles", arg: string }` | Popup → CS        | Replace `#custom-style` text                    |
-| `{ action: "deleteMessages" }`            | Popup → CS        | Run `deleteAllChats()`; respond SUCCESS/FAILURE |
-| `{ type: "SETTINGS_CHANGED", payload }`   | Background → tabs | **Not handled** by content script today         |
+| Message                                   | Direction         | Content script effect                                               |
+| ----------------------------------------- | ----------------- | ------------------------------------------------------------------- |
+| `{ action: "updateStyles", arg: string }` | Popup → CS        | Replace `#custom-style` text                                        |
+| `{ action: "deleteMessages" }`            | Popup → CS        | Run async `deleteAllChats()`; respond SUCCESS/FAILURE when finished |
+| `{ type: "SETTINGS_CHANGED", payload }`   | Background → tabs | **Not handled** by content script today                             |
 
 On load, CS still applies styles from `getOptionsFromStorage` → `buildCss(settings)`.
 

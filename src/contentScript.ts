@@ -24,16 +24,29 @@ getOptionsFromStorage(
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "updateStyles") {
         customStyle.textContent = request.arg;
-    } else if (request.action === "deleteMessages") {
-        console.log("Received Message From Popup: Deleting All Messages");
-        const deleteChats = deleteAllChats();
-        if (deleteChats && deleteChats.message === "No chat history found") {
-            sendResponse({ status: "FAILURE", message: deleteChats.message });
-        } else {
-            sendResponse({ status: "SUCCESS" });
-        }
+        return false;
     }
-    return true;
+
+    if (request.action === "deleteMessages") {
+        console.log("Received Message From Popup: Deleting All Messages");
+        deleteAllChats()
+            .then((result) => {
+                sendResponse(result);
+            })
+            .catch((error: unknown) => {
+                sendResponse({
+                    status: "FAILURE",
+                    message:
+                        error instanceof Error
+                            ? error.message
+                            : "Failed to delete chats",
+                });
+            });
+        // Keep the message channel open for the async response.
+        return true;
+    }
+
+    return false;
 });
 
 const syncLayoutHelpers = (): void => {
