@@ -1,4 +1,4 @@
-name: Build and Zip Artifacts on Tag Push
+name: Release
 
 on:
     push:
@@ -7,7 +7,6 @@ on:
 
 permissions:
     contents: read
-    actions: write
 
 jobs:
     validate:
@@ -80,3 +79,28 @@ jobs:
               with:
                   name: dist-${{ github.ref_name }}${{ matrix.suffix }}
                   path: dist-${{ github.ref_name }}${{ matrix.suffix }}.zip
+
+    release:
+        needs: build-and-archive
+        runs-on: ubuntu-latest
+
+        # Creating a release + uploading assets needs contents:write; downloading
+        # this run's artifacts needs actions:read.
+        permissions:
+            contents: write
+            actions: read
+
+        steps:
+            - name: Download build artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  path: artifacts
+                  merge-multiple: true
+
+            - name: Publish GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: artifacts/*.zip
+                  # Treat tags containing a hyphen (e.g. 1.2.4-RC1) as pre-releases.
+                  prerelease: ${{ contains(github.ref_name, '-') }}
+                  generate_release_notes: true

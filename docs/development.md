@@ -110,7 +110,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 ### Tag release artifacts
 
-Workflow: [`.github/workflows/release-artifacts.yml`](../.github/workflows/release-artifacts.yml).
+Workflow: [`.github/workflows/release.yml`](../.github/workflows/release.yml).
 
 -   **Trigger:** push of any git tag (`*`).
 -   **Steps:** same validation gates as PR CI, then `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.

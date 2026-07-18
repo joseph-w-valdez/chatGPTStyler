@@ -63,7 +63,7 @@ npm run lint         # ESLint --fix on src/**/*.ts*
 npm run prettify     # Prettier --write on src/**/*.ts*
 ```
 
-Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)). TypeScript is **4.9.5** with `@types/node` **24.x** (aligned to the runtime Node major).
+Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release.yml`](.github/workflows/release.yml)). TypeScript is **4.9.5** with `@types/node` **24.x** (aligned to the runtime Node major).
 
 ## Architecture (short)
 
