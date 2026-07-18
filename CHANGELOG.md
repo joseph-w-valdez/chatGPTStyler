@@ -38,6 +38,7 @@
 -   Upgraded TypeScript to 4.9.5 and aligned `@types/node` to 24.x; bumped `ts-loader` for compatibility
 -   Upgraded Jest to 29.7 with matching `ts-jest`, `@types/jest`, and `jest-environment-jsdom`
 -   Replaced `jest-css-modules` with `identity-obj-proxy` for CSS module mocks
+-   Upgraded React and ReactDOM to 18.3; migrated popup and content-script mounts to `createRoot`
 
 ## [1.2.3] - 2025-06-25
 

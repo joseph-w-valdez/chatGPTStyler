@@ -42,9 +42,9 @@
         "@types/chrome": "0.0.124",
         "@types/jest": "29.5.14",
         "@types/node": "24.13.3",
-        "@types/react": "17.0.75",
-        "@types/react-dom": "17.0.25",
-        "@types/react-test-renderer": "17.0.9",
+        "@types/react": "18.3.18",
+        "@types/react-dom": "18.3.5",
+        "@types/react-test-renderer": "18.3.1",
         "@typescript-eslint/eslint-plugin": "4.33.0",
         "@typescript-eslint/parser": "4.33.0",
         "autoprefixer": "10.4.27",
@@ -59,7 +59,7 @@
         "postcss": "8.5.19",
         "postcss-loader": "6.2.1",
         "prettier": "2.5.1",
-        "react-test-renderer": "17.0.2",
+        "react-test-renderer": "18.3.1",
         "style-loader": "3.3.4",
         "tailwindcss": "3.0.8",
         "ts-jest": "29.4.6",
@@ -70,8 +70,8 @@
         "webpack-merge": "5.10.0"
     },
     "dependencies": {
-        "react": "17.0.2",
-        "react-dom": "17.0.2"
+        "react": "18.3.1",
+        "react-dom": "18.3.1"
     },
     "overrides": {
         "braces": "3.0.3",

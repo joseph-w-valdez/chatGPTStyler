@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Popup } from "./Popup";
 import "../css/app.css";
 
@@ -9,7 +9,7 @@ const mountPopup = (): void => {
         console.error("Popup root #popup was not found");
         return;
     }
-    ReactDOM.render(<Popup />, root);
+    createRoot(root).render(<Popup />);
 };
 
 // popup.html historically loads js/popup.js in <head>, so wait for the body root.

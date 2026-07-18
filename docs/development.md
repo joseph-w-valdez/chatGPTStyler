@@ -38,7 +38,7 @@ Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf
 
 TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`, `skipLibCheck`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
 
-**Note:** Runtime is Node 24 with TypeScript **4.9.5** and `@types/node` **24.x**. Jest is on **29.x**. A TypeScript 5.x jump can wait for a dedicated PR (now unblocked by the Jest modernization).
+**Note:** Runtime is Node 24 with TypeScript **4.9.5**, React **18.3**, and `@types/node` **24.x**. Jest is on **29.x**. A TypeScript 5.x jump can wait for a dedicated PR.
 
 ## Loading the unpacked extension
 
