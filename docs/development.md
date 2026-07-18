@@ -27,12 +27,10 @@ From [`package.json`](../package.json):
 | `npm test` | Jest with [`jest.config.js`](../jest.config.js) |
 | `npm run lint` | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files) |
 | `npm run prettify` | Prettier **write** on `src/**/*.ts*` (mutates files) |
-| `npm run storybook` | Storybook on port **6006** |
-| `npm run build-storybook` | Static Storybook build |
 
 Check-only alternatives: `npx eslint -c ./.eslintrc.js "src/**/*.ts*"`, `npx prettier --check "src/**/*.ts*"`, `npx tsc --noEmit`.
 
-TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline expects `style-loader` (may be transitive only — keep that in mind if pruning dependencies).
+TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
 
 ## Loading the unpacked extension
 
@@ -55,7 +53,7 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 
 ## Project conventions for contributors
 
-- Colocate components with `component.tsx` / `index.tsx`, optional `styles.module.css`, `__tests__` or `__test__`, and `stories/`.
+- Colocate components with `component.tsx` / `index.tsx`, optional `styles.module.css`, and `__tests__` or `__test__`.
 - Prefer `@src/...` imports over deep relative paths across packages.
 - Do not commit secrets; this extension has no backend API keys by design.
 - Human process / CoC: [`CONTRIBUTING.md`](../CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](../CODE_OF_CONDUCT.md).
@@ -66,7 +64,6 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 - Runner: **Jest** + **ts-jest**.
 - Roots: `src/`.
 - Module maps: `@src/(.*)` → `src/$1`; CSS → `jest-css-modules`.
-- Stories excluded via `testPathIgnorePatterns: ["stories.tsx"]`.
 - Common patterns: `react-test-renderer` snapshots; some Enzyme `shallow` tests (MiscEditor).
 - Browser APIs: mock `webextension-polyfill` ([`src/__mocks__/webextension-polyfill.ts`](../src/__mocks__/webextension-polyfill.ts)); tests that hit `chrome.*` typically stub globals.
 
@@ -79,16 +76,6 @@ npm test
 Update snapshots intentionally when UI output changes (`jest -u` / accept in your workflow). Snapshot paths live next to tests under `__snapshots__/`.
 
 **Note:** Some suites currently fail without docs changes (missing Enzyme adapter for shallow tests, incomplete `webextension-polyfill` mock for `runtime.connect`, and brittle `findByType("button")` assumptions in DeleteAllChatsButton tests). Treat a green suite as a goal when touching those areas; do not assume `npm test` is fully green on a fresh clone.
-
-## Storybook
-
-Config: [`.storybook/main.js`](../.storybook/main.js), [`.storybook/preview.js`](../.storybook/preview.js).
-
-- Stories glob: `src/**/*.stories.tsx`.
-- Webpack 5 builder; CSS modules + `app.css` rules mirrored from the extension build.
-- `webextension-polyfill` is replaced with the mock under `src/__mocks__/`.
-
-Useful for iterating on popup controls without reloading the extension.
 
 ## Release / CI
 

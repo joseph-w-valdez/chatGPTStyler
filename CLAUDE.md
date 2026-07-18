@@ -40,7 +40,6 @@ npm install          # setup
 npm run dev          # webpack watch (development)
 npm run build        # production webpack → dist/js only
 npm test             # Jest
-npm run storybook    # Storybook on :6006
 ```
 
 Check-only validation (preferred during reviews — the package scripts below **mutate**):
@@ -76,12 +75,11 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ## Conventions
 
-- **Language / UI**: TypeScript + React 17. Prefer functional components and existing folder layout (`component.tsx` + `index.tsx` + `__tests__` / `stories`).
+- **Language / UI**: TypeScript + React 17. Prefer functional components and existing folder layout (`component.tsx` + `index.tsx` + `__tests__` / `__test__`).
 - **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
 - **Extension APIs**: Prefer patterns already in the file you touch. Popup uses `webextension-polyfill` in places; content/background/storage often use raw `chrome.*`. Do not “clean up” APIs across the codebase unless asked.
 - **Lint / format**: ESLint + Prettier ([`.eslintrc.js`](.eslintrc.js), [`.prettierrc.js`](.prettierrc.js)). Prefer check-only commands for validation; `npm run lint` / `npm run prettify` fix/write files.
-- **Tests**: Jest + `react-test-renderer` / Enzyme snapshots under `__tests__` / `__test__`. Mock `webextension-polyfill` via [`src/__mocks__/webextension-polyfill.ts`](src/__mocks__/webextension-polyfill.ts). Stories are ignored by Jest (`stories.tsx`). Some suites are currently broken (Enzyme adapter missing, incomplete polyfill mock); see [docs/development.md](docs/development.md).
-- **Storybook**: Colocate `*.stories.tsx`; polyfill is mocked in [`.storybook/main.js`](.storybook/main.js). Dependency majors are mixed (6.x / 7.x) — avoid casual Storybook upgrades.
+- **Tests**: Jest + `react-test-renderer` / Enzyme snapshots under `__tests__` / `__test__`. Mock `webextension-polyfill` via [`src/__mocks__/webextension-polyfill.ts`](src/__mocks__/webextension-polyfill.ts). Some suites are currently broken (Enzyme adapter missing, incomplete polyfill mock); see [docs/development.md](docs/development.md).
 
 ## Extension constraints (do not ignore)
 
@@ -99,7 +97,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 2. Update `defaultSettings` in [`data.ts`](src/shared/utils/data.ts).
 3. Add / adjust a `settingsController` entry and concatenation in [`stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts).
 4. Wire UI controls (usually MessageEditor sliders/colors or FormButtons).
-5. Update tests/snapshots/stories that embed settings objects.
+5. Update tests/snapshots that embed settings objects.
 6. Manually verify: load unpacked extension → change value → live preview on chatgpt.com → Save → reload page → style persists.
 
 ### Chrome messaging
@@ -128,7 +126,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 - Do not use `npm run lint` / `npm run prettify` as read-only checks.
 - Do not edit `yarn.lock` unless deliberately changing package-manager policy; prefer npm.
 - Do not add exploit-style or broad DOM scraping beyond existing feature needs.
-- Do not rewrite the build to a new bundler or broadly upgrade React/Jest/Storybook/Node without an explicit request.
+- Do not rewrite the build to a new bundler or broadly upgrade React/Jest/Node without an explicit request.
 
 ## Further reading
 
