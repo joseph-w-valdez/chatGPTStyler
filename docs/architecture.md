@@ -60,7 +60,7 @@ Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) 
 - Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
 - Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 
-**Note:** `HomeMenu` and `MiscEditor` are still imported in `component.tsx` but are **not rendered**. Multi-page navigation was removed in changelog `1.1.0`; those views remain for tests/Storybook and possible restoration.
+**Note:** `HomeMenu` and `MiscEditor` are still imported in `component.tsx` but are **not rendered**. Multi-page navigation was removed in changelog `1.1.0`; those views remain for tests and possible restoration.
 
 ### Background service worker
 

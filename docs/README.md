@@ -18,7 +18,7 @@ Primary agent entry point: [`../CLAUDE.md`](../CLAUDE.md).
 |-----|----------|
 | [architecture.md](architecture.md) | Entry points, MV3 wiring, module map, messaging & persistence flows, known caveats |
 | [features-and-settings.md](features-and-settings.md) | User-facing features, settings model, live preview / save / cancel, CSS generation |
-| [development.md](development.md) | Setup, scripts, loading unpacked builds, tests, Storybook, release CI |
+| [development.md](development.md) | Setup, scripts, loading unpacked builds, tests, release CI |
 | [dom-integration.md](dom-integration.md) | ChatGPT DOM selectors, class mutations, selector-breakage checklist |
 
 ## Source layout (summary)
