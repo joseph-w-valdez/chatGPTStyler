@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
-import { updateStyles } from "./shared/utils";
+import { buildCss } from "./shared/utils";
 import { removeUnnecessarySpace } from "@src/lib/utilities";
 
 console.log("Content script loaded.");
@@ -12,7 +12,7 @@ customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
 
 getOptionsFromStorage(
-    (settings) => (customStyle.textContent = updateStyles(settings)),
+    (settings) => (customStyle.textContent = buildCss(settings)),
 );
 
 // listening for messages from the background script or popup

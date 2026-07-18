@@ -7,7 +7,6 @@ import { FormButtons } from "@src/components/formButtons/FormButtons";
 
 jest.mock("@src/shared/utils", () => ({
     sendMessageToTab: jest.fn(),
-    loadSettings: jest.fn(),
 }));
 
 describe("MessageEditor Component", () => {

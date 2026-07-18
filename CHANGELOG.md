@@ -7,6 +7,12 @@
 -   Cancel now restores the last saved settings instead of built-in defaults
 -   Prevented a race where closing the popup before settings finished loading could overwrite saved options with defaults
 -   Merged stored settings with defaults so missing keys from older installs are filled in
+-   Applied `messageButtonsVisibilityStyle: false` correctly after settings reload
+
+### Changed
+
+-   Made CSS generation deterministic by building styles from the complete settings object
+-   Added regression coverage for generated CSS and boolean settings
 
 ## [1.2.3] - 2025-06-25
 

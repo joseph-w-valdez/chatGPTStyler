@@ -4,50 +4,50 @@ ChatGPT Styler depends heavily on ChatGPT’s page structure. When OpenAI change
 
 ## Why this is fragile
 
-- Content script CSS targets deep, often nth-child-based selectors.
-- Delete-all **clicks through ChatGPT’s own UI** rather than calling an official API.
-- Layout helpers **remove site classes** by name (`max-w-(--thread-content-max-width)`, `items-end`, etc.).
-- Remount / cleanup runs on a **1-second interval**, so broken selectors may fail quietly until you inspect the page.
+-   Content script CSS targets deep, often nth-child-based selectors.
+-   Delete-all **clicks through ChatGPT’s own UI** rather than calling an official API.
+-   Layout helpers **remove site classes** by name (`max-w-(--thread-content-max-width)`, `items-end`, etc.).
+-   Remount / cleanup runs on a **1-second interval**, so broken selectors may fail quietly until you inspect the page.
 
 Always prefer updating selectors in the smallest surface that broke, then smoke-test light + dark themes.
 
 ## Files that touch the DOM
 
-| File | Responsibility |
-|------|----------------|
-| [`src/contentScript.ts`](../src/contentScript.ts) | Style tag, message listeners, mount loop, query for containers |
-| [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) | CSS selectors for conversation turns, form, composer |
-| [`src/lib/utilities/removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | ClassList removals on message / input containers |
-| [`src/lib/utilities/deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts) | Profile → Settings → delete-all automation |
-| [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx) | Scroll container + injected button |
+| File                                                                                            | Responsibility                                                 |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [`src/contentScript.ts`](../src/contentScript.ts)                                               | Style tag, message listeners, mount loop, query for containers |
+| [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)               | CSS selectors for conversation turns, form, composer           |
+| [`src/lib/utilities/removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | ClassList removals on message / input containers               |
+| [`src/lib/utilities/deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → delete-all automation                     |
+| [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx)   | Scroll container + injected button                             |
 
 ## Selector catalog
 
 ### Content script mount & layout ([`contentScript.ts`](../src/contentScript.ts))
 
-| Purpose | Selector / target |
-|---------|-------------------|
-| Style injection | `#custom-style` created under `document.head` |
+| Purpose              | Selector / target                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| Style injection      | `#custom-style` created under `document.head`                                      |
 | User text containers | `[data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > * > * > div` |
-| Input box container | `#thread-bottom > * > div` |
-| Scroll-to-top parent | `div[role="presentation"] > div > div > div > div` |
-| Mount node id | `#scroll-to-top-mount` |
+| Input box container  | `#thread-bottom > * > div`                                                         |
+| Scroll-to-top parent | `div[role="presentation"] > div > div > div > div`                                 |
+| Mount node id        | `#scroll-to-top-mount`                                                             |
 
 ### Generated CSS root ([`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts))
 
-| Purpose | Selector pattern |
-|---------|------------------|
-| All message bubbles | `[data-testid^="conversation-turn-"]` (variable `messageBubbles`) |
-| User bubble background | `...:nth-child(odd) > * > *` |
-| Assistant bubble background | `...:nth-child(even) > * > *` |
-| User text color | `:nth-child(odd) .bg-token-message-surface` |
-| Assistant text color | Even turns: nested `div`, `p`, lists, code, headings |
-| Message max-width / padding / radius | `${messageBubbles} > * > div` |
-| Input form width | `form` |
-| Message action buttons visibility | `${messageBubbles} button` |
-| Code / composer helpers | nth-child(2) under bubbles; `#composer-submit-button` |
-| Default surface / edit UI | `.bg-token-message-surface`, `.hidden`, `.bg-token-main-surface-tertiary` |
-| Input chrome resets | `main > [role="presentation"] > div:nth-child(2) > ...` |
+| Purpose                              | Selector pattern                                                          |
+| ------------------------------------ | ------------------------------------------------------------------------- |
+| All message bubbles                  | `[data-testid^="conversation-turn-"]` (variable `messageBubbles`)         |
+| User bubble background               | `...:nth-child(odd) > * > *`                                              |
+| Assistant bubble background          | `...:nth-child(even) > * > *`                                             |
+| User text color                      | `:nth-child(odd) .bg-token-message-surface`                               |
+| Assistant text color                 | Even turns: nested `div`, `p`, lists, code, headings                      |
+| Message max-width / padding / radius | `${messageBubbles} > * > div`                                             |
+| Input form width                     | `form`                                                                    |
+| Message action buttons visibility    | `${messageBubbles} button`                                                |
+| Code / composer helpers              | nth-child(2) under bubbles; `#composer-submit-button`                     |
+| Default surface / edit UI            | `.bg-token-message-surface`, `.hidden`, `.bg-token-main-surface-tertiary` |
+| Input chrome resets                  | `main > [role="presentation"] > div:nth-child(2) > ...`                   |
 
 Odd/even turn indexing assumes ChatGPT’s conversation list order; if that order flips, colors appear swapped (historically fixed in changelog entries).
 
@@ -55,22 +55,22 @@ Odd/even turn indexing assumes ChatGPT’s conversation list order; if that orde
 
 **On input box container:**
 
-- `max-w-(--thread-content-max-width)`
-- `gap-4`, `md:gap-5`, `lg:gap-6`
+-   `max-w-(--thread-content-max-width)`
+-   `gap-4`, `md:gap-5`, `lg:gap-6`
 
 **On each user text container:**
 
-- `items-end`
-- First child: `px-5`
+-   `items-end`
+-   First child: `px-5`
 
 If ChatGPT renames these utilities, cleanup becomes a no-op and widths may look constrained again.
 
 ### Scroll to top ([`scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx))
 
-| Purpose | Selector |
-|---------|----------|
-| Scroll parent | Same presentation chain as content script: `div[role="presentation"] > div > div > div > div` |
-| Injected button id | `#scroll-to-top-btn` |
+| Purpose            | Selector                                                                                      |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| Scroll parent      | Same presentation chain as content script: `div[role="presentation"] > div > div > div > div` |
+| Injected button id | `#scroll-to-top-btn`                                                                          |
 
 Uses site design tokens in button classes (`border-token-border-light`, `bg-token-main-surface-primary`, etc.) so the control blends with ChatGPT chrome.
 
@@ -78,25 +78,25 @@ Uses site design tokens in button classes (`border-token-border-light`, `bg-toke
 
 Comments in source note that selectors may need updates after domain HTML changes.
 
-| Step | Selector / action |
-|------|-------------------|
+| Step                   | Selector / action                                             |
+| ---------------------- | ------------------------------------------------------------- |
 | Detect history present | `div.group\\/sidebar > div:nth-child(3)` (must have children) |
-| Open profile | `[aria-label="Open Profile Menu"]` via pointerdown/pointerup |
-| Open settings | `[data-testid="settings-menu-item"]` click |
-| Delete all | `[data-testid="delete-all-chats-button"]` (polled) |
-| Confirm | `[data-testid="confirm-delete-all-chats-button"]` (polled) |
+| Open profile           | `[aria-label="Open Profile Menu"]` via pointerdown/pointerup  |
+| Open settings          | `[data-testid="settings-menu-item"]` click                    |
+| Delete all             | `[data-testid="delete-all-chats-button"]` (polled)            |
+| Confirm                | `[data-testid="confirm-delete-all-chats-button"]` (polled)    |
 
 Popup gate: active tab URL slice must equal `chatgpt.com` ([`DeleteAllChatsButton.tsx`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx)).
 
 ## Message contracts that affect the page
 
-| Message | Direction | Content script effect |
-|---------|-----------|------------------------|
-| `{ action: "updateStyles", arg: string }` | Popup → CS | Replace `#custom-style` text |
-| `{ action: "deleteMessages" }` | Popup → CS | Run `deleteAllChats()`; respond SUCCESS/FAILURE |
-| `{ type: "SETTINGS_CHANGED", payload }` | Background → tabs | **Not handled** by content script today |
+| Message                                   | Direction         | Content script effect                           |
+| ----------------------------------------- | ----------------- | ----------------------------------------------- |
+| `{ action: "updateStyles", arg: string }` | Popup → CS        | Replace `#custom-style` text                    |
+| `{ action: "deleteMessages" }`            | Popup → CS        | Run `deleteAllChats()`; respond SUCCESS/FAILURE |
+| `{ type: "SETTINGS_CHANGED", payload }`   | Background → tabs | **Not handled** by content script today         |
 
-On load, CS still applies styles from `getOptionsFromStorage` → `updateStyles(settings)`.
+On load, CS still applies styles from `getOptionsFromStorage` → `buildCss(settings)`.
 
 ## Selector-update verification checklist
 
@@ -115,14 +115,14 @@ Use this after ChatGPT UI changes or when touching any file above.
 
 ## Debugging tips
 
-- In DevTools on chatgpt.com, inspect `#custom-style` — its text content is the exact CSS the extension applied.
-- Log lines: content script prints `"Content script loaded."`; delete path logs popup ↔ CS messages.
-- If live preview “does nothing,” confirm the **active** tab is ChatGPT (popup messaging targets the active tab only).
-- If Save works after reload but not live, check `sendMessageToTab` / content-script listener; if live works but reload loses styles, check `chrome.storage.sync` `options` and background disconnect save.
+-   In DevTools on chatgpt.com, inspect `#custom-style` — its text content is the exact CSS the extension applied.
+-   Log lines: content script prints `"Content script loaded."`; delete path logs popup ↔ CS messages.
+-   If live preview “does nothing,” confirm the **active** tab is ChatGPT (popup messaging targets the active tab only).
+-   If Save works after reload but not live, check `sendMessageToTab` / content-script listener; if live works but reload loses styles, check `chrome.storage.sync` `options` and background disconnect save.
 
 ## Related docs
 
-- [architecture.md](architecture.md)
-- [features-and-settings.md](features-and-settings.md)
-- [development.md](development.md)
-- [../CLAUDE.md](../CLAUDE.md)
+-   [architecture.md](architecture.md)
+-   [features-and-settings.md](features-and-settings.md)
+-   [development.md](development.md)
+-   [../CLAUDE.md](../CLAUDE.md)

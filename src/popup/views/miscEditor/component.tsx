@@ -30,15 +30,13 @@ export function MiscEditor({
                         type="checkbox"
                         checked={liveSettings.messageButtonsVisibilityStyle}
                         onChange={() => {
-                            setLiveSettings({
+                            const nextSettings = {
                                 ...liveSettings,
                                 messageButtonsVisibilityStyle:
                                     !liveSettings.messageButtonsVisibilityStyle,
-                            });
-                            sendMessageToTab(
-                                "messageButtonsVisibilityStyle",
-                                !liveSettings.messageButtonsVisibilityStyle,
-                            );
+                            };
+                            setLiveSettings(nextSettings);
+                            sendMessageToTab(nextSettings);
                             setIsEditing(true);
                         }}
                         className=" hover:cursor-pointer"

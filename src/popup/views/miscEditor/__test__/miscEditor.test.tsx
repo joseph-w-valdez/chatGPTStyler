@@ -48,9 +48,10 @@ describe("MiscEditor Component", () => {
                 !defaultProps.liveSettings.messageButtonsVisibilityStyle,
         });
 
-        expect(sendMessageToTab).toHaveBeenCalledWith(
-            "messageButtonsVisibilityStyle",
-            !defaultProps.liveSettings.messageButtonsVisibilityStyle,
-        );
+        expect(sendMessageToTab).toHaveBeenCalledWith({
+            ...defaultProps.liveSettings,
+            messageButtonsVisibilityStyle:
+                !defaultProps.liveSettings.messageButtonsVisibilityStyle,
+        });
     });
 });
