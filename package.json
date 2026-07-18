@@ -12,8 +12,12 @@
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack -w --config webpack.dev.js",
         "test": "jest --config=jest.config.js",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint --fix -c ./.eslintrc.js \"src/**/*.ts*\"",
-        "prettify": "prettier --write \"src/**/*.ts*\""
+        "lint:check": "eslint -c ./.eslintrc.js \"src/**/*.ts*\"",
+        "prettify": "prettier --write \"src/**/*.ts*\"",
+        "format:check": "prettier --check \"src/**/*.ts*\"",
+        "validate": "npm run typecheck && npm run lint:check && npm run format:check"
     },
     "repository": {
         "type": "git",

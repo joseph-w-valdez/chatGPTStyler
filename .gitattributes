@@ -1,0 +1,17 @@
+# Normalize all text files to LF in the repo and on checkout.
+# This makes line endings consistent across Windows/macOS/Linux and
+# keeps Prettier/ESLint from flagging CRLF (`Delete ␍`) on Windows clones.
+* text=auto eol=lf
+
+# Explicitly treat common binary assets as binary (never touch line endings).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary

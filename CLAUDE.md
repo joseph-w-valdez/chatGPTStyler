@@ -44,12 +44,13 @@ npm run build      # production webpack → dist/js only
 npm test           # Jest
 ```
 
-Check-only validation (preferred during reviews — the package scripts below **mutate**):
+Check-only validation (preferred during reviews):
 
 ```bash
-npx eslint -c ./.eslintrc.js "src/**/*.ts*"
-npx prettier --check "src/**/*.ts*"
-npx tsc --noEmit
+npm run typecheck      # tsc --noEmit
+npm run lint:check     # ESLint (no --fix)
+npm run format:check   # Prettier --check
+npm run validate       # typecheck + lint:check + format:check
 ```
 
 Mutating scripts (use when you intend to fix style):

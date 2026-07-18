@@ -8,10 +8,8 @@ import {
     getOptionsFromStorage,
 } from "@src/lib/utilities/googleStorage";
 import { MessageEditor } from "./views/messageEditor";
-import { HomeMenu } from "./views/homeMenu";
 import { defaultSettings } from "@src/shared/utils/data";
 import { loadSettings } from "@src/shared/utils";
-import { MiscEditor } from "./views/miscEditor/component";
 
 const port = browser.runtime.connect({ name: "popup" });
 
@@ -52,7 +50,7 @@ export function Popup(): JSX.Element {
 
     // Renders the component tree
     return (
-            <div className={css.popupContainer}>
+        <div className={css.popupContainer}>
             <div className="w-full">
                 <Header page={page} setPage={setPage} />
                 <hr className="mb-2" />
