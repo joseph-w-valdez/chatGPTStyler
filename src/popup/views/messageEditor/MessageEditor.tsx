@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Settings } from "@src/shared/settings";
-import { ColorControls } from "./components/colorControl/component";
+import { ColorControls } from "./components/colorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/messageSliderControls";
 import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
@@ -9,6 +9,7 @@ export interface MessageEditorProps {
     liveSettings: Settings;
     setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
 }
+
 export function MessageEditor({
     liveSettings,
     setLiveSettings,
@@ -33,13 +34,13 @@ export function MessageEditor({
             }`}
         >
             <MessageSliderControls
-                setLiveChanges={setLiveSettings}
-                liveChanges={liveSettings}
+                setLiveSettings={setLiveSettings}
+                liveSettings={liveSettings}
                 setIsEditing={setIsEditing}
             />
             <ColorControls
-                setLiveChanges={setLiveSettings}
-                liveChanges={liveSettings}
+                setLiveSettings={setLiveSettings}
+                liveSettings={liveSettings}
                 setIsEditing={setIsEditing}
             />
             <FormButtons

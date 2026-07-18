@@ -27,6 +27,10 @@
 -   Hardened live-preview tab messaging against missing tabs / `runtime.lastError`
 -   Fixed popup mount so React waits for `#popup` (script no longer races ahead of the DOM)
 -   Colocated the `Settings` model and defaults; renamed the Chrome storage adapter for clearer ownership
+-   Standardized popup prop naming on `liveSettings` / `setLiveSettings`
+-   Renamed popup views to named files (`Popup`, `MessageEditor`, `ColorControls`, `MessageSliderControls`)
+-   Renamed `colorControl` → `colorControls` and `scrollToTop.tsx` → `ScrollToTop.tsx`
+-   Standardized test folders on `__tests__`; removed unused MessageEditor CSS and Tailwind tokens
 
 ## [1.2.3] - 2025-06-25
 

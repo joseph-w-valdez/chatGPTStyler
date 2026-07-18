@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
+import { ScrollToTop } from "./components/scrollToTop/ScrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { buildCss } from "./shared/utils";
 import { removeUnnecessarySpace } from "@src/lib/utilities";

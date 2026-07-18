@@ -2,18 +2,17 @@ import { Settings } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 
-export interface SliderControlsProps {
-    setLiveChanges: React.Dispatch<React.SetStateAction<Settings>>;
-    liveChanges: Settings;
+export interface MessageSliderControlsProps {
+    setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
+    liveSettings: Settings;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export type colorSetting = "messageColor" | "textColor";
 
 export function MessageSliderControls({
-    setLiveChanges,
-    liveChanges,
+    setLiveSettings,
+    liveSettings,
     setIsEditing,
-}: SliderControlsProps): JSX.Element {
+}: MessageSliderControlsProps): JSX.Element {
     // using this to create data we need so we can map through and have clean callback
     class InputSetting {
         name = "";
@@ -65,11 +64,11 @@ export function MessageSliderControls({
                 let currValue = e.target.value;
                 if (Number(currValue) > 100) currValue = "100";
                 const nextSettings = {
-                    ...liveChanges,
+                    ...liveSettings,
                     [settingKey]: currValue,
                 };
                 setIsEditing(true);
-                setLiveChanges(nextSettings);
+                setLiveSettings(nextSettings);
                 sendMessageToTab(nextSettings);
             }
         };
@@ -90,7 +89,7 @@ export function MessageSliderControls({
                         style={{
                             backgroundColor: `${setting.bgColor}, 0.1)`,
                         }}
-                        value={liveChanges[setting.id].toString()}
+                        value={liveSettings[setting.id].toString()}
                         id={setting.id}
                         onChange={(e) => handleOnChange(e, setting.id)}
                     ></input>
@@ -98,7 +97,7 @@ export function MessageSliderControls({
                         type="range"
                         min="1"
                         max="100"
-                        value={liveChanges[setting.id].toString()}
+                        value={liveSettings[setting.id].toString()}
                         className="absolute w-full h-0.5 left-0 bottom-0"
                         onChange={(e) => handleOnChange(e, setting.id)}
                         step={"1"}

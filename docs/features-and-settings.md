@@ -68,8 +68,8 @@ flowchart TD
 
 ### Control behavior
 
--   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/component.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
--   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControl/component.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
+-   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/MessageSliderControls.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
+-   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControls/ColorControls.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
 -   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
     -   **Restore Defaults** — set live state to `defaultSettings`, preview via `sendMessageToTab(defaultSettings)`, leave `isEditing` true.
     -   **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.
@@ -103,7 +103,7 @@ Content script applies `arg` as `customStyle.textContent` — it does not re-par
 
 ## Scroll to top
 
-[`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx), mounted by the content script:
+[`src/components/scrollToTop/ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx), mounted by the content script:
 
 -   Finds ChatGPT’s scroll container under `div[role="presentation"] > ...`.
 -   Shows a circular button when `scrollTop !== 0`.
