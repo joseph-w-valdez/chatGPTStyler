@@ -16,7 +16,10 @@ export const getOptionsFromStorage = (
     callback: (options: SettingsType) => void,
 ): void => {
     chrome.storage.sync.get(["options"], (result) => {
-        const options = result.options || { ...defaultSettings };
+        const options: SettingsType = {
+            ...defaultSettings,
+            ...(result.options || {}),
+        };
         callback(options);
         console.log("GETTING OPTIONS FROM STORAGE", options);
     });

@@ -17,11 +17,12 @@ export function Popup(): JSX.Element {
     const [liveSettings, setLiveSettings] = useState<SettingsType>({
         ...defaultSettings,
     });
+    const [settingsLoaded, setSettingsLoaded] = useState(false);
     const [page, setPage] = useState<string>("Home");
 
     const sendSettingsToBackground = (updatedSettings: SettingsType) => {
         try {
-            console.log("sending settings to background", liveSettings);
+            console.log("sending settings to background", updatedSettings);
             port.postMessage({
                 type: "updateSettings",
                 settings: updatedSettings,
@@ -31,9 +32,12 @@ export function Popup(): JSX.Element {
         }
     };
 
+    // Only mirror settings to the background after storage has loaded.
+    // Avoids saving defaultSettings if the popup closes during the initial race.
     useEffect(() => {
+        if (!settingsLoaded) return;
         sendSettingsToBackground(liveSettings);
-    }, [liveSettings]);
+    }, [liveSettings, settingsLoaded]);
 
     useEffect(() => {
         port.postMessage({ popupOpened: true });
@@ -41,6 +45,7 @@ export function Popup(): JSX.Element {
         getOptionsFromStorage((savedOptions) => {
             setLiveSettings(savedOptions);
             loadSettings(savedOptions);
+            setSettingsLoaded(true);
             console.log("loaded options from storage", savedOptions);
         });
         return () => {

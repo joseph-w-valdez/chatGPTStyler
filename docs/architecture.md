@@ -26,14 +26,14 @@ flowchart LR
 
 Source of truth in-repo: [`dist/manifest.json`](../dist/manifest.json).
 
-| Manifest field | Value / meaning |
-|----------------|-----------------|
-| `manifest_version` | `3` |
-| `action.default_popup` | `popup.html` → loads `js/popup.js` |
-| `background.service_worker` | `js/backgroundPage.js` |
-| `content_scripts` | `js/contentScript.js` on `*://chatgpt.com/*` |
-| `host_permissions` | `*://chatgpt.com/*` |
-| `permissions` | `activeTab`, `storage` |
+| Manifest field              | Value / meaning                              |
+| --------------------------- | -------------------------------------------- |
+| `manifest_version`          | `3`                                          |
+| `action.default_popup`      | `popup.html` → loads `js/popup.js`           |
+| `background.service_worker` | `js/backgroundPage.js`                       |
+| `content_scripts`           | `js/contentScript.js` on `*://chatgpt.com/*` |
+| `host_permissions`          | `*://chatgpt.com/*`                          |
+| `permissions`               | `activeTab`, `storage`                       |
 
 Webpack does **not** copy or generate the manifest. Static files under `dist/` (manifest, `popup.html`, icons) are maintained alongside built JS in `dist/js/`.
 
@@ -41,11 +41,11 @@ Webpack does **not** copy or generate the manifest. Static files under `dist/` (
 
 Defined in [`webpack.common.js`](../webpack.common.js):
 
-| Entry key | Source | Output |
-|-----------|--------|--------|
+| Entry key        | Source                                              | Output                      |
+| ---------------- | --------------------------------------------------- | --------------------------- |
 | `backgroundPage` | [`src/backgroundPage.ts`](../src/backgroundPage.ts) | `dist/js/backgroundPage.js` |
-| `popup` | [`src/popup/index.tsx`](../src/popup/index.tsx) | `dist/js/popup.js` |
-| `contentScript` | [`src/contentScript.ts`](../src/contentScript.ts) | `dist/js/contentScript.js` |
+| `popup`          | [`src/popup/index.tsx`](../src/popup/index.tsx)     | `dist/js/popup.js`          |
+| `contentScript`  | [`src/contentScript.ts`](../src/contentScript.ts)   | `dist/js/contentScript.js`  |
 
 Shared modules (`@src/...`) are bundled into each entry that imports them. Alias `@src` → `src/`.
 
@@ -55,23 +55,23 @@ Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) 
 
 ### Popup
 
-- [`src/popup/index.tsx`](../src/popup/index.tsx) — mounts `<Popup />` into `#popup`, imports global CSS.
-- [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, opens a long-lived `runtime.connect({ name: "popup" })` port, loads storage on mount, posts every `liveSettings` change to the background, renders **MessageEditor** (not HomeMenu).
-- Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
-- Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
+-   [`src/popup/index.tsx`](../src/popup/index.tsx) — mounts `<Popup />` into `#popup`, imports global CSS.
+-   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, opens a long-lived `runtime.connect({ name: "popup" })` port, loads storage on mount, and posts `liveSettings` changes to the background after the initial load completes. It renders **MessageEditor** (not HomeMenu).
+-   Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
+-   Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 
-**Note:** `HomeMenu` and `MiscEditor` are still imported in `component.tsx` but are **not rendered**. Multi-page navigation was removed in changelog `1.1.0`; those views remain for tests and possible restoration.
+**Note:** `HomeMenu` and `MiscEditor` are retained in the source tree but are not imported or rendered by the live popup. Multi-page navigation was removed in changelog `1.1.0`; those views remain for tests and possible restoration.
 
 ### Background service worker
 
 [`src/backgroundPage.ts`](../src/backgroundPage.ts):
 
-1. Keeps `currentSettings` in memory (starts as `defaultSettings`).
+1. Seeds `currentSettings` from storage when the popup connects.
 2. Listens for `chrome.runtime.onConnect` with port name `"popup"`.
 3. On `message.type === 'updateSettings'`, updates `currentSettings`.
-4. On port disconnect (popup closed), calls `saveOptionsToStorage(currentSettings)`.
+4. On port disconnect (popup closed), saves only after settings have been loaded or received.
 
-This is the “save when popup closes” path. Explicit Save in the UI also writes storage (see caveats).
+This is the intentional “save when popup closes” path. Explicit Save in the UI also writes storage, allowing users to persist immediately without closing the popup.
 
 ### Content script
 
@@ -80,19 +80,19 @@ This is the “save when popup closes” path. Explicit Save in the UI also writ
 1. Creates `<style id="custom-style">` in `document.head`.
 2. Loads options from storage and sets `customStyle.textContent = updateStyles(settings)`.
 3. Listens for runtime messages:
-   - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
-   - `action === "deleteMessages"` → run `deleteAllChats()`, respond SUCCESS/FAILURE.
+    - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
+    - `action === "deleteMessages"` → run `deleteAllChats()`, respond SUCCESS/FAILURE.
 4. Periodically (every 1s) runs layout cleanup (`removeUnnecessarySpace`) and mounts `ScrollToTop` into ChatGPT’s presentation container if missing.
 
 ### Shared styling & storage
 
-| Module | Role |
-|--------|------|
-| [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts) | `SettingsType`, get/set `options` under `chrome.storage.sync` |
-| [`data.ts`](../src/shared/utils/data.ts) | `defaultSettings` |
-| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) | `loadSettings`, `updateStyles`, `sendMessageToTab` |
-| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts) | Profile menu → Settings → delete-all click sequence |
-| [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width |
+| Module                                                                        | Role                                                          |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts)                   | `SettingsType`, get/set `options` under `chrome.storage.sync` |
+| [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                             |
+| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | `loadSettings`, `updateStyles`, `sendMessageToTab`            |
+| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence           |
+| [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width           |
 
 ## Communication flows
 
@@ -102,10 +102,10 @@ This is the “save when popup closes” path. Explicit Save in the UI also writ
 2. Control updates React state and calls `sendMessageToTab(settingKey, value)`.
 3. `sendMessageToTab` rebuilds the full CSS string via `updateStyles`, then:
 
-   ```ts
-   chrome.tabs.query({ active: true, currentWindow: true }, ...)
-   chrome.tabs.sendMessage(tabId, { action: "updateStyles", arg: cssTextContent })
-   ```
+    ```ts
+    chrome.tabs.query({ active: true, currentWindow: true }, ...)
+    chrome.tabs.sendMessage(tabId, { action: "updateStyles", arg: cssTextContent })
+    ```
 
 4. Content script writes the string into `#custom-style`.
 
@@ -115,12 +115,14 @@ This is the “save when popup closes” path. Explicit Save in the UI also writ
 
 Two paths write `chrome.storage.sync`:
 
-| Path | Trigger | Code |
-|------|---------|------|
-| Explicit Save | FormButtons Save | `saveOptionsToStorage(liveSettings)` |
-| Popup close | Port disconnect | Background `saveOptionsToStorage(currentSettings)` |
+| Path          | Trigger          | Code                                               |
+| ------------- | ---------------- | -------------------------------------------------- |
+| Explicit Save | FormButtons Save | `saveOptionsToStorage(liveSettings)`               |
+| Popup close   | Port disconnect  | Background `saveOptionsToStorage(currentSettings)` |
 
 `saveOptionsToStorage` also broadcasts `{ type: "SETTINGS_CHANGED", payload: options }` to all tabs. The content script **does not** listen for `SETTINGS_CHANGED` today; it only applies styles on load and via `updateStyles` messages. See caveats.
+
+Cancel restores the settings last loaded from storage or explicitly saved during the current popup session. Closing the popup without pressing Save intentionally persists the current live settings.
 
 ### Delete all conversations
 
@@ -146,9 +148,9 @@ sequenceDiagram
 
 ## Persistence model
 
-- Key: `options` in `chrome.storage.sync`.
-- Shape: [`SettingsType`](../src/lib/utilities/googleStorage.ts) (string numeric-looking values for widths/padding/radius; hex colors; one boolean for button visibility).
-- Defaults: [`defaultSettings`](../src/shared/utils/data.ts) when storage is empty.
+-   Key: `options` in `chrome.storage.sync`.
+-   Shape: [`SettingsType`](../src/lib/utilities/googleStorage.ts) (string numeric-looking values for widths/padding/radius; hex colors; one boolean for button visibility).
+-   Defaults: [`defaultSettings`](../src/shared/utils/data.ts), merged with storage so new/missing keys receive defaults.
 
 ## Known implementation caveats
 
@@ -157,14 +159,12 @@ These are **current code realities**, not goals:
 1. **Unused navigation UI** — `page` / `setPage` state and Header “Back” exist, but MessageEditor is always shown; HomeMenu/MiscEditor are dead runtime paths.
 2. **`SETTINGS_CHANGED` unused** — storage saver notifies tabs with `type: "SETTINGS_CHANGED"`; content script listens for `action: "updateStyles"` / `"deleteMessages"` only. Other tabs/pages do not auto-refresh from that broadcast.
 3. **Unmatched handshake messages** — content script sends `{ message: "Content script active" }` expecting `response.reply`, and the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
-4. **Dual save paths** — Save button writes immediately; closing the popup also saves whatever the background last received. Closing without Save can still persist live edits via the background path.
-5. **Race: Cancel vs async load** — MessageEditor initializes `savedSettings` from the first `liveSettings` prop (defaults). Storage loads asynchronously into `Popup`. Cancel before/without a Save can restore defaults instead of the previously persisted options.
-6. **Race: disconnect before load** — background `currentSettings` starts as `defaultSettings`. If the popup connects and disconnects before any `updateSettings` (or before the popup finishes loading storage), disconnect save may write defaults over stored options.
-7. **Delete button UX vs response** — DeleteAllChatsButton sets success after sending the message and does not reliably wait for / surface the content-script FAILURE response in all cases. Inside `deleteAllChats`, errors thrown from `setInterval` callbacks are outside the outer `try/catch`.
-8. **DOM fragility** — Styling and delete-all depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
+4. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
+5. **Delete button UX vs response** — DeleteAllChatsButton sets success after sending the message and does not reliably wait for / surface the content-script FAILURE response in all cases. Inside `deleteAllChats`, errors thrown from `setInterval` callbacks are outside the outer `try/catch`.
+6. **DOM fragility** — Styling and delete-all depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
 
 ## Related docs
 
-- [features-and-settings.md](features-and-settings.md)
-- [development.md](development.md)
-- [../CLAUDE.md](../CLAUDE.md)
+-   [features-and-settings.md](features-and-settings.md)
+-   [development.md](development.md)
+-   [../CLAUDE.md](../CLAUDE.md)

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SettingsType } from "@src/lib/utilities/googleStorage";
 import { ColorControls } from "./components/colorControl/component";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
@@ -17,6 +17,14 @@ export function MessageEditor({
     const [savedSettings, setSavedSettings] = useState<SettingsType>({
         ...liveSettings,
     });
+
+    // Keep Cancel's baseline in sync with storage-loaded / saved settings.
+    // While editing, leave savedSettings alone so Cancel can restore them.
+    useEffect(() => {
+        if (!isEditing) {
+            setSavedSettings({ ...liveSettings });
+        }
+    }, [liveSettings, isEditing]);
 
     return (
         <div
