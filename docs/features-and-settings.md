@@ -18,12 +18,7 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
 | Fixed CSS helpers                | `stylingFunctions`           | Code-snippet width, transparent edit box, hide default message surface, etc.  |
 
-### Retained but inactive UI
-
--   **HomeMenu** — button to open “Message Editor” (multi-page shell no longer used).
--   **MiscEditor** — checkbox for `messageButtonsVisibilityStyle` (show/hide chat message buttons). The setting still exists in `SettingsType` / CSS generation, but MiscEditor is not mounted in the live popup.
-
-Changelog `1.1.0` removed home/misc as the default navigation so MessageEditor is the sole popup view.
+`messageButtonsVisibilityStyle` remains in the settings schema and CSS output (default `true`) but has **no popup control** today. A future Misc-style toggle can wire it back up without a storage migration.
 
 ## Settings model
 

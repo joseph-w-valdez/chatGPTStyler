@@ -56,11 +56,11 @@ Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) 
 ### Popup
 
 -   [`src/popup/index.tsx`](../src/popup/index.tsx) — mounts `<Popup />` into `#popup`, imports global CSS.
--   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, opens a long-lived `runtime.connect({ name: "popup" })` port, loads storage on mount, and posts `liveSettings` changes to the background after the initial load completes. It renders **MessageEditor** (not HomeMenu).
+-   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, opens a long-lived `runtime.connect({ name: "popup" })` port, loads storage on mount, and posts `liveSettings` changes to the background after the initial load completes. It renders Header + **MessageEditor** only.
 -   Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
 -   Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 
-**Note:** `HomeMenu` and `MiscEditor` are retained in the source tree but are not imported or rendered by the live popup. Multi-page navigation was removed in changelog `1.1.0`; those views remain for tests and possible restoration.
+**Note:** Multi-page navigation (HomeMenu / MiscEditor / HomeButton) was removed from the source tree. `messageButtonsVisibilityStyle` remains in settings + CSS with no UI control for now.
 
 ### Background service worker
 
@@ -158,7 +158,7 @@ sequenceDiagram
 
 These are **current code realities**, not goals:
 
-1. **Unused navigation UI** — `page` / `setPage` state and Header “Back” exist, but MessageEditor is always shown; HomeMenu/MiscEditor are dead runtime paths.
+1. **No UI for `messageButtonsVisibilityStyle`** — the boolean still ships in storage defaults and `buildCss`, but nothing in the popup toggles it. Revisit if product wants that control back.
 2. **`SETTINGS_CHANGED` unused** — storage saver notifies tabs with `type: "SETTINGS_CHANGED"`; content script listens for `action: "updateStyles"` / `"deleteMessages"` only. Other tabs/pages do not auto-refresh from that broadcast.
 3. **Unmatched handshake messages** — the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
 4. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
