@@ -78,7 +78,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 [`src/contentScript.ts`](../src/contentScript.ts):
 
 1. Creates `<style id="custom-style">` in `document.head`.
-2. Loads options from storage and sets `customStyle.textContent = updateStyles(settings)`.
+2. Loads options from storage and sets `customStyle.textContent = buildCss(settings)`.
 3. Listens for runtime messages:
     - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
     - `action === "deleteMessages"` → run `deleteAllChats()`, respond SUCCESS/FAILURE.
@@ -86,21 +86,21 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 
 ### Shared styling & storage
 
-| Module                                                                        | Role                                                          |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts)                   | `SettingsType`, get/set `options` under `chrome.storage.sync` |
-| [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                             |
-| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | `loadSettings`, `updateStyles`, `sendMessageToTab`            |
-| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence           |
-| [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width           |
+| Module                                                                        | Role                                                           |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts)                   | `SettingsType`, get/set `options` under `chrome.storage.sync`  |
+| [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                              |
+| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
+| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence            |
+| [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width            |
 
 ## Communication flows
 
 ### Live preview (popup → page)
 
 1. User changes a control in MessageEditor / ColorControls / sliders.
-2. Control updates React state and calls `sendMessageToTab(settingKey, value)`.
-3. `sendMessageToTab` rebuilds the full CSS string via `updateStyles`, then:
+2. Control updates React state with the full next settings object and calls `sendMessageToTab(nextSettings)`.
+3. `sendMessageToTab` builds CSS via pure `buildCss(settings)`, then:
 
     ```ts
     chrome.tabs.query({ active: true, currentWindow: true }, ...)

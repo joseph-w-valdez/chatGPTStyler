@@ -9,7 +9,6 @@ import {
 } from "@src/lib/utilities/googleStorage";
 import { MessageEditor } from "./views/messageEditor";
 import { defaultSettings } from "@src/shared/utils/data";
-import { loadSettings } from "@src/shared/utils";
 
 const port = browser.runtime.connect({ name: "popup" });
 
@@ -44,7 +43,6 @@ export function Popup(): JSX.Element {
         browser.runtime.sendMessage({ popupMounted: true });
         getOptionsFromStorage((savedOptions) => {
             setLiveSettings(savedOptions);
-            loadSettings(savedOptions);
             setSettingsLoaded(true);
             console.log("loaded options from storage", savedOptions);
         });

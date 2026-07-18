@@ -73,11 +73,12 @@ export function ColorControls({
             e: React.ChangeEvent<HTMLInputElement>,
             settingsKey: keyof SettingsType,
         ) => {
-            setLiveChanges({
+            const nextSettings = {
                 ...liveChanges,
                 [settingsKey]: e.currentTarget.value,
-            });
-            sendMessageToTab(settingsKey, e.currentTarget.value);
+            };
+            setLiveChanges(nextSettings);
+            sendMessageToTab(nextSettings);
             setIsEditing(true);
         };
         return (

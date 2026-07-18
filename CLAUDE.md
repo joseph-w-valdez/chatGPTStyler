@@ -19,7 +19,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 | [`src/popup/views/homeMenu/`](src/popup/views/homeMenu/), [`src/popup/views/miscEditor/`](src/popup/views/miscEditor/) | **Retained but unused** in the live popup tree (imports exist; not rendered). Prefer not extending these unless restoring multi-page navigation.                  |
 | [`src/contentScript.ts`](src/contentScript.ts)                                                                         | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
 | [`src/backgroundPage.ts`](src/backgroundPage.ts)                                                                       | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
-| [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts)                                         | Settings → CSS string; `sendMessageToTab` for live preview.                                                                                                       |
+| [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts)                                         | Pure `buildCss(settings)` → CSS string; `sendMessageToTab` for live preview.                                                                                      |
 | [`src/shared/utils/data.ts`](src/shared/utils/data.ts)                                                                 | `defaultSettings`.                                                                                                                                                |
 | [`src/lib/utilities/googleStorage.ts`](src/lib/utilities/googleStorage.ts)                                             | `SettingsType`, `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                          |
 | [`src/lib/utilities/deleteAllChats.ts`](src/lib/utilities/deleteAllChats.ts)                                           | DOM automation for delete-all.                                                                                                                                    |
@@ -99,7 +99,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 1. Update `SettingsType` in [`googleStorage.ts`](src/lib/utilities/googleStorage.ts).
 2. Update `defaultSettings` in [`data.ts`](src/shared/utils/data.ts).
-3. Add / adjust a `settingsController` entry and concatenation in [`stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts).
+3. Extend `buildCss` in [`stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts) for the new field.
 4. Wire UI controls (usually MessageEditor sliders/colors or FormButtons).
 5. Update tests/snapshots that embed settings objects.
 6. Manually verify: load unpacked extension → change value → live preview on chatgpt.com → Save → reload page → style persists.
@@ -112,7 +112,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ### Generated CSS / DOM selectors
 
-1. Prefer editing `settingsController` / fixed CSS fragments in `stylingFunctions.ts` rather than hardcoding CSS in the content script.
+1. Prefer editing `buildCss` / fixed CSS fragments in `stylingFunctions.ts` rather than hardcoding CSS in the content script.
 2. If ChatGPT’s markup changed, update selectors in content script, styling functions, `deleteAllChats`, `removeUnnecessarySpace`, and `ScrollToTop` together — see [docs/dom-integration.md](docs/dom-integration.md).
 3. Verify both light and dark ChatGPT themes when colors are involved.
 

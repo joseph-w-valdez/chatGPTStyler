@@ -29,10 +29,9 @@ export function FormButtons({
             <button
                 className={`${css.btnGrey} col-span-2`}
                 onClick={() => {
-                    setLiveSettings({ ...defaultSettings });
-                    sendMessageToTab("restoreSettings", {
-                        ...defaultSettings,
-                    });
+                    const nextSettings = { ...defaultSettings };
+                    setLiveSettings(nextSettings);
+                    sendMessageToTab(nextSettings);
                     setIsEditing(true);
                 }}
             >
@@ -54,7 +53,7 @@ export function FormButtons({
                 className={`${css.btnRed}`}
                 onClick={() => {
                     setLiveSettings({ ...savedSettings });
-                    sendMessageToTab("restoreSettings", { ...savedSettings });
+                    sendMessageToTab({ ...savedSettings });
                     setIsEditing(false);
                 }}
             >

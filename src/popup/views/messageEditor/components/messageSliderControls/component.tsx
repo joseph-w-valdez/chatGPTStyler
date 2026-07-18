@@ -64,12 +64,13 @@ export function MessageSliderControls({
             if (regex.test(e.target.value)) {
                 let currValue = e.target.value;
                 if (Number(currValue) > 100) currValue = "100";
-                setIsEditing(true);
-                sendMessageToTab(settingKey, currValue);
-                setLiveChanges({
+                const nextSettings = {
                     ...liveChanges,
                     [settingKey]: currValue,
-                });
+                };
+                setIsEditing(true);
+                setLiveChanges(nextSettings);
+                sendMessageToTab(nextSettings);
             }
         };
         return (
