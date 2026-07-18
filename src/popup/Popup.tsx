@@ -27,7 +27,6 @@ export function Popup(): JSX.Element {
         };
 
         try {
-            console.log("sending settings to background", updatedSettings);
             port.postMessage(message);
         } catch (error) {
             console.error(error);
@@ -48,7 +47,6 @@ export function Popup(): JSX.Element {
         getOptionsFromStorage((savedOptions) => {
             setLiveSettings(savedOptions);
             setSettingsLoaded(true);
-            console.log("loaded options from storage", savedOptions);
         });
 
         return () => {

@@ -31,6 +31,8 @@
 -   Renamed popup views to named files (`Popup`, `MessageEditor`, `ColorControls`, `MessageSliderControls`)
 -   Renamed `colorControl` → `colorControls` and `scrollToTop.tsx` → `ScrollToTop.tsx`
 -   Standardized test folders on `__tests__`; removed unused MessageEditor CSS and Tailwind tokens
+-   Improved popup control labeling and delete-all status announcements for assistive tech
+-   Stopped logging user settings and other noisy console messages in production paths
 
 ## [1.2.3] - 2025-06-25
 

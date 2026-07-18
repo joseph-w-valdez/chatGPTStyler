@@ -2,11 +2,14 @@
 
 exports[`FormButtons renders correctly 1`] = `
 <div
+  aria-label="Settings actions"
   className="grid grid-cols-4 gap-1"
+  role="group"
 >
   <button
     className="btnGrey col-span-2"
     onClick={[Function]}
+    type="button"
   >
     Restore Defaults
   </button>
@@ -14,6 +17,7 @@ exports[`FormButtons renders correctly 1`] = `
     className="btn"
     disabled={true}
     onClick={[Function]}
+    type="button"
   >
     Save
   </button>
@@ -21,6 +25,7 @@ exports[`FormButtons renders correctly 1`] = `
     className="btnRed"
     disabled={true}
     onClick={[Function]}
+    type="button"
   >
     Cancel
   </button>

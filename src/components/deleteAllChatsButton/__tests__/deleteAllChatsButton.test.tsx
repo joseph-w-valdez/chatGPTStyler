@@ -11,10 +11,13 @@ const findButtonByText = (
         .find((button) => button.children.includes(text)) as ReactTestInstance;
 };
 
-const hasHeadingText = (instance: ReactTestInstance, text: string): boolean => {
+const hasStatusText = (instance: ReactTestInstance, text: string): boolean => {
     return instance
-        .findAllByType("h1")
-        .some((node) => node.children.includes(text));
+        .findAllByType("p")
+        .some(
+            (node) =>
+                node.props.role === "status" && node.children.includes(text),
+        );
 };
 
 describe("DeleteAllChatsButton", () => {
@@ -104,7 +107,7 @@ describe("DeleteAllChatsButton", () => {
             { action: "deleteMessages" },
             expect.any(Function),
         );
-        expect(hasHeadingText(instance, "All chats have been deleted!")).toBe(
+        expect(hasStatusText(instance, "All chats have been deleted!")).toBe(
             true,
         );
     });
@@ -141,7 +144,7 @@ describe("DeleteAllChatsButton", () => {
             findButtonByText(instance, "Yes").props.onClick();
         });
 
-        expect(hasHeadingText(instance, "No chat history found")).toBe(true);
+        expect(hasStatusText(instance, "No chat history found")).toBe(true);
     });
 
     it("should reject non-ChatGPT tabs", () => {
@@ -168,9 +171,7 @@ describe("DeleteAllChatsButton", () => {
         });
 
         expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
-        expect(hasHeadingText(instance, "Active tab is not ChatGPT")).toBe(
-            true,
-        );
+        expect(hasStatusText(instance, "Active tab is not ChatGPT")).toBe(true);
     });
 
     it("should close the confirmation when 'No' is clicked", () => {

@@ -9,11 +9,9 @@ export const getOptionsFromStorage = (
             ...(result.options || {}),
         };
         callback(options);
-        console.log("GETTING OPTIONS FROM STORAGE", options);
     });
 };
 
 export const saveOptionsToStorage = (options: Settings): void => {
-    console.log("SAVING OPTIONS TO STORAGE", options);
     chrome.storage.sync.set({ options });
 };

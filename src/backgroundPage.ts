@@ -21,17 +21,12 @@ chrome.runtime.onConnect.addListener((port) => {
 
     port.onMessage.addListener((message: PopupPortMessage) => {
         if (message.type === "updateSettings") {
-            console.log(
-                "Received updated settings from popup:",
-                message.settings,
-            );
             currentSettings = message.settings;
             receivedFromPopup = true;
         }
     });
 
     port.onDisconnect.addListener(() => {
-        console.log("Popup closed. Settings are now:", currentSettings);
         // Intentional autosave-on-close. Skip only if we never learned any settings.
         if (currentSettings !== null) {
             saveOptionsToStorage(currentSettings);
