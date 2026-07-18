@@ -42,6 +42,7 @@ const chromeMock = {
             },
         })),
         sendMessage: jest.fn(),
+        lastError: undefined as chrome.runtime.LastError | undefined,
     },
 };
 

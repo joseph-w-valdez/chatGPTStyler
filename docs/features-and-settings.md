@@ -123,9 +123,10 @@ Remount logic runs on a 1s interval so SPA navigations between chats still get t
 UI: [`DeleteAllChatsButton`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx).
 
 1. User confirms (Yes / No).
-2. Active tab URL must look like `chatgpt.com` (string slice check on `tabs[0].url`).
-3. Message `{ action: "deleteMessages" }` → content script → [`deleteAllChats()`](../src/lib/utilities/deleteAllChats.ts).
-4. Automation opens profile menu → Settings → delete-all → confirm (selector-dependent).
+2. Active tab hostname must be `chatgpt.com` (or a subdomain).
+3. Message `{ action: "deleteMessages" }` → content script → async [`deleteAllChats()`](../src/lib/utilities/deleteAllChats.ts).
+4. Content script waits (with timeout) for each ChatGPT UI step, then responds SUCCESS/FAILURE.
+5. Popup shows that result — it does **not** claim success just because the message was sent.
 
 Treat this feature as **fragile**; selector failures are expected after ChatGPT UI updates. See [dom-integration.md](dom-integration.md).
 

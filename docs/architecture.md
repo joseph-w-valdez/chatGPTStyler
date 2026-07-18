@@ -81,7 +81,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 2. Loads options from storage and sets `customStyle.textContent = buildCss(settings)`.
 3. Listens for runtime messages:
     - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
-    - `action === "deleteMessages"` → run `deleteAllChats()`, respond SUCCESS/FAILURE.
+    - `action === "deleteMessages"` → run async `deleteAllChats()`, respond SUCCESS/FAILURE when finished.
 4. Periodically (every 1s) runs layout cleanup (`removeUnnecessarySpace`) and keeps `ScrollToTop` mounted on the current ChatGPT scroll container. Missing DOM nodes are skipped; stale mounts are cleaned up when the parent is replaced.
 
 ### Shared styling & storage
@@ -127,9 +127,10 @@ Cancel restores the settings last loaded from storage or explicitly saved during
 
 ### Delete all conversations
 
-1. [`DeleteAllChatsButton`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx) confirms, checks active tab URL contains `chatgpt.com`.
+1. [`DeleteAllChatsButton`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx) confirms, checks the active tab hostname is `chatgpt.com`.
 2. Sends `{ action: "deleteMessages" }` to that tab.
-3. Content script runs `deleteAllChats()` against live DOM and `sendResponse`s status.
+3. Content script runs async `deleteAllChats()` against live DOM (bounded waits, cleaned-up timers) and `sendResponse`s SUCCESS/FAILURE.
+4. Popup shows success or the failure message from that response.
 
 ### Popup ↔ background port
 
@@ -161,8 +162,8 @@ These are **current code realities**, not goals:
 2. **`SETTINGS_CHANGED` unused** — storage saver notifies tabs with `type: "SETTINGS_CHANGED"`; content script listens for `action: "updateStyles"` / `"deleteMessages"` only. Other tabs/pages do not auto-refresh from that broadcast.
 3. **Unmatched handshake messages** — the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
 4. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
-5. **Delete button UX vs response** — DeleteAllChatsButton sets success after sending the message and does not reliably wait for / surface the content-script FAILURE response in all cases. Inside `deleteAllChats`, errors thrown from `setInterval` callbacks are outside the outer `try/catch`.
-6. **DOM fragility** — Styling and delete-all depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
+5. **Delete-all DOM fragility** — automation still depends on ChatGPT’s menu markup and can time out when selectors drift; failures are now reported honestly instead of as false success. See [dom-integration.md](dom-integration.md).
+6. **General DOM fragility** — Styling and layout helpers also depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
 
 ## Related docs
 

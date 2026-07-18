@@ -10,6 +10,8 @@
 -   Applied `messageButtonsVisibilityStyle: false` correctly after settings reload
 -   Prevented content-script console errors when ChatGPT layout nodes are missing
 -   Made scroll-to-top remount correctly when ChatGPT replaces its scroll container
+-   Made delete-all report success only after the ChatGPT UI flow completes
+-   Stopped delete-all polling from throwing forever when buttons never appear
 
 ### Changed
 
@@ -17,6 +19,7 @@
 -   Added regression coverage for generated CSS and boolean settings
 -   Hardened the content-script 1s integration loop to skip missing DOM and avoid stale mounts
 -   Removed an unused content-script handshake message
+-   Delete-all now awaits the content-script result and uses a hostname-based ChatGPT tab check
 
 ## [1.2.3] - 2025-06-25
 

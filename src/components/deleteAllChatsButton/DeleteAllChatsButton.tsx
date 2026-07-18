@@ -1,47 +1,92 @@
 import React, { useState } from "react";
 import css from "./styles.module.css";
 
+const isChatGptUrl = (url: string | undefined): boolean => {
+    if (!url) return false;
+    try {
+        const { hostname } = new URL(url);
+        return hostname === "chatgpt.com" || hostname.endsWith(".chatgpt.com");
+    } catch {
+        return false;
+    }
+};
+
+type DeleteMessagesResponse = {
+    status?: "SUCCESS" | "FAILURE";
+    message?: string;
+};
+
 export function DeleteAllChatsButton(): JSX.Element {
     const [showConfirmButtons, setShowConfirmButtons] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccessful] = useState<string | null>(null);
+
     const handleClick = (): void => {
         setError(null);
+        setSuccessful(null);
         setShowConfirmButtons(!showConfirmButtons);
     };
 
+    const finishWithMessage = (
+        nextError: string | null,
+        nextSuccess: string | null,
+    ): void => {
+        setError(nextError);
+        setSuccessful(nextSuccess);
+        setIsLoading(false);
+        setShowConfirmButtons(false);
+        window.setTimeout(() => {
+            setError(null);
+            setSuccessful(null);
+        }, 5000);
+    };
+
     /**
-     * Checks if active tab is ChatGPT.
-     * If so, we attempt to delete all messages.
-     * If active tab is not ChatGPT or there is no message history, show an error to the user.
+     * Checks if active tab is ChatGPT, then asks the content script to run
+     * delete-all. Success/failure UI follows the content-script response.
      */
-    const deleteAllChats = (): void => {
+    const requestDeleteAllChats = (): void => {
         console.log("Sending Message to Content Script: Deleting All Messages");
 
         setIsLoading(true);
+        setError(null);
+        setSuccessful(null);
+
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs[0].url?.slice(8, 19) === "chatgpt.com") {
-                chrome.tabs.sendMessage(
-                    tabs[0].id || 0,
-                    { action: "deleteMessages" },
-                    (response) => {
-                        console.log("Response from content script:", response);
-                    },
-                );
-                setSuccessful("All chats have been deleted!");
-                setTimeout(() => {
-                    setError(null);
-                }, 5000);
-            } else {
-                console.error("Active tab is not ChatGPT");
-                setError("Active tab is not ChatGPT");
-                setSuccessful(null);
+            const tab = tabs[0];
+            if (!tab?.id || !isChatGptUrl(tab.url)) {
+                finishWithMessage("Active tab is not ChatGPT", null);
+                return;
             }
-            setIsLoading(false);
-            setShowConfirmButtons(false);
+
+            chrome.tabs.sendMessage(
+                tab.id,
+                { action: "deleteMessages" },
+                (response: DeleteMessagesResponse | undefined) => {
+                    if (chrome.runtime.lastError) {
+                        finishWithMessage(
+                            chrome.runtime.lastError.message ||
+                                "Failed to reach the ChatGPT tab",
+                            null,
+                        );
+                        return;
+                    }
+
+                    if (response?.status === "SUCCESS") {
+                        finishWithMessage(null, "All chats have been deleted!");
+                        return;
+                    }
+
+                    finishWithMessage(
+                        response?.message || "Failed to delete chats",
+                        null,
+                    );
+                },
+            );
         });
     };
+
     return (
         <div>
             <button
@@ -71,7 +116,7 @@ export function DeleteAllChatsButton(): JSX.Element {
                     <button
                         className={css.yesBtn}
                         disabled={isLoading}
-                        onClick={deleteAllChats}
+                        onClick={requestDeleteAllChats}
                     >
                         Yes
                     </button>
