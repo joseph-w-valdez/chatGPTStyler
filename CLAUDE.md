@@ -90,7 +90,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 -   Target host is **`chatgpt.com`** only ([`dist/manifest.json`](dist/manifest.json) `host_permissions` / `content_scripts`).
 -   Permissions in use: `activeTab`, `storage`. Avoid new permissions unless product requires them.
 -   CSS is applied by writing a **string** into `#custom-style`. Selector drift on ChatGPT’s DOM is the #1 breakage mode.
--   `contentScript` remounts / re-applies layout helpers on a **1s interval** — be careful adding heavier work there.
+-   `contentScript` re-applies layout helpers and keeps ScrollToTop mounted on a **1s interval** — null-safe, but still avoid heavier work there.
 -   Built JS lands in `dist/js/` (typically gitignored after build); static assets (`manifest.json`, `popup.html`, icons) are **tracked release inputs** under `dist/` and are **not** emitted by Webpack. Never delete tracked static `dist` files; never hand-edit generated `dist/js/*`.
 
 ## Change checklists

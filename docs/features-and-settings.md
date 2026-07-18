@@ -116,7 +116,7 @@ Content script applies `arg` as `customStyle.textContent` — it does not re-par
 -   Shows a circular button when `scrollTop !== 0`.
 -   Smooth-scrolls to top; hides the button while scrolling.
 
-Remount logic runs on a 1s interval so SPA navigations between chats still get the button.
+Remount logic runs on a 1s interval so SPA navigations between chats still get the button. If ChatGPT replaces the scroll container, the old mount is removed and a fresh `ScrollToTop` is attached.
 
 ## Delete all conversations
 

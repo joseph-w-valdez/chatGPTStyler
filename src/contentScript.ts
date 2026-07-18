@@ -4,6 +4,12 @@ import { ScrollToTop } from "./components/scrollToTop/scrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { buildCss } from "./shared/utils";
 import { removeUnnecessarySpace } from "@src/lib/utilities";
+import {
+    CHAT_SCROLL_PARENT_SELECTOR,
+    INPUT_BOX_CONTAINER_SELECTOR,
+    SCROLL_TO_TOP_MOUNT_ID,
+    USER_TEXT_CONTAINER_SELECTOR,
+} from "@src/lib/utilities/chatDom";
 
 console.log("Content script loaded.");
 
@@ -15,7 +21,6 @@ getOptionsFromStorage(
     (settings) => (customStyle.textContent = buildCss(settings)),
 );
 
-// listening for messages from the background script or popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "updateStyles") {
         customStyle.textContent = request.arg;
@@ -31,39 +36,51 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
 });
 
-// send a message to the background script if needed
-chrome.runtime.sendMessage({ message: "Content script active" }, (response) => {
-    console.log(response.reply);
-});
-const mountComponent = () => {
-    const mountPoint = document.createElement("div");
-    mountPoint.id = "scroll-to-top-mount";
-
-    const userTextContainer: any = document.querySelectorAll(
-        '[data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > * > * > div',
+const syncLayoutHelpers = (): void => {
+    const userTextContainer = document.querySelectorAll(
+        USER_TEXT_CONTAINER_SELECTOR,
     );
-
-    const inputBoxContainer: any = document.querySelector(
-        "#thread-bottom > * > div",
+    const inputBoxContainer = document.querySelector(
+        INPUT_BOX_CONTAINER_SELECTOR,
     );
 
     removeUnnecessarySpace({ userTextContainer, inputBoxContainer });
+};
 
-    if (!document.getElementById("scroll-to-top-mount")) {
-        const $parentDiv = document.querySelector(
-            'div[role="presentation"] > div > div > div > div ',
-        );
-        if ($parentDiv) {
-            $parentDiv.appendChild(mountPoint);
-            ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
+const unmountScrollToTop = (mountPoint: Element): void => {
+    ReactDOM.unmountComponentAtNode(mountPoint);
+    mountPoint.remove();
+};
+
+const syncScrollToTop = (): void => {
+    const parentDiv = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    const existingMount = document.getElementById(SCROLL_TO_TOP_MOUNT_ID);
+
+    if (!(parentDiv instanceof HTMLElement)) {
+        if (existingMount) {
+            unmountScrollToTop(existingMount);
         }
+        return;
     }
+
+    if (existingMount && parentDiv.contains(existingMount)) {
+        return;
+    }
+
+    if (existingMount) {
+        unmountScrollToTop(existingMount);
+    }
+
+    const mountPoint = document.createElement("div");
+    mountPoint.id = SCROLL_TO_TOP_MOUNT_ID;
+    parentDiv.appendChild(mountPoint);
+    ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
 };
 
-const checkAndMountComponent = () => {
-    mountComponent();
+const syncPageIntegrations = (): void => {
+    syncLayoutHelpers();
+    syncScrollToTop();
 };
 
-checkAndMountComponent();
-
-setInterval(checkAndMountComponent, 1000);
+syncPageIntegrations();
+setInterval(syncPageIntegrations, 1000);
