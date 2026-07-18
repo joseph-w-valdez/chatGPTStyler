@@ -37,7 +37,7 @@ dist/              # Packaged extension (manifest, HTML, icons, built JS)
 ## Related root files
 
 -   [`package.json`](../package.json) — scripts and dependencies
--   [`webpack.common.js`](../webpack.common.js) — bundle entries
+-   [`webpack.config.js`](../webpack.config.js) — mode-driven bundle entries and build configuration
 -   [`dist/manifest.json`](../dist/manifest.json) — extension manifest
 -   [`CHANGELOG.md`](../CHANGELOG.md) — version history
 -   [`CONTRIBUTING.md`](../CONTRIBUTING.md) — contribution process

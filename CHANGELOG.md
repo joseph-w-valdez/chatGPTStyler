@@ -39,6 +39,8 @@
 -   Upgraded Jest to 29.7 with matching `ts-jest`, `@types/jest`, and `jest-environment-jsdom`
 -   Replaced `jest-css-modules` with `identity-obj-proxy` for CSS module mocks
 -   Upgraded React and ReactDOM to 18.3; migrated popup and content-script mounts to `createRoot`
+-   Added a development-only ChatGPT selector health check in the popup
+-   Added explicit `build:dev` / `build:prod` flavors driven by one mode-aware Webpack config; production strips debug console calls
 
 ## [1.2.3] - 2025-06-25
 

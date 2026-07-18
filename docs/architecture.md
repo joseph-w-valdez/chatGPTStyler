@@ -39,7 +39,7 @@ Webpack does **not** copy or generate the manifest. Static files under `dist/` (
 
 ## Build entry points
 
-Defined in [`webpack.common.js`](../webpack.common.js):
+Defined in [`webpack.config.js`](../webpack.config.js):
 
 | Entry key        | Source                                              | Output                      |
 | ---------------- | --------------------------------------------------- | --------------------------- |
@@ -49,7 +49,7 @@ Defined in [`webpack.common.js`](../webpack.common.js):
 
 Shared modules (`@src/...`) are bundled into each entry that imports them. Alias `@src` → `src/`.
 
-Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) merges into common; [`webpack.prod.js`](../webpack.prod.js) sets `mode: "production"`.
+Dev vs prod: [`webpack.config.js`](../webpack.config.js) reads Webpack's `--mode` argument. Development enables inline source maps; production strips debug `console.*` calls while keeping `console.warn` / `console.error`. Scripts: `build:dev` / `dev` vs `build:prod` / `build`.
 
 ## Module responsibilities
 

@@ -27,7 +27,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 | [`src/components/`](src/components/)                                                         | Shared UI: Header, FormButtons, DeleteAllChatsButton, ScrollToTop.                                                                                                |
 | [`src/css/app.css`](src/css/app.css)                                                         | Global Tailwind entry for the popup.                                                                                                                              |
 | [`dist/`](dist/)                                                                             | Built extension package. Load this folder as an unpacked extension. Includes [`dist/manifest.json`](dist/manifest.json) (source of truth for MV3 config in-repo). |
-| [`webpack.common.js`](webpack.common.js)                                                     | Entries: `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                                        |
+| [`webpack.config.js`](webpack.config.js)                                                     | Mode-driven entries/config for `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                   |
 
 Path alias: `@src/*` → `src/*` (TypeScript + Webpack + Jest).
 
@@ -39,8 +39,10 @@ Prefer **npm** (`package-lock.json` + [`packageManager`](package.json) field). E
 nvm use            # or: nvm use $(cat .nvmrc)
 npm ci             # preferred when lockfile is trusted
 npm install        # only when intentionally changing deps
-npm run dev        # webpack watch (development)
-npm run build      # production webpack → dist/js only
+npm run dev        # webpack watch (development flavor)
+npm run build:dev  # one-off development webpack → dist/js
+npm run build      # alias for build:prod
+npm run build:prod # production webpack → dist/js (strips debug logs / dev UI)
 npm test           # Jest
 ```
 

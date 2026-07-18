@@ -34,14 +34,29 @@ jobs:
             - name: Test
               run: npm run test:ci
 
-            - name: Build Project
-              run: npm run build
+            - name: Build Production Flavor
+              run: npm run build:prod
 
-            - name: Zip dist folder
+            - name: Zip Production dist folder
               run: zip -r dist-${{ github.ref_name }}.zip dist
 
-            - name: Upload Artifact
+            - name: Upload Production Artifact
               uses: actions/upload-artifact@v4
               with:
                   name: dist-${{ github.ref_name }}
                   path: dist-${{ github.ref_name }}.zip
+
+            # Dev flavor: unminified bundle with source maps and dev-only tooling
+            # (e.g. selector health check) for sideloading / debugging. Not for
+            # Chrome Web Store submission.
+            - name: Build Development Flavor
+              run: npm run build:dev
+
+            - name: Zip Development dist folder
+              run: zip -r dist-${{ github.ref_name }}-dev.zip dist
+
+            - name: Upload Development Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dist-${{ github.ref_name }}-dev
+                  path: dist-${{ github.ref_name }}-dev.zip

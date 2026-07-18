@@ -21,18 +21,20 @@ npm install
 
 From [`package.json`](../package.json):
 
-| Command                | Purpose                                                                                            |
-| ---------------------- | -------------------------------------------------------------------------------------------------- |
-| `npm run dev`          | Webpack watch with [`webpack.dev.js`](../webpack.dev.js) (inline source maps) → updates `dist/js/` |
-| `npm run build`        | Production Webpack via [`webpack.prod.js`](../webpack.prod.js)                                     |
-| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                    |
-| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                          |
-| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                        |
-| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                              |
-| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                               |
-| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                        |
-| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                          |
-| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                               |
+| Command                | Purpose                                                                                                              |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`          | Webpack watch with [`webpack.config.js`](../webpack.config.js) and `--mode development` → updates `dist/js/`          |
+| `npm run build:dev`    | One-off development Webpack build (same flavor as `dev`, no watch)                                                   |
+| `npm run build`        | Alias for `build:prod`                                                                                               |
+| `npm run build:prod`   | Production Webpack via [`webpack.config.js`](../webpack.config.js) and `--mode production`                            |
+| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                                      |
+| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                                            |
+| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                                          |
+| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                                                |
+| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                                                 |
+| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                                          |
+| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                                            |
+| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                                                 |
 
 Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf"` keep LF in the repo so Windows clones don’t drown lint in CRLF noise.
 
@@ -42,13 +44,24 @@ TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, pat
 
 ## Loading the unpacked extension
 
-1. Run `npm run build` (or keep `npm run dev` running while iterating).
+1. Run `npm run build:prod` / `npm run build` (or `npm run build:dev` / keep `npm run dev` running while iterating).
 2. Open `chrome://extensions` (or your browser’s equivalent).
 3. Enable **Developer mode**.
 4. **Load unpacked** → select the repo’s [`dist/`](../dist/) directory (not the repo root).
 5. Open [https://chatgpt.com](https://chatgpt.com), then open the extension popup from the toolbar.
 
-After JS changes with `npm run dev`, use the extensions page **Reload** on ChatGPT Styler, then refresh the ChatGPT tab so the content script picks up the new bundle.
+After JS changes with `npm run dev` or `npm run build:dev`, use the extensions page **Reload** on ChatGPT Styler, then refresh the ChatGPT tab so the content script picks up the new bundle.
+
+### Build flavors
+
+| Flavor | Commands | Behavior |
+| ------ | -------- | -------- |
+| Development | `npm run build:dev`, `npm run dev` | Source maps; keeps debug logging; includes tools like **Check ChatGPT Selectors** |
+| Production | `npm run build:prod`, `npm run build` | Minified; strips `console.log` / `info` / `debug` / `table`; omits dev-only UI; keeps `console.warn` / `console.error` |
+
+### Dev-only selector health check
+
+With a **development** build (`npm run build:dev` or `npm run dev`), the popup shows **Check ChatGPT Selectors**. Focus a chatgpt.com tab, click it, and the content script returns match counts for critical DOM probes (also `console.table` in the page DevTools). Production builds omit the control.
 
 Static assets that Webpack does **not** emit (edit by hand when needed):
 

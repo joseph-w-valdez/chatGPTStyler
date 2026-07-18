@@ -11,10 +11,40 @@ export type DeleteMessagesMessage = {
     action: "deleteMessages";
 };
 
-export type ContentScriptMessage = UpdateStylesMessage | DeleteMessagesMessage;
+/** Dev-only popup → content script: probe ChatGPT DOM selectors. */
+export type CheckSelectorsMessage = {
+    action: "checkSelectors";
+};
+
+export type ContentScriptMessage =
+    | UpdateStylesMessage
+    | DeleteMessagesMessage
+    | CheckSelectorsMessage;
 
 export type DeleteMessagesResponse =
     | { status: "SUCCESS" }
+    | { status: "FAILURE"; message: string };
+
+export type SelectorCheckItem = {
+    id: string;
+    label: string;
+    selector: string;
+    count: number;
+    ok: boolean;
+    optional: boolean;
+};
+
+export type SelectorCheckReport = {
+    checkedAt: string;
+    href: string;
+    items: SelectorCheckItem[];
+    requiredOk: number;
+    requiredFail: number;
+    optionalPresent: number;
+};
+
+export type CheckSelectorsResponse =
+    | { status: "SUCCESS"; report: SelectorCheckReport }
     | { status: "FAILURE"; message: string };
 
 /** Popup → background (port `name: "popup"`): mirror live settings. */

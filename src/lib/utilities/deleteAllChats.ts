@@ -5,11 +5,12 @@ export type DeleteAllChatsResult =
 const POLL_INTERVAL_MS = 100;
 const DEFAULT_TIMEOUT_MS = 10000;
 
-const CHAT_HISTORY_SELECTOR = "div.group\\/sidebar > div:nth-child(3)";
-const PROFILE_BUTTON_SELECTOR = '[aria-label="Open Profile Menu"]';
-const SETTINGS_MENU_ITEM_SELECTOR = '[data-testid="settings-menu-item"]';
-const DELETE_ALL_BUTTON_SELECTOR = '[data-testid="delete-all-chats-button"]';
-const CONFIRM_DELETE_BUTTON_SELECTOR =
+export const CHAT_HISTORY_SELECTOR = "div.group\\/sidebar > div:nth-child(3)";
+export const PROFILE_BUTTON_SELECTOR = '[aria-label="Open Profile Menu"]';
+export const SETTINGS_MENU_ITEM_SELECTOR = '[data-testid="settings-menu-item"]';
+export const DELETE_ALL_BUTTON_SELECTOR =
+    '[data-testid="delete-all-chats-button"]';
+export const CONFIRM_DELETE_BUTTON_SELECTOR =
     '[data-testid="confirm-delete-all-chats-button"]';
 
 const waitForElement = <T extends Element>(

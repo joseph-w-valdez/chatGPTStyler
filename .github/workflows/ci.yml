@@ -34,3 +34,11 @@ jobs:
 
             - name: Test
               run: npm run test:ci
+
+            # Smoke-check both build flavors so webpack breakage is caught in CI,
+            # not just at release time.
+            - name: Build Production Flavor
+              run: npm run build:prod
+
+            - name: Build Development Flavor
+              run: npm run build:dev
