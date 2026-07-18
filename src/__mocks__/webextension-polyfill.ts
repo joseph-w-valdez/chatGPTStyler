@@ -1,23 +1,31 @@
-// src/__mocks__/webextension-polyfill
-// Update this file to include any mocks for the `webextension-polyfill` package
-// This is used to mock these values for Storybook so you can develop your components
-// outside the Web Extension environment provided by a compatible browser
-// See .storybook/main.js to see how this module is swapped in for `webextension-polyfill`
-const browser: any = {
+// Manual mock for `webextension-polyfill` used by Jest (see jest.config.js moduleNameMapper).
+type Listener = (...args: unknown[]) => void;
+
+const createEvent = () => ({
+    addListener: jest.fn((listener: Listener) => listener),
+    removeListener: jest.fn(),
+    hasListener: jest.fn(() => false),
+});
+
+const createPort = () => ({
+    name: "popup",
+    postMessage: jest.fn(),
+    disconnect: jest.fn(),
+    onMessage: createEvent(),
+    onDisconnect: createEvent(),
+});
+
+const browser = {
     tabs: {
-        executeScript(currentTabId: number, details: any) {
-            return Promise.resolve({ done: true });
-        },
-        query(params: any): Promise<Tab[]> {
-            return Promise.resolve([]);
-        },
+        executeScript: jest.fn(() => Promise.resolve({ done: true })),
+        query: jest.fn(() => Promise.resolve([])),
     },
     runtime: {
-        sendMessage: (params: { popupMounted: boolean }) => {
-            return;
-        },
+        connect: jest.fn(() => createPort()),
+        sendMessage: jest.fn(() => Promise.resolve()),
     },
 };
+
 export default browser;
 
 interface Tab {

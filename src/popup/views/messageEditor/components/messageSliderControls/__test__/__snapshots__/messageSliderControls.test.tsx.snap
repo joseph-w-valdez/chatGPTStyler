@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MessageSliderControls renders correctly 1`] = `
+exports[`MessageSliderControls component renders correctly 1`] = `
 <div
   className="grid grid-cols-1 gap-y-3 "
 >
   <div
     className="flex justify-between items-center"
-    key="0"
   >
     <label
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
@@ -19,13 +18,14 @@ exports[`MessageSliderControls renders correctly 1`] = `
     >
       Message Width:
     </label>
+     
     <div
       className="relative flex"
     >
       <input
-        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm "
         id="messageMaxWidthStyle"
-        maxLength={2}
+        maxLength={3}
         onChange={[Function]}
         style={
           Object {
@@ -33,7 +33,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="text"
-        value="50"
+        value="95"
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
@@ -47,7 +47,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="range"
-        value="50"
+        value="95"
       />
     </div>
     <div
@@ -63,7 +63,6 @@ exports[`MessageSliderControls renders correctly 1`] = `
   </div>
   <div
     className="flex justify-between items-center"
-    key="1"
   >
     <label
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
@@ -76,13 +75,14 @@ exports[`MessageSliderControls renders correctly 1`] = `
     >
       Message Padding:
     </label>
+     
     <div
       className="relative flex"
     >
       <input
-        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm "
         id="messagePaddingStyle"
-        maxLength={2}
+        maxLength={3}
         onChange={[Function]}
         style={
           Object {
@@ -90,7 +90,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="text"
-        value="20"
+        value="10"
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
@@ -104,7 +104,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="range"
-        value="20"
+        value="10"
       />
     </div>
     <div
@@ -120,7 +120,6 @@ exports[`MessageSliderControls renders correctly 1`] = `
   </div>
   <div
     className="flex justify-between items-center"
-    key="2"
   >
     <label
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
@@ -133,13 +132,14 @@ exports[`MessageSliderControls renders correctly 1`] = `
     >
       Message Border:
     </label>
+     
     <div
       className="relative flex"
     >
       <input
-        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm "
         id="messageBorderRadiusStyle"
-        maxLength={2}
+        maxLength={3}
         onChange={[Function]}
         style={
           Object {
@@ -147,7 +147,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="text"
-        value="10"
+        value="5"
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
@@ -161,7 +161,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="range"
-        value="10"
+        value="5"
       />
     </div>
     <div
@@ -177,7 +177,6 @@ exports[`MessageSliderControls renders correctly 1`] = `
   </div>
   <div
     className="flex justify-between items-center"
-    key="3"
   >
     <label
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
@@ -190,13 +189,14 @@ exports[`MessageSliderControls renders correctly 1`] = `
     >
       Input Box Width:
     </label>
+     
     <div
       className="relative flex"
     >
       <input
-        className="outline-none px-2 py-2 w-full text-right rounded-l-sm"
+        className="outline-none px-2 py-2 w-full text-right rounded-l-sm "
         id="inputBoxMaxWidthStyle"
-        maxLength={2}
+        maxLength={3}
         onChange={[Function]}
         style={
           Object {
@@ -204,7 +204,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="text"
-        value="80"
+        value="94"
       />
       <input
         className="absolute w-full h-0.5 left-0 bottom-0"
@@ -218,7 +218,7 @@ exports[`MessageSliderControls renders correctly 1`] = `
           }
         }
         type="range"
-        value="80"
+        value="94"
       />
     </div>
     <div

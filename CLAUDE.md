@@ -82,7 +82,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 - **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
 - **Extension APIs**: Prefer patterns already in the file you touch. Popup uses `webextension-polyfill` in places; content/background/storage often use raw `chrome.*`. Do not “clean up” APIs across the codebase unless asked.
 - **Lint / format**: ESLint + Prettier ([`.eslintrc.js`](.eslintrc.js), [`.prettierrc.js`](.prettierrc.js)). Prefer check-only commands for validation; `npm run lint` / `npm run prettify` fix/write files.
-- **Tests**: Jest + `react-test-renderer` / Enzyme snapshots under `__tests__` / `__test__`. Mock `webextension-polyfill` via [`src/__mocks__/webextension-polyfill.ts`](src/__mocks__/webextension-polyfill.ts). Some suites are currently broken (Enzyme adapter missing, incomplete polyfill mock); see [docs/development.md](docs/development.md).
+- **Tests**: Jest + `react-test-renderer` snapshots under `__tests__` / `__test__`. Mock `webextension-polyfill` via [`src/__mocks__/webextension-polyfill.ts`](src/__mocks__/webextension-polyfill.ts); shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts).
 
 ## Extension constraints (do not ignore)
 

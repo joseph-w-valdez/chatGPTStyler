@@ -3,9 +3,9 @@
 exports[`component renders 1`] = `
 <button
   className="btn"
-  data-testid={Any<String>}
-  onClick={[Function]}
+  data-testid="test-id"
+  onClick={[MockFunction]}
 >
-  {Any<String>}
+  click me uWu
 </button>
 `;

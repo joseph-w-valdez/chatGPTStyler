@@ -1,11 +1,16 @@
 import React from "react";
-import { shallow, ShallowWrapper } from "enzyme";
+import renderer, { ReactTestRenderer } from "react-test-renderer";
 import { MessageEditor, MessageEditorProps } from "../index";
 import { MessageSliderControls } from "../components/messageSliderControls";
 import { ColorControls } from "../components/colorControl/component";
 
+jest.mock("@src/shared/utils", () => ({
+    sendMessageToTab: jest.fn(),
+    loadSettings: jest.fn(),
+}));
+
 describe("MessageEditor Component", () => {
-    let wrapper: ShallowWrapper;
+    let component: ReactTestRenderer;
     const mockProps: MessageEditorProps = {
         liveSettings: {
             messageColorUserStyle: "",
@@ -22,34 +27,35 @@ describe("MessageEditor Component", () => {
     };
 
     beforeEach(() => {
-        wrapper = shallow(<MessageEditor {...mockProps} />);
+        component = renderer.create(<MessageEditor {...mockProps} />);
     });
 
     it("renders correctly", () => {
-        expect(wrapper).toMatchSnapshot();
+        expect(component.toJSON()).toMatchSnapshot();
     });
 
-    it("calls setLiveChanges on user message color change", () => {
+    it("passes setLiveSettings through MessageSliderControls", () => {
+        const slider = component.root.findByType(MessageSliderControls);
         const liveChanges = mockProps.liveSettings;
-        wrapper.find(MessageSliderControls).at(0).prop("setLiveChanges")(
-            liveChanges,
-        );
+
+        slider.props.setLiveChanges(liveChanges);
+
         expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
     });
 
-    it("calls setLiveChanges on chat message color change", () => {
+    it("passes setLiveSettings through ColorControls", () => {
+        const colors = component.root.findByType(ColorControls);
         const liveChanges = mockProps.liveSettings;
-        wrapper.find(ColorControls).at(0).prop("setLiveChanges")(liveChanges);
+
+        colors.props.setLiveChanges(liveChanges);
+
         expect(mockProps.setLiveSettings).toHaveBeenCalledWith(liveChanges);
     });
 
-    it("calls setLiveChanges on message max width change", () => {
-        const event = {
-            target: { value: "50%" },
-        } as React.ChangeEvent<HTMLInputElement>;
-        wrapper.find("#messageMaxWidthStyle").simulate("change", event);
-        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(
-            event.target.value,
-        );
+    it("wires live settings into MessageSliderControls", () => {
+        const slider = component.root.findByType(MessageSliderControls);
+
+        expect(slider.props.liveChanges).toEqual(mockProps.liveSettings);
+        expect(slider.props.setLiveChanges).toBe(mockProps.setLiveSettings);
     });
 });
