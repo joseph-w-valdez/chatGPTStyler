@@ -8,11 +8,15 @@
 -   Prevented a race where closing the popup before settings finished loading could overwrite saved options with defaults
 -   Merged stored settings with defaults so missing keys from older installs are filled in
 -   Applied `messageButtonsVisibilityStyle: false` correctly after settings reload
+-   Prevented content-script console errors when ChatGPT layout nodes are missing
+-   Made scroll-to-top remount correctly when ChatGPT replaces its scroll container
 
 ### Changed
 
 -   Made CSS generation deterministic by building styles from the complete settings object
 -   Added regression coverage for generated CSS and boolean settings
+-   Hardened the content-script 1s integration loop to skip missing DOM and avoid stale mounts
+-   Removed an unused content-script handshake message
 
 ## [1.2.3] - 2025-06-25
 

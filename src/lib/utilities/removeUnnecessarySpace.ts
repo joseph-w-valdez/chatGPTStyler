@@ -1,21 +1,26 @@
-interface removeUnnecessarySpaceTypes {
-    userTextContainer: HTMLElement[];
-    inputBoxContainer: HTMLDivElement;
+interface RemoveUnnecessarySpaceTypes {
+    userTextContainer: ArrayLike<Element>;
+    inputBoxContainer: Element | null;
 }
 
 export const removeUnnecessarySpace = ({
     userTextContainer,
     inputBoxContainer,
-}: removeUnnecessarySpaceTypes): void => {
-    inputBoxContainer.classList.remove("max-w-(--thread-content-max-width)");
-    inputBoxContainer.classList.remove("gap-4");
-    inputBoxContainer.classList.remove("md:gap-5");
-    inputBoxContainer.classList.remove("lg:gap-6");
+}: RemoveUnnecessarySpaceTypes): void => {
+    if (inputBoxContainer instanceof HTMLElement) {
+        inputBoxContainer.classList.remove(
+            "max-w-(--thread-content-max-width)",
+        );
+        inputBoxContainer.classList.remove("gap-4");
+        inputBoxContainer.classList.remove("md:gap-5");
+        inputBoxContainer.classList.remove("lg:gap-6");
+    }
 
-    userTextContainer.forEach((element) => {
+    Array.from(userTextContainer).forEach((element) => {
+        if (!(element instanceof HTMLElement)) return;
         element.classList.remove("items-end");
-        const firstChild = element.children[0] as HTMLElement | undefined;
-        if (firstChild) {
+        const firstChild = element.children[0];
+        if (firstChild instanceof HTMLElement) {
             firstChild.classList.remove("px-5");
         }
     });

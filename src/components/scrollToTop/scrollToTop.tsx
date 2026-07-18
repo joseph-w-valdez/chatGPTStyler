@@ -1,54 +1,51 @@
 import React, { useState, useEffect } from "react";
+import { CHAT_SCROLL_PARENT_SELECTOR } from "@src/lib/utilities/chatDom";
 
-export const ScrollToTop = () => {
+const getScrollParent = (): HTMLElement | null => {
+    const node = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    return node instanceof HTMLElement ? node : null;
+};
+
+export const ScrollToTop = (): JSX.Element => {
     const [isShowingScrollToTopButton, setIsShowingScrollToTopButton] =
-        useState<boolean | null>(null);
-    const [isScrollingToTop, setIsScrollingToTop] = useState<boolean | null>(
-        false,
-    );
-    const parentDiv = document.querySelector(
-        'div[role="presentation"] > div > div > div > div',
-    );
+        useState(false);
+    const [isScrollingToTop, setIsScrollingToTop] = useState(false);
 
     useEffect(() => {
+        const parentDiv = getScrollParent();
+        if (!parentDiv) return;
+
         const handleScroll = () => {
-            if (!parentDiv) return;
-            // If the scrollTop is 0, the user is at the top of the page
             if (!parentDiv.scrollTop) {
                 setIsScrollingToTop(false);
                 setIsShowingScrollToTopButton(false);
             } else {
-                // Otherwise, the button should be visible
                 setIsShowingScrollToTopButton(true);
             }
         };
 
-        const handleScrollEnd = () => setIsScrollingToTop(false); // Reset isScrollingToTop after scroll ends
+        const handleScrollEnd = () => setIsScrollingToTop(false);
 
-        if (!parentDiv) return;
-
-        // Initial check for scrollTop when the component mounts and when the user changes conversation threads
         handleScroll();
 
         parentDiv.addEventListener("scroll", handleScroll);
-        parentDiv.addEventListener("scrollend", handleScrollEnd); // Event listener for the end of the scroll
+        parentDiv.addEventListener("scrollend", handleScrollEnd);
         return () => {
             parentDiv.removeEventListener("scroll", handleScroll);
             parentDiv.removeEventListener("scrollend", handleScrollEnd);
         };
     }, []);
 
-    const scrollToTop = () => {
+    const scrollToTop = (): void => {
+        const parentDiv = getScrollParent();
+        if (!parentDiv) return;
         setIsShowingScrollToTopButton(false);
         setIsScrollingToTop(true);
-        parentDiv!.scrollTo({ top: 0, behavior: "smooth" });
+        parentDiv.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
         <>
-            {/* This is only rendered if the user is scrolled down and the user is
-            not currently scrolling to the top. The button is hidden during the
-            scroll to prevent more clicks. */}
             {isShowingScrollToTopButton && !isScrollingToTop && (
                 <button
                     className={
@@ -56,6 +53,8 @@ export const ScrollToTop = () => {
                     }
                     onClick={scrollToTop}
                     id="scroll-to-top-btn"
+                    type="button"
+                    aria-label="Scroll to top"
                 >
                     <UpArrow />
                 </button>
@@ -64,7 +63,7 @@ export const ScrollToTop = () => {
     );
 };
 
-const UpArrow = () => {
+const UpArrow = (): JSX.Element => {
     return (
         <svg
             width="24"
@@ -73,6 +72,7 @@ const UpArrow = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="icon-md text-token-text-primary"
+            aria-hidden="true"
         >
             <path
                 fillRule="evenodd"

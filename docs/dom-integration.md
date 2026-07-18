@@ -7,23 +7,24 @@ ChatGPT Styler depends heavily on ChatGPT’s page structure. When OpenAI change
 -   Content script CSS targets deep, often nth-child-based selectors.
 -   Delete-all **clicks through ChatGPT’s own UI** rather than calling an official API.
 -   Layout helpers **remove site classes** by name (`max-w-(--thread-content-max-width)`, `items-end`, etc.).
--   Remount / cleanup runs on a **1-second interval**, so broken selectors may fail quietly until you inspect the page.
+-   Remount / cleanup runs on a **1-second interval**. Missing nodes are skipped (no throw). Broken selectors may still fail quietly until you inspect the page.
 
 Always prefer updating selectors in the smallest surface that broke, then smoke-test light + dark themes.
 
 ## Files that touch the DOM
 
-| File                                                                                            | Responsibility                                                 |
-| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| [`src/contentScript.ts`](../src/contentScript.ts)                                               | Style tag, message listeners, mount loop, query for containers |
-| [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)               | CSS selectors for conversation turns, form, composer           |
-| [`src/lib/utilities/removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | ClassList removals on message / input containers               |
-| [`src/lib/utilities/deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → delete-all automation                     |
-| [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx)   | Scroll container + injected button                             |
+| File                                                                                            | Responsibility                                            |
+| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| [`src/contentScript.ts`](../src/contentScript.ts)                                               | Style tag, message listeners, null-safe mount/layout loop |
+| [`src/lib/utilities/chatDom.ts`](../src/lib/utilities/chatDom.ts)                               | Shared ChatGPT DOM selectors / mount ids                  |
+| [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)               | CSS selectors for conversation turns, form, composer      |
+| [`src/lib/utilities/removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | ClassList removals on message / input containers          |
+| [`src/lib/utilities/deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → delete-all automation                |
+| [`src/components/scrollToTop/scrollToTop.tsx`](../src/components/scrollToTop/scrollToTop.tsx)   | Scroll container + injected button                        |
 
 ## Selector catalog
 
-### Content script mount & layout ([`contentScript.ts`](../src/contentScript.ts))
+### Content script mount & layout ([`contentScript.ts`](../src/contentScript.ts) / [`chatDom.ts`](../src/lib/utilities/chatDom.ts))
 
 | Purpose              | Selector / target                                                                  |
 | -------------------- | ---------------------------------------------------------------------------------- |

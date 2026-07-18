@@ -82,7 +82,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 3. Listens for runtime messages:
     - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
     - `action === "deleteMessages"` → run `deleteAllChats()`, respond SUCCESS/FAILURE.
-4. Periodically (every 1s) runs layout cleanup (`removeUnnecessarySpace`) and mounts `ScrollToTop` into ChatGPT’s presentation container if missing.
+4. Periodically (every 1s) runs layout cleanup (`removeUnnecessarySpace`) and keeps `ScrollToTop` mounted on the current ChatGPT scroll container. Missing DOM nodes are skipped; stale mounts are cleaned up when the parent is replaced.
 
 ### Shared styling & storage
 
@@ -92,6 +92,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 | [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                              |
 | [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
 | [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence            |
+| [`chatDom.ts`](../src/lib/utilities/chatDom.ts)                               | Shared ChatGPT DOM selectors / mount ids                       |
 | [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width            |
 
 ## Communication flows
@@ -158,7 +159,7 @@ These are **current code realities**, not goals:
 
 1. **Unused navigation UI** — `page` / `setPage` state and Header “Back” exist, but MessageEditor is always shown; HomeMenu/MiscEditor are dead runtime paths.
 2. **`SETTINGS_CHANGED` unused** — storage saver notifies tabs with `type: "SETTINGS_CHANGED"`; content script listens for `action: "updateStyles"` / `"deleteMessages"` only. Other tabs/pages do not auto-refresh from that broadcast.
-3. **Unmatched handshake messages** — content script sends `{ message: "Content script active" }` expecting `response.reply`, and the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
+3. **Unmatched handshake messages** — the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
 4. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
 5. **Delete button UX vs response** — DeleteAllChatsButton sets success after sending the message and does not reliably wait for / surface the content-script FAILURE response in all cases. Inside `deleteAllChats`, errors thrown from `setInterval` callbacks are outside the outer `try/catch`.
 6. **DOM fragility** — Styling and delete-all depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
