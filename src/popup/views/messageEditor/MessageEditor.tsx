@@ -4,6 +4,7 @@ import { ColorControls } from "./components/colorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/messageSliderControls";
 import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
+import { SelectorHealthCheck } from "@src/components/selectorHealthCheck";
 
 export interface MessageEditorProps {
     liveSettings: Settings;
@@ -52,6 +53,9 @@ export function MessageEditor({
                 setSavedSettings={setSavedSettings}
             />
             <DeleteAllChatsButton />
+            {process.env.NODE_ENV === "development" ? (
+                <SelectorHealthCheck />
+            ) : null}
         </div>
     );
 }

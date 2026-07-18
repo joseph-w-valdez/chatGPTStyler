@@ -27,7 +27,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 | [`src/components/`](src/components/)                                                         | Shared UI: Header, FormButtons, DeleteAllChatsButton, ScrollToTop.                                                                                                |
 | [`src/css/app.css`](src/css/app.css)                                                         | Global Tailwind entry for the popup.                                                                                                                              |
 | [`dist/`](dist/)                                                                             | Built extension package. Load this folder as an unpacked extension. Includes [`dist/manifest.json`](dist/manifest.json) (source of truth for MV3 config in-repo). |
-| [`webpack.common.js`](webpack.common.js)                                                     | Entries: `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                                        |
+| [`webpack.config.js`](webpack.config.js)                                                     | Mode-driven entries/config for `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                   |
 
 Path alias: `@src/*` → `src/*` (TypeScript + Webpack + Jest).
 
@@ -39,8 +39,10 @@ Prefer **npm** (`package-lock.json` + [`packageManager`](package.json) field). E
 nvm use            # or: nvm use $(cat .nvmrc)
 npm ci             # preferred when lockfile is trusted
 npm install        # only when intentionally changing deps
-npm run dev        # webpack watch (development)
-npm run build      # production webpack → dist/js only
+npm run dev        # webpack watch (development flavor)
+npm run build:dev  # one-off development webpack → dist/js
+npm run build      # alias for build:prod
+npm run build:prod # production webpack → dist/js (strips debug logs / dev UI)
 npm test           # Jest
 ```
 
@@ -61,7 +63,7 @@ npm run lint         # ESLint --fix on src/**/*.ts*
 npm run prettify     # Prettier --write on src/**/*.ts*
 ```
 
-Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)). TypeScript is **4.9.5** with `@types/node` **24.x** (aligned to the runtime Node major).
+Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release.yml`](.github/workflows/release.yml)). TypeScript is **4.9.5** with `@types/node` **24.x** (aligned to the runtime Node major).
 
 ## Architecture (short)
 
@@ -120,8 +122,10 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 1. Bump version in `package.json`, `package-lock.json` (top-level), and `dist/manifest.json` together — they have drifted historically.
 2. Update `CHANGELOG.md`.
-3. `npm run build` and smoke-test unpacked `dist/` (build alone does **not** recreate manifest/HTML/icons).
-4. Only then create/push a tag; tags run validation then zip artifact upload via GitHub Actions.
+3. `npm run build:prod` and smoke-test unpacked `dist/` (build alone does **not** recreate manifest/HTML/icons).
+4. Run `npm run validate && npm run test:ci`.
+5. Push an RC tag such as `1.2.4-RC1` for a pre-release, or a final tag such as `1.2.4` after approval.
+6. The Release workflow builds dev/prod concurrently and attaches both zips to a GitHub Release; only the prod zip is a store deliverable. See [docs/releases.md](docs/releases.md).
 
 ## What to avoid
 
@@ -138,5 +142,6 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 -   [docs/architecture.md](docs/architecture.md)
 -   [docs/features-and-settings.md](docs/features-and-settings.md)
 -   [docs/development.md](docs/development.md)
+-   [docs/releases.md](docs/releases.md)
 -   [docs/dom-integration.md](docs/dom-integration.md)
 -   [CONTRIBUTING.md](CONTRIBUTING.md) — human contributor process

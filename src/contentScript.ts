@@ -1,7 +1,11 @@
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { ScrollToTop } from "./components/scrollToTop/ScrollToTop";
-import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
+import {
+    getOptionsFromStorage,
+    deleteAllChats,
+    checkSelectors,
+} from "./lib/utilities";
 import { buildCss } from "./shared/utils";
 import { removeUnnecessarySpace } from "@src/lib/utilities";
 import {
@@ -43,6 +47,35 @@ chrome.runtime.onMessage.addListener(
                 });
             // Keep the message channel open for the async response.
             return true;
+        }
+
+        if (
+            process.env.NODE_ENV === "development" &&
+            request.action === "checkSelectors"
+        ) {
+            try {
+                const report = checkSelectors(document);
+                // eslint-disable-next-line no-console
+                console.table(
+                    report.items.map((item) => ({
+                        id: item.id,
+                        count: item.count,
+                        ok: item.ok,
+                        optional: item.optional,
+                        selector: item.selector,
+                    })),
+                );
+                sendResponse({ status: "SUCCESS", report });
+            } catch (error: unknown) {
+                sendResponse({
+                    status: "FAILURE",
+                    message:
+                        error instanceof Error
+                            ? error.message
+                            : "Selector check failed",
+                });
+            }
+            return false;
         }
 
         return false;

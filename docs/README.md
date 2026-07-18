@@ -19,6 +19,7 @@ Primary agent entry point: [`../CLAUDE.md`](../CLAUDE.md).
 | [architecture.md](architecture.md)                   | Entry points, MV3 wiring, module map, messaging & persistence flows, known caveats |
 | [features-and-settings.md](features-and-settings.md) | User-facing features, settings model, live preview / save / cancel, CSS generation |
 | [development.md](development.md)                     | Setup, scripts, loading unpacked builds, tests, release CI                         |
+| [releases.md](releases.md)                           | Release candidates, final tags, generated artifacts, and GitHub Releases           |
 | [dom-integration.md](dom-integration.md)             | ChatGPT DOM selectors, class mutations, selector-breakage checklist                |
 
 ## Source layout (summary)
@@ -37,7 +38,7 @@ dist/              # Packaged extension (manifest, HTML, icons, built JS)
 ## Related root files
 
 -   [`package.json`](../package.json) — scripts and dependencies
--   [`webpack.common.js`](../webpack.common.js) — bundle entries
+-   [`webpack.config.js`](../webpack.config.js) — mode-driven bundle entries and build configuration
 -   [`dist/manifest.json`](../dist/manifest.json) — extension manifest
 -   [`CHANGELOG.md`](../CHANGELOG.md) — version history
 -   [`CONTRIBUTING.md`](../CONTRIBUTING.md) — contribution process
