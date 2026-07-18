@@ -36,6 +36,8 @@
 -   Improved popup control labeling and delete-all status announcements for assistive tech
 -   Stopped logging user settings and other noisy console messages in production paths
 -   Upgraded TypeScript to 4.9.5 and aligned `@types/node` to 24.x; bumped `ts-loader` for compatibility
+-   Upgraded Jest to 29.7 with matching `ts-jest`, `@types/jest`, and `jest-environment-jsdom`
+-   Replaced `jest-css-modules` with `identity-obj-proxy` for CSS module mocks
 
 ## [1.2.3] - 2025-06-25
 
