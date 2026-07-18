@@ -1,4 +1,4 @@
 export * from "./deleteAllChats";
-export * from "./googleStorage";
+export * from "./settingsStorage";
 export * from "./removeUnnecessarySpace";
 export * from "./chatDom";

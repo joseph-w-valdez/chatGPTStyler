@@ -22,10 +22,10 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 
 ## Settings model
 
-Defined in [`src/lib/utilities/googleStorage.ts`](../src/lib/utilities/googleStorage.ts):
+The domain model and defaults are colocated in [`src/shared/settings.ts`](../src/shared/settings.ts):
 
 ```ts
-interface SettingsType {
+interface Settings {
     messageMaxWidthStyle: string;
     messageColorUserStyle: string;
     messageColorNonUserStyle: string;
@@ -37,8 +37,6 @@ interface SettingsType {
     messageButtonsVisibilityStyle: boolean;
 }
 ```
-
-Defaults in [`src/shared/utils/data.ts`](../src/shared/utils/data.ts):
 
 | Key                             | Default     |
 | ------------------------------- | ----------- |
@@ -84,7 +82,7 @@ The popup does not forward its initial defaults to the background until storage 
 
 [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) is the single place settings become CSS.
 
-1. `buildCss(settings)` is a **pure** function: the returned CSS string depends only on the provided `SettingsType` object (no module-level mutable fragments).
+1. `buildCss(settings)` is a **pure** function: the returned CSS string depends only on the provided `Settings` object (no module-level mutable fragments).
 2. Boolean settings such as `messageButtonsVisibilityStyle: false` are applied correctly (`visibility: invisible`).
 3. Fixed helper rules (code-snippet width, hide default message surface, show edit button, transparent edit box, input padding/max-width resets) are always included.
 4. Primary selector root: `[data-testid^="conversation-turn-"]`.
@@ -127,7 +125,7 @@ Treat this feature as **fragile**; selector failures are expected after ChatGPT 
 
 ## Adding a new setting (checklist)
 
-1. Add field to `SettingsType` and `defaultSettings`.
+1. Add the field and default to `Settings` / `defaultSettings` in `src/shared/settings.ts`.
 2. Extend `buildCss` / dynamic style fragments to emit CSS for the new field.
 3. Add UI control that updates `liveSettings` and calls `sendMessageToTab` with the full updated settings object.
 4. Update tests/snapshots.

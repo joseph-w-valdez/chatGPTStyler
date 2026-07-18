@@ -18,10 +18,10 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 | [`src/popup/views/messageEditor/`](src/popup/views/messageEditor/)                           | **Active** settings UI: sliders, color pickers, save/cancel/defaults, delete-all button.                                                                          |
 | [`src/contentScript.ts`](src/contentScript.ts)                                               | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
 | [`src/backgroundPage.ts`](src/backgroundPage.ts)                                             | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
+| [`src/shared/settings.ts`](src/shared/settings.ts)                                           | Domain `Settings` interface and `defaultSettings`.                                                                                                                |
 | [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts)               | Pure `buildCss(settings)` → CSS string; `sendMessageToTab` for live preview.                                                                                      |
 | [`src/shared/messaging/`](src/shared/messaging/)                                             | Typed extension message contracts (content-script + popup port).                                                                                                  |
-| [`src/shared/utils/data.ts`](src/shared/utils/data.ts)                                       | `defaultSettings`.                                                                                                                                                |
-| [`src/lib/utilities/googleStorage.ts`](src/lib/utilities/googleStorage.ts)                   | `SettingsType`, `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                          |
+| [`src/lib/utilities/settingsStorage.ts`](src/lib/utilities/settingsStorage.ts)               | `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                                          |
 | [`src/lib/utilities/deleteAllChats.ts`](src/lib/utilities/deleteAllChats.ts)                 | DOM automation for delete-all.                                                                                                                                    |
 | [`src/lib/utilities/removeUnnecessarySpace.ts`](src/lib/utilities/removeUnnecessarySpace.ts) | Strips ChatGPT layout classes that fight custom widths.                                                                                                           |
 | [`src/components/`](src/components/)                                                         | Shared UI: Header, FormButtons, DeleteAllChatsButton, ScrollToTop.                                                                                                |
@@ -97,12 +97,11 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ### Settings shape or defaults
 
-1. Update `SettingsType` in [`googleStorage.ts`](src/lib/utilities/googleStorage.ts).
-2. Update `defaultSettings` in [`data.ts`](src/shared/utils/data.ts).
-3. Extend `buildCss` in [`stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts) for the new field.
-4. Wire UI controls (usually MessageEditor sliders/colors or FormButtons).
-5. Update tests/snapshots that embed settings objects.
-6. Manually verify: load unpacked extension → change value → live preview on chatgpt.com → Save → reload page → style persists.
+1. Update `Settings` and `defaultSettings` together in [`settings.ts`](src/shared/settings.ts).
+2. Extend `buildCss` in [`stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts) for the new field.
+3. Wire UI controls (usually MessageEditor sliders/colors or FormButtons).
+4. Update tests/snapshots that embed settings objects.
+5. Manually verify: load unpacked extension → change value → live preview on chatgpt.com → Save → reload page → style persists.
 
 ### Chrome messaging
 

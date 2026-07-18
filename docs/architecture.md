@@ -88,8 +88,8 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 
 | Module                                                                        | Role                                                           |
 | ----------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts)                   | `SettingsType`, get/set `options` under `chrome.storage.sync`  |
-| [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                              |
+| [`settings.ts`](../src/shared/settings.ts)                                    | Domain `Settings` interface and `defaultSettings`              |
+| [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts)               | Get/set `options` under `chrome.storage.sync`                  |
 | [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
 | [`messaging/`](../src/shared/messaging/)                                      | Typed popup / content / port message contracts                 |
 | [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence            |
@@ -143,8 +143,8 @@ sequenceDiagram
 ## Persistence model
 
 -   Key: `options` in `chrome.storage.sync`.
--   Shape: [`SettingsType`](../src/lib/utilities/googleStorage.ts) (string numeric-looking values for widths/padding/radius; hex colors; one boolean for button visibility).
--   Defaults: [`defaultSettings`](../src/shared/utils/data.ts), merged with storage so new/missing keys receive defaults.
+-   Shape and defaults: [`Settings` / `defaultSettings`](../src/shared/settings.ts) (string numeric-looking values for widths/padding/radius; hex colors; one boolean for button visibility).
+-   Storage adapter: [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts), which merges stored values over defaults so new/missing keys are filled.
 
 ## Known implementation caveats
 

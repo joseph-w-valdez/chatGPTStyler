@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { Settings } from "@src/shared/settings";
 import { ColorControls } from "./components/colorControl/component";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/messageSliderControls";
 import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
 
 export interface MessageEditorProps {
-    liveSettings: SettingsType;
-    setLiveSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveSettings: Settings;
+    setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
 }
 export function MessageEditor({
     liveSettings,
     setLiveSettings,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
-    const [savedSettings, setSavedSettings] = useState<SettingsType>({
+    const [savedSettings, setSavedSettings] = useState<Settings>({
         ...liveSettings,
     });
 

@@ -1,10 +1,10 @@
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { Settings } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 
 export interface ColorControlsProps {
-    setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
-    liveChanges: SettingsType;
+    setLiveChanges: React.Dispatch<React.SetStateAction<Settings>>;
+    liveChanges: Settings;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export type colorSetting = "messageColor" | "textColor";
@@ -65,13 +65,13 @@ export function ColorControls({
         index: number,
         isUser: boolean,
     ) => {
-        const settingsKey: keyof SettingsType = `${setting}${
+        const settingsKey: keyof Settings = `${setting}${
             isUser ? "User" : "NonUser"
         }Style`;
 
         const handleOnChange = (
             e: React.ChangeEvent<HTMLInputElement>,
-            settingsKey: keyof SettingsType,
+            settingsKey: keyof Settings,
         ) => {
             const nextSettings = {
                 ...liveChanges,

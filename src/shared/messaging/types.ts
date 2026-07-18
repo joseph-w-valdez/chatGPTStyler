@@ -1,4 +1,4 @@
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { Settings } from "@src/shared/settings";
 
 /** Popup → content script: replace injected `#custom-style` CSS. */
 export type UpdateStylesMessage = {
@@ -20,7 +20,7 @@ export type DeleteMessagesResponse =
 /** Popup → background (port `name: "popup"`): mirror live settings. */
 export type UpdateSettingsPortMessage = {
     type: "updateSettings";
-    settings: SettingsType;
+    settings: Settings;
 };
 
 export type PopupPortMessage = UpdateSettingsPortMessage;
