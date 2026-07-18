@@ -9,11 +9,5 @@ exports[`component renders 1`] = `
   >
     ChatGPT Styler
   </h1>
-  <button
-    className="btn absolute inset-y-0 right-0 animate-fade-in m-2"
-    onClick={[Function]}
-  >
-    Back
-  </button>
 </div>
 `;

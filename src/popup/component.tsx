@@ -17,7 +17,6 @@ export function Popup(): JSX.Element {
         ...defaultSettings,
     });
     const [settingsLoaded, setSettingsLoaded] = useState(false);
-    const [page, setPage] = useState<string>("Home");
 
     const sendSettingsToBackground = (updatedSettings: SettingsType) => {
         try {
@@ -51,11 +50,10 @@ export function Popup(): JSX.Element {
         };
     }, []);
 
-    // Renders the component tree
     return (
         <div className={css.popupContainer}>
             <div className="w-full">
-                <Header page={page} setPage={setPage} />
+                <Header />
                 <hr className="mb-2" />
                 <MessageEditor
                     liveSettings={liveSettings}

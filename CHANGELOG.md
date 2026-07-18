@@ -20,6 +20,8 @@
 -   Hardened the content-script 1s integration loop to skip missing DOM and avoid stale mounts
 -   Removed an unused content-script handshake message
 -   Delete-all now awaits the content-script result and uses a hostname-based ChatGPT tab check
+-   Removed unused HomeMenu / MiscEditor / HomeButton multi-page shell; popup is MessageEditor-only
+-   Simplified Header (title only; no vestigial Back / page state)
 
 ## [1.2.3] - 2025-06-25
 
