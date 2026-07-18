@@ -56,7 +56,7 @@ Dev vs prod: [`webpack.dev.js`](../webpack.dev.js) (watch + inline source maps) 
 ### Popup
 
 -   [`src/popup/index.tsx`](../src/popup/index.tsx) — mounts `<Popup />` into `#popup`, imports global CSS.
--   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, opens a long-lived `runtime.connect({ name: "popup" })` port, loads storage on mount, and posts `liveSettings` changes to the background after the initial load completes. It renders Header + **MessageEditor** only.
+-   [`src/popup/component.tsx`](../src/popup/component.tsx) — owns `liveSettings` state, connects a `chrome.runtime` port (`name: "popup"`) on mount, loads storage, and posts `updateSettings` when live settings change after load. Renders Header + **MessageEditor** only.
 -   Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
 -   Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 
@@ -91,6 +91,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 | [`googleStorage.ts`](../src/lib/utilities/googleStorage.ts)                   | `SettingsType`, get/set `options` under `chrome.storage.sync`  |
 | [`data.ts`](../src/shared/utils/data.ts)                                      | `defaultSettings`                                              |
 | [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
+| [`messaging/`](../src/shared/messaging/)                                      | Typed popup / content / port message contracts                 |
 | [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence            |
 | [`chatDom.ts`](../src/lib/utilities/chatDom.ts)                               | Shared ChatGPT DOM selectors / mount ids                       |
 | [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width            |
@@ -101,13 +102,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 
 1. User changes a control in MessageEditor / ColorControls / sliders.
 2. Control updates React state with the full next settings object and calls `sendMessageToTab(nextSettings)`.
-3. `sendMessageToTab` builds CSS via pure `buildCss(settings)`, then:
-
-    ```ts
-    chrome.tabs.query({ active: true, currentWindow: true }, ...)
-    chrome.tabs.sendMessage(tabId, { action: "updateStyles", arg: cssTextContent })
-    ```
-
+3. `sendMessageToTab` builds CSS via pure `buildCss(settings)`, then sends a typed `{ action: "updateStyles", arg }` to the active tab (skips missing tab ids / swallows `runtime.lastError` when no content script).
 4. Content script writes the string into `#custom-style`.
 
 **Implication:** Live preview only reaches the **active** tab. The ChatGPT tab must be focused when adjusting styles.
@@ -120,8 +115,6 @@ Two paths write `chrome.storage.sync`:
 | ------------- | ---------------- | -------------------------------------------------- |
 | Explicit Save | FormButtons Save | `saveOptionsToStorage(liveSettings)`               |
 | Popup close   | Port disconnect  | Background `saveOptionsToStorage(currentSettings)` |
-
-`saveOptionsToStorage` also broadcasts `{ type: "SETTINGS_CHANGED", payload: options }` to all tabs. The content script **does not** listen for `SETTINGS_CHANGED` today; it only applies styles on load and via `updateStyles` messages. See caveats.
 
 Cancel restores the settings last loaded from storage or explicitly saved during the current popup session. Closing the popup without pressing Save intentionally persists the current live settings.
 
@@ -141,8 +134,7 @@ sequenceDiagram
   participant S as storage.sync
 
   P->>B: connect name=popup
-  P->>B: popupOpened
-  P->>B: updateSettings (on each liveSettings change)
+  P->>B: updateSettings (on each liveSettings change after load)
   Note over P,B: User edits / closes popup
   P-->>B: disconnect
   B->>S: saveOptionsToStorage(currentSettings)
@@ -159,11 +151,9 @@ sequenceDiagram
 These are **current code realities**, not goals:
 
 1. **No UI for `messageButtonsVisibilityStyle`** — the boolean still ships in storage defaults and `buildCss`, but nothing in the popup toggles it. Revisit if product wants that control back.
-2. **`SETTINGS_CHANGED` unused** — storage saver notifies tabs with `type: "SETTINGS_CHANGED"`; content script listens for `action: "updateStyles"` / `"deleteMessages"` only. Other tabs/pages do not auto-refresh from that broadcast.
-3. **Unmatched handshake messages** — the popup sends `{ popupMounted: true }` / port `{ popupOpened: true }`. The background has no `runtime.onMessage` handler for those; they are effectively no-ops (aside from port connect).
-4. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
-5. **Delete-all DOM fragility** — automation still depends on ChatGPT’s menu markup and can time out when selectors drift; failures are now reported honestly instead of as false success. See [dom-integration.md](dom-integration.md).
-6. **General DOM fragility** — Styling and layout helpers also depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
+2. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
+3. **Delete-all DOM fragility** — automation still depends on ChatGPT’s menu markup and can time out when selectors drift; failures are now reported honestly instead of as false success. See [dom-integration.md](dom-integration.md).
+4. **General DOM fragility** — Styling and layout helpers also depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
 
 ## Related docs
 

@@ -10,6 +10,7 @@ import {
     SCROLL_TO_TOP_MOUNT_ID,
     USER_TEXT_CONTAINER_SELECTOR,
 } from "@src/lib/utilities/chatDom";
+import { ContentScriptMessage } from "@src/shared/messaging";
 
 console.log("Content script loaded.");
 
@@ -21,33 +22,35 @@ getOptionsFromStorage(
     (settings) => (customStyle.textContent = buildCss(settings)),
 );
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "updateStyles") {
-        customStyle.textContent = request.arg;
-        return false;
-    }
+chrome.runtime.onMessage.addListener(
+    (request: ContentScriptMessage, _sender, sendResponse) => {
+        if (request.action === "updateStyles") {
+            customStyle.textContent = request.arg;
+            return false;
+        }
 
-    if (request.action === "deleteMessages") {
-        console.log("Received Message From Popup: Deleting All Messages");
-        deleteAllChats()
-            .then((result) => {
-                sendResponse(result);
-            })
-            .catch((error: unknown) => {
-                sendResponse({
-                    status: "FAILURE",
-                    message:
-                        error instanceof Error
-                            ? error.message
-                            : "Failed to delete chats",
+        if (request.action === "deleteMessages") {
+            console.log("Received Message From Popup: Deleting All Messages");
+            deleteAllChats()
+                .then((result) => {
+                    sendResponse(result);
+                })
+                .catch((error: unknown) => {
+                    sendResponse({
+                        status: "FAILURE",
+                        message:
+                            error instanceof Error
+                                ? error.message
+                                : "Failed to delete chats",
+                    });
                 });
-            });
-        // Keep the message channel open for the async response.
-        return true;
-    }
+            // Keep the message channel open for the async response.
+            return true;
+        }
 
-    return false;
-});
+        return false;
+    },
+);
 
 const syncLayoutHelpers = (): void => {
     const userTextContainer = document.querySelectorAll(

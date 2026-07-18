@@ -19,6 +19,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 | [`src/contentScript.ts`](src/contentScript.ts)                                               | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
 | [`src/backgroundPage.ts`](src/backgroundPage.ts)                                             | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
 | [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts)               | Pure `buildCss(settings)` → CSS string; `sendMessageToTab` for live preview.                                                                                      |
+| [`src/shared/messaging/`](src/shared/messaging/)                                             | Typed extension message contracts (content-script + popup port).                                                                                                  |
 | [`src/shared/utils/data.ts`](src/shared/utils/data.ts)                                       | `defaultSettings`.                                                                                                                                                |
 | [`src/lib/utilities/googleStorage.ts`](src/lib/utilities/googleStorage.ts)                   | `SettingsType`, `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                          |
 | [`src/lib/utilities/deleteAllChats.ts`](src/lib/utilities/deleteAllChats.ts)                 | DOM automation for delete-all.                                                                                                                                    |
@@ -80,9 +81,9 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 -   **Language / UI**: TypeScript + React 17. Prefer functional components and existing folder layout (`component.tsx` + `index.tsx` + `__tests__` / `__test__`).
 -   **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
--   **Extension APIs**: Prefer patterns already in the file you touch. Popup uses `webextension-polyfill` in places; content/background/storage often use raw `chrome.*`. Do not “clean up” APIs across the codebase unless asked.
+-   **Extension APIs**: Use raw `chrome.*` everywhere (popup, background, content, storage). Do not reintroduce `webextension-polyfill` without an explicit product need.
 -   **Lint / format**: ESLint + Prettier ([`.eslintrc.js`](.eslintrc.js), [`.prettierrc.js`](.prettierrc.js)). Prefer check-only commands for validation; `npm run lint` / `npm run prettify` fix/write files.
--   **Tests**: Jest + `react-test-renderer` snapshots under `__tests__` / `__test__`. Mock `webextension-polyfill` via [`src/__mocks__/webextension-polyfill.ts`](src/__mocks__/webextension-polyfill.ts); shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts).
+-   **Tests**: Jest + `react-test-renderer` snapshots under `__tests__` / `__test__`. Shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts). Message shapes live in [`src/shared/messaging/`](src/shared/messaging/).
 
 ## Extension constraints (do not ignore)
 
@@ -105,8 +106,8 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ### Chrome messaging
 
-1. Confirm sender/receiver action names match (`updateStyles`, `deleteMessages`, port `updateSettings`, etc.).
-2. Note caveats in [docs/architecture.md](docs/architecture.md): `SETTINGS_CHANGED` from storage is **not** handled by the content script; background save-on-disconnect can race with FormButtons `saveOptionsToStorage`.
+1. Confirm sender/receiver shapes match the typed contracts in [`src/shared/messaging/`](src/shared/messaging/) (`updateStyles`, `deleteMessages`, port `updateSettings`).
+2. Background save-on-disconnect can still race with FormButtons `saveOptionsToStorage` (intentional dual save paths).
 3. Live preview uses `sendMessageToTab` → active tab; ensure the active tab is ChatGPT when testing.
 
 ### Generated CSS / DOM selectors

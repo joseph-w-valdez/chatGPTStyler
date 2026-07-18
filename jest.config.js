@@ -3,8 +3,6 @@ module.exports = {
     moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node"],
     moduleNameMapper: {
         "@src/(.*)": "<rootDir>/src/$1",
-        "webextension-polyfill":
-            "<rootDir>/src/__mocks__/webextension-polyfill.ts",
         "\\.(css|less|scss|sss|styl)$":
             "<rootDir>/node_modules/jest-css-modules",
     },

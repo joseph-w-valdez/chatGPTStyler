@@ -1,6 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import browser from "webextension-polyfill";
+import { useState, useEffect, useRef } from "react";
 import css from "./styles.module.css";
 import { Header } from "@src/components/header/Header";
 import {
@@ -9,22 +8,30 @@ import {
 } from "@src/lib/utilities/googleStorage";
 import { MessageEditor } from "./views/messageEditor";
 import { defaultSettings } from "@src/shared/utils/data";
-
-const port = browser.runtime.connect({ name: "popup" });
+import {
+    POPUP_PORT_NAME,
+    UpdateSettingsPortMessage,
+} from "@src/shared/messaging";
 
 export function Popup(): JSX.Element {
     const [liveSettings, setLiveSettings] = useState<SettingsType>({
         ...defaultSettings,
     });
     const [settingsLoaded, setSettingsLoaded] = useState(false);
+    const portRef = useRef<chrome.runtime.Port | null>(null);
 
     const sendSettingsToBackground = (updatedSettings: SettingsType) => {
+        const port = portRef.current;
+        if (!port) return;
+
+        const message: UpdateSettingsPortMessage = {
+            type: "updateSettings",
+            settings: updatedSettings,
+        };
+
         try {
             console.log("sending settings to background", updatedSettings);
-            port.postMessage({
-                type: "updateSettings",
-                settings: updatedSettings,
-            });
+            port.postMessage(message);
         } catch (error) {
             console.error(error);
         }
@@ -38,15 +45,18 @@ export function Popup(): JSX.Element {
     }, [liveSettings, settingsLoaded]);
 
     useEffect(() => {
-        port.postMessage({ popupOpened: true });
-        browser.runtime.sendMessage({ popupMounted: true });
+        const port = chrome.runtime.connect({ name: POPUP_PORT_NAME });
+        portRef.current = port;
+
         getOptionsFromStorage((savedOptions) => {
             setLiveSettings(savedOptions);
             setSettingsLoaded(true);
             console.log("loaded options from storage", savedOptions);
         });
+
         return () => {
             port.disconnect();
+            portRef.current = null;
         };
     }, []);
 

@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import css from "./styles.module.css";
+import {
+    DeleteMessagesMessage,
+    DeleteMessagesResponse,
+} from "@src/shared/messaging";
 
 const isChatGptUrl = (url: string | undefined): boolean => {
     if (!url) return false;
@@ -9,11 +13,6 @@ const isChatGptUrl = (url: string | undefined): boolean => {
     } catch {
         return false;
     }
-};
-
-type DeleteMessagesResponse = {
-    status?: "SUCCESS" | "FAILURE";
-    message?: string;
 };
 
 export function DeleteAllChatsButton(): JSX.Element {
@@ -60,9 +59,13 @@ export function DeleteAllChatsButton(): JSX.Element {
                 return;
             }
 
+            const message: DeleteMessagesMessage = {
+                action: "deleteMessages",
+            };
+
             chrome.tabs.sendMessage(
                 tab.id,
-                { action: "deleteMessages" },
+                message,
                 (response: DeleteMessagesResponse | undefined) => {
                     if (chrome.runtime.lastError) {
                         finishWithMessage(
