@@ -61,7 +61,7 @@ npm run lint         # ESLint --fix on src/**/*.ts*
 npm run prettify     # Prettier --write on src/**/*.ts*
 ```
 
-Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)). `@types/node` stays on a TypeScript **4.5**-compatible pin until TypeScript itself is upgraded (newer `@types/node` use syntax TS 4.5 cannot parse).
+Node / npm: [`.nvmrc`](.nvmrc) → **24.18.0**; `engines` require Node 24.x and npm ≥11. PR CI and release CI read `.nvmrc` and run `npm ci` ([`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/release-artifacts.yml`](.github/workflows/release-artifacts.yml)). TypeScript is **4.9.5** with `@types/node` **24.x** (aligned to the runtime Node major).
 
 ## Architecture (short)
 

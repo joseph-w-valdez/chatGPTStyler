@@ -1,4 +1,4 @@
-.btn {
+button.btn {
     @apply inline-flex;
     @apply items-center;
     @apply justify-center;
@@ -23,7 +23,7 @@
     @apply disabled:shadow-none;
     @apply duration-300;
 }
-.btnRed {
+button.btnRed {
     @apply inline-flex;
     @apply items-center;
     @apply justify-center;
@@ -49,7 +49,7 @@
     @apply duration-300;
 }
 
-.btnGrey {
+button.btnGrey {
     @apply inline-flex;
     @apply items-center;
     @apply justify-center;

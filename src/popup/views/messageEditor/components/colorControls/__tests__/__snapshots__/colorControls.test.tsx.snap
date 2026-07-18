@@ -8,8 +8,13 @@ exports[`ColorControls component renders correctly 1`] = `
     className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
   >
     <legend
-      className=" text-center p-1 w-24 rounded-md"
-      id="user-color-legend"
+      className="sr-only"
+    >
+      User color settings
+    </legend>
+    <div
+      aria-hidden="true"
+      className="text-center p-1 w-24 rounded-md"
       style={
         Object {
           "backgroundColor": "#386d9f",
@@ -18,56 +23,49 @@ exports[`ColorControls component renders correctly 1`] = `
       }
     >
       User Color
-    </legend>
+    </div>
     <div
-      aria-labelledby="user-color-legend"
       className="grid grid-cols-2 gap-1 w-full text-white"
-      role="group"
     >
-      <div
-        className="flex flex-col gap-1 w-full"
+      <input
+        aria-label="User background color"
+        className="text-center w-full rounded-md h-8"
+        id="messageColorUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#386d9f"
+      />
+      <input
+        aria-label="User text color"
+        className="text-center w-full rounded-md h-8"
+        id="textColorUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#FFFFFF"
+      />
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
       >
-        <label
-          className="rounded-md font-medium text-center p-0 m-0"
-          htmlFor="messageColorUserStyle"
-        >
-          BG
-        </label>
-        <input
-          aria-label="User background color"
-          className="text-center w-full rounded-md h-8"
-          id="messageColorUserStyle"
-          onChange={[Function]}
-          type="color"
-          value="#386d9f"
-        />
-      </div>
-      <div
-        className="flex flex-col gap-1 w-full"
+        BG
+      </span>
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
       >
-        <label
-          className="rounded-md font-medium text-center p-0 m-0"
-          htmlFor="textColorUserStyle"
-        >
-          Text
-        </label>
-        <input
-          aria-label="User text color"
-          className="text-center w-full rounded-md h-8"
-          id="textColorUserStyle"
-          onChange={[Function]}
-          type="color"
-          value="#FFFFFF"
-        />
-      </div>
+        Text
+      </span>
     </div>
   </fieldset>
   <fieldset
     className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
   >
     <legend
-      className=" text-center p-1 w-24 rounded-md"
-      id="chatgpt-color-legend"
+      className="sr-only"
+    >
+      ChatGPT color settings
+    </legend>
+    <div
+      aria-hidden="true"
+      className="text-center p-1 w-24 rounded-md"
       style={
         Object {
           "backgroundColor": "#333333",
@@ -76,48 +74,36 @@ exports[`ColorControls component renders correctly 1`] = `
       }
     >
       ChatGPT Color
-    </legend>
+    </div>
     <div
-      aria-labelledby="chatgpt-color-legend"
       className="grid grid-cols-2 gap-1 w-full text-white"
-      role="group"
     >
-      <div
-        className="flex flex-col gap-1 w-full"
+      <input
+        aria-label="ChatGPT background color"
+        className="text-center w-full rounded-md h-8"
+        id="messageColorNonUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#333333"
+      />
+      <input
+        aria-label="ChatGPT text color"
+        className="text-center w-full rounded-md h-8"
+        id="textColorNonUserStyle"
+        onChange={[Function]}
+        type="color"
+        value="#FFFFFF"
+      />
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
       >
-        <label
-          className="rounded-md font-medium text-center p-0 m-0"
-          htmlFor="messageColorNonUserStyle"
-        >
-          BG
-        </label>
-        <input
-          aria-label="ChatGPT background color"
-          className="text-center w-full rounded-md h-8"
-          id="messageColorNonUserStyle"
-          onChange={[Function]}
-          type="color"
-          value="#333333"
-        />
-      </div>
-      <div
-        className="flex flex-col gap-1 w-full"
+        BG
+      </span>
+      <span
+        className="rounded-md font-medium text-center p-0 m-0"
       >
-        <label
-          className="rounded-md font-medium text-center p-0 m-0"
-          htmlFor="textColorNonUserStyle"
-        >
-          Text
-        </label>
-        <input
-          aria-label="ChatGPT text color"
-          className="text-center w-full rounded-md h-8"
-          id="textColorNonUserStyle"
-          onChange={[Function]}
-          type="color"
-          value="#FFFFFF"
-        />
-      </div>
+        Text
+      </span>
     </div>
   </fieldset>
 </div>
