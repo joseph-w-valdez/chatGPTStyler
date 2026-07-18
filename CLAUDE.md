@@ -84,7 +84,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 -   **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
 -   **Extension APIs**: Use raw `chrome.*` everywhere (popup, background, content, storage). Do not reintroduce `webextension-polyfill` without an explicit product need.
 -   **Lint / format**: ESLint + Prettier ([`.eslintrc.js`](.eslintrc.js), [`.prettierrc.js`](.prettierrc.js)). Prefer check-only commands for validation; `npm run lint` / `npm run prettify` fix/write files.
--   **Tests**: Jest + `react-test-renderer` snapshots under `__tests__/`. Shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts). Message shapes live in [`src/shared/messaging/`](src/shared/messaging/).
+-   **Tests**: Jest 29 + `react-test-renderer` snapshots under `__tests__/`. Shared Chrome stubs in [`src/setupTests.ts`](src/setupTests.ts). Message shapes live in [`src/shared/messaging/`](src/shared/messaging/).
 
 ## Extension constraints (do not ignore)
 

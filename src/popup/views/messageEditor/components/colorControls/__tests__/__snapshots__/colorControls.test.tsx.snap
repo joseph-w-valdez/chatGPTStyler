@@ -16,7 +16,7 @@ exports[`ColorControls component renders correctly 1`] = `
       aria-hidden="true"
       className="text-center p-1 w-24 rounded-md"
       style={
-        Object {
+        {
           "backgroundColor": "#386d9f",
           "color": "#FFFFFF",
         }
@@ -67,7 +67,7 @@ exports[`ColorControls component renders correctly 1`] = `
       aria-hidden="true"
       className="text-center p-1 w-24 rounded-md"
       style={
-        Object {
+        {
           "backgroundColor": "#333333",
           "color": "#FFFFFF",
         }

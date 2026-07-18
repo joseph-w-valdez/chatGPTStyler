@@ -11,7 +11,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
       htmlFor="messageMaxWidthStyle"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(145, 10, 103)",
         }
       }
@@ -29,7 +29,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         maxLength={3}
         onChange={[Function]}
         style={
-          Object {
+          {
             "backgroundColor": "rgba(145, 10, 103, 0.1)",
           }
         }
@@ -45,7 +45,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         onChange={[Function]}
         step="1"
         style={
-          Object {
+          {
             "accentColor": "rgba(145, 10, 103)",
           }
         }
@@ -57,7 +57,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       aria-hidden="true"
       className="py-2 rounded-r-sm"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(145, 10, 103, 0.1)",
         }
       }
@@ -72,7 +72,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
       htmlFor="messagePaddingStyle"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(114, 4, 85)",
         }
       }
@@ -90,7 +90,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         maxLength={3}
         onChange={[Function]}
         style={
-          Object {
+          {
             "backgroundColor": "rgba(114, 4, 85, 0.1)",
           }
         }
@@ -106,7 +106,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         onChange={[Function]}
         step="1"
         style={
-          Object {
+          {
             "accentColor": "rgba(114, 4, 85)",
           }
         }
@@ -118,7 +118,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       aria-hidden="true"
       className="py-2 rounded-r-sm"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(114, 4, 85, 0.1)",
         }
       }
@@ -133,7 +133,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
       htmlFor="messageBorderRadiusStyle"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(60, 7, 83)",
         }
       }
@@ -151,7 +151,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         maxLength={3}
         onChange={[Function]}
         style={
-          Object {
+          {
             "backgroundColor": "rgba(60, 7, 83, 0.1)",
           }
         }
@@ -167,7 +167,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         onChange={[Function]}
         step="1"
         style={
-          Object {
+          {
             "accentColor": "rgba(60, 7, 83)",
           }
         }
@@ -179,7 +179,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       aria-hidden="true"
       className="py-2 rounded-r-sm"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(60, 7, 83, 0.1)",
         }
       }
@@ -194,7 +194,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       className="basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2"
       htmlFor="inputBoxMaxWidthStyle"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(3, 6, 55)",
         }
       }
@@ -212,7 +212,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         maxLength={3}
         onChange={[Function]}
         style={
-          Object {
+          {
             "backgroundColor": "rgba(3, 6, 55, 0.1)",
           }
         }
@@ -228,7 +228,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         onChange={[Function]}
         step="1"
         style={
-          Object {
+          {
             "accentColor": "rgba(3, 6, 55)",
           }
         }
@@ -240,7 +240,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
       aria-hidden="true"
       className="py-2 rounded-r-sm"
       style={
-        Object {
+        {
           "backgroundColor": "rgba(3, 6, 55, 0.1)",
         }
       }

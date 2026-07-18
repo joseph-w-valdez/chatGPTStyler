@@ -38,7 +38,7 @@ Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf
 
 TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`, `skipLibCheck`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
 
-**Note:** Runtime is Node 24 with TypeScript **4.9.5** and `@types/node` **24.x**. A TypeScript 5.x jump can wait for a dedicated PR (and likely pairs with Jest modernization).
+**Note:** Runtime is Node 24 with TypeScript **4.9.5** and `@types/node` **24.x**. Jest is on **29.x**. A TypeScript 5.x jump can wait for a dedicated PR (now unblocked by the Jest modernization).
 
 ## Loading the unpacked extension
 
@@ -70,9 +70,9 @@ Keep `version` in sync between `package.json`, top-level `package-lock.json`, an
 
 ## Tests
 
--   Runner: **Jest** + **ts-jest**.
+-   Runner: **Jest 29** + **ts-jest** + **jest-environment-jsdom**.
 -   Roots: `src/`.
--   Module maps: `@src/(.*)` → `src/$1`; CSS → `jest-css-modules`.
+-   Module maps: `@src/(.*)` → `src/$1`; CSS → `identity-obj-proxy`.
 -   Setup: [`src/setupTests.ts`](../src/setupTests.ts) stubs `chrome.storage` / `chrome.tabs` / `chrome.runtime`.
 -   Extension APIs in product code use raw `chrome.*` (no `webextension-polyfill`).
 -   Common patterns: `react-test-renderer` snapshots and prop wiring (no Enzyme).
