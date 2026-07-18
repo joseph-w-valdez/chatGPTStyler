@@ -79,7 +79,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 
 ## Conventions
 
--   **Language / UI**: TypeScript + React 17. Prefer functional components. Popup views/controls use named implementation files (`MessageEditor.tsx`) plus a barrel `index.ts`; shared UI under `src/components/` uses PascalCase filenames (`FormButtons.tsx`). Tests live under `__tests__/`.
+-   **Language / UI**: TypeScript + React 18. Prefer functional components. Popup views/controls use named implementation files (`MessageEditor.tsx`) plus a barrel `index.ts`; shared UI under `src/components/` uses PascalCase filenames (`FormButtons.tsx`). Tests live under `__tests__/`.
 -   **Folder roles**: `src/shared/` = cross-entry domain model, messaging contracts, and pure helpers. `src/lib/utilities/` = Chrome/DOM runtime adapters (storage, selectors, page automation). Do not merge these trees casually.
 -   **Styling**: Tailwind utility classes in TSX; CSS modules (`*.module.css`) for component-scoped rules; global styles via `app.css` + PostCSS/Tailwind.
 -   **Extension APIs**: Use raw `chrome.*` everywhere (popup, background, content, storage). Do not reintroduce `webextension-polyfill` without an explicit product need.

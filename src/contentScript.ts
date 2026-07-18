@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import { ScrollToTop } from "./components/scrollToTop/ScrollToTop";
 import { getOptionsFromStorage, deleteAllChats } from "./lib/utilities";
 import { buildCss } from "./shared/utils";
@@ -60,8 +60,14 @@ const syncLayoutHelpers = (): void => {
     removeUnnecessarySpace({ userTextContainer, inputBoxContainer });
 };
 
+const scrollToTopRoots = new WeakMap<Element, Root>();
+
 const unmountScrollToTop = (mountPoint: Element): void => {
-    ReactDOM.unmountComponentAtNode(mountPoint);
+    const root = scrollToTopRoots.get(mountPoint);
+    if (root) {
+        root.unmount();
+        scrollToTopRoots.delete(mountPoint);
+    }
     mountPoint.remove();
 };
 
@@ -87,7 +93,9 @@ const syncScrollToTop = (): void => {
     const mountPoint = document.createElement("div");
     mountPoint.id = SCROLL_TO_TOP_MOUNT_ID;
     parentDiv.appendChild(mountPoint);
-    ReactDOM.render(React.createElement(ScrollToTop), mountPoint);
+    const root = createRoot(mountPoint);
+    scrollToTopRoots.set(mountPoint, root);
+    root.render(React.createElement(ScrollToTop));
 };
 
 const syncPageIntegrations = (): void => {
