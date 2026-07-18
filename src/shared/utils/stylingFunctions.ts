@@ -1,4 +1,4 @@
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { Settings } from "@src/shared/settings";
 import { UpdateStylesMessage } from "@src/shared/messaging";
 
 const messageBubbles = '[data-testid^="conversation-turn-"]';
@@ -30,7 +30,7 @@ const fixedStyles = `
     }
 `;
 
-const buildDynamicStyles = (settings: SettingsType): string => {
+const buildDynamicStyles = (settings: Settings): string => {
     const buttonVisibility = settings.messageButtonsVisibilityStyle
         ? "unset"
         : "invisible";
@@ -60,16 +60,16 @@ const buildDynamicStyles = (settings: SettingsType): string => {
 };
 
 /** Pure settings → CSS. Output depends only on the provided settings object. */
-export const buildCss = (settings: SettingsType): string => {
+export const buildCss = (settings: Settings): string => {
     return buildDynamicStyles(settings) + fixedStyles;
 };
 
 /** @deprecated Prefer buildCss. Kept as an alias for existing call sites. */
-export const updateStyles = (settings: SettingsType): string => {
+export const updateStyles = (settings: Settings): string => {
     return buildCss(settings);
 };
 
-export const sendMessageToTab = (settings: SettingsType): void => {
+export const sendMessageToTab = (settings: Settings): void => {
     const message: UpdateStylesMessage = {
         action: "updateStyles",
         arg: buildCss(settings),

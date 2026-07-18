@@ -26,6 +26,7 @@
 -   Removed unused popup handshakes and the unused `SETTINGS_CHANGED` storage broadcast
 -   Hardened live-preview tab messaging against missing tabs / `runtime.lastError`
 -   Fixed popup mount so React waits for `#popup` (script no longer races ahead of the DOM)
+-   Colocated the `Settings` model and defaults; renamed the Chrome storage adapter for clearer ownership
 
 ## [1.2.3] - 2025-06-25
 

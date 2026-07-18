@@ -1,10 +1,10 @@
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { Settings } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 import React from "react";
 
 export interface SliderControlsProps {
-    setLiveChanges: React.Dispatch<React.SetStateAction<SettingsType>>;
-    liveChanges: SettingsType;
+    setLiveChanges: React.Dispatch<React.SetStateAction<Settings>>;
+    liveChanges: Settings;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export type colorSetting = "messageColor" | "textColor";
@@ -17,7 +17,7 @@ export function MessageSliderControls({
     // using this to create data we need so we can map through and have clean callback
     class InputSetting {
         name = "";
-        id: keyof SettingsType = "messageMaxWidthStyle";
+        id: keyof Settings = "messageMaxWidthStyle";
         valueType: "px" | "%" = "px";
         bgColor = "";
 
@@ -58,7 +58,7 @@ export function MessageSliderControls({
     const mapInputSettings = (setting: InputSetting, index: number) => {
         const handleOnChange = (
             e: React.ChangeEvent<HTMLInputElement>,
-            settingKey: keyof SettingsType,
+            settingKey: keyof Settings,
         ) => {
             const regex = /^\d+$/;
             if (regex.test(e.target.value)) {

@@ -2,25 +2,22 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import css from "./styles.module.css";
 import { Header } from "@src/components/header/Header";
-import {
-    SettingsType,
-    getOptionsFromStorage,
-} from "@src/lib/utilities/googleStorage";
+import { getOptionsFromStorage } from "@src/lib/utilities/settingsStorage";
 import { MessageEditor } from "./views/messageEditor";
-import { defaultSettings } from "@src/shared/utils/data";
+import { defaultSettings, Settings } from "@src/shared/settings";
 import {
     POPUP_PORT_NAME,
     UpdateSettingsPortMessage,
 } from "@src/shared/messaging";
 
 export function Popup(): JSX.Element {
-    const [liveSettings, setLiveSettings] = useState<SettingsType>({
+    const [liveSettings, setLiveSettings] = useState<Settings>({
         ...defaultSettings,
     });
     const [settingsLoaded, setSettingsLoaded] = useState(false);
     const portRef = useRef<chrome.runtime.Port | null>(null);
 
-    const sendSettingsToBackground = (updatedSettings: SettingsType) => {
+    const sendSettingsToBackground = (updatedSettings: Settings) => {
         const port = portRef.current;
         if (!port) return;
 

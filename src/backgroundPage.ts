@@ -1,11 +1,11 @@
 import {
     getOptionsFromStorage,
     saveOptionsToStorage,
-    SettingsType,
-} from "./lib/utilities/googleStorage";
+} from "./lib/utilities/settingsStorage";
 import { POPUP_PORT_NAME, PopupPortMessage } from "./shared/messaging";
+import { Settings } from "./shared/settings";
 
-let currentSettings: SettingsType | null = null;
+let currentSettings: Settings | null = null;
 let receivedFromPopup = false;
 
 chrome.runtime.onConnect.addListener((port) => {

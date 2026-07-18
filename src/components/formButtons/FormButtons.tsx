@@ -1,19 +1,16 @@
 import React from "react";
 import css from "./styles.module.css";
-import {
-    SettingsType,
-    saveOptionsToStorage,
-} from "@src/lib/utilities/googleStorage";
-import { defaultSettings } from "@src/shared/utils/data";
+import { saveOptionsToStorage } from "@src/lib/utilities/settingsStorage";
+import { defaultSettings, Settings } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 
 export interface FormButtonsProps {
     isEditing: boolean;
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-    liveSettings: SettingsType;
-    setLiveSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
-    savedSettings: SettingsType;
-    setSavedSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+    liveSettings: Settings;
+    setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
+    savedSettings: Settings;
+    setSavedSettings: React.Dispatch<React.SetStateAction<Settings>>;
 }
 
 export function FormButtons({

@@ -1,6 +1,5 @@
 import { buildCss, updateStyles, sendMessageToTab } from "../stylingFunctions";
-import { defaultSettings } from "../data";
-import { SettingsType } from "@src/lib/utilities/googleStorage";
+import { defaultSettings, Settings } from "@src/shared/settings";
 
 describe("buildCss", () => {
     it("includes default width, padding, and color values", () => {
@@ -25,7 +24,7 @@ describe("buildCss", () => {
     });
 
     it("applies messageButtonsVisibilityStyle false", () => {
-        const settings: SettingsType = {
+        const settings: Settings = {
             ...defaultSettings,
             messageButtonsVisibilityStyle: false,
         };
@@ -35,7 +34,7 @@ describe("buildCss", () => {
     });
 
     it("is deterministic for the same settings object", () => {
-        const settings: SettingsType = {
+        const settings: Settings = {
             ...defaultSettings,
             messageMaxWidthStyle: "80",
             messagePaddingStyle: "12",
@@ -45,11 +44,11 @@ describe("buildCss", () => {
     });
 
     it("does not depend on previous calls", () => {
-        const wide: SettingsType = {
+        const wide: Settings = {
             ...defaultSettings,
             messageMaxWidthStyle: "99",
         };
-        const narrow: SettingsType = {
+        const narrow: Settings = {
             ...defaultSettings,
             messageMaxWidthStyle: "40",
         };

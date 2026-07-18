@@ -29,8 +29,8 @@ src/
   components/      # Shared UI (also used from content script for ScrollToTop)
   contentScript.ts # Page injection
   backgroundPage.ts# Service worker
-  shared/utils/    # Defaults + CSS generation + tab messaging
-  lib/utilities/   # Storage, delete-all, layout helpers
+  shared/          # Cross-entry domain model, messaging, CSS generation
+  lib/utilities/   # Chrome/DOM adapters: storage, delete-all, layout helpers
 dist/              # Packaged extension (manifest, HTML, icons, built JS)
 ```
 
