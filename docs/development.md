@@ -4,15 +4,16 @@ Local setup, scripts, testing, and release packaging for ChatGPT Styler.
 
 ## Prerequisites
 
-- **Node.js** — [`.nvmrc`](../.nvmrc) pins `16.13.0`. Newer Node may work; CI release uses Node 14.
-- **npm (preferred)** — CI uses npm. Both [`package-lock.json`](../package-lock.json) and [`yarn.lock`](../yarn.lock) exist; treat npm/`package-lock.json` as authoritative unless the project standardizes on Yarn.
+- **Node.js 24.x** — [`.nvmrc`](../.nvmrc) pins `24.18.0` (Active LTS). `engines` in [`package.json`](../package.json) require `node >=24 <25` and `npm >=11`.
+- **npm** — only package manager. Exact versions via [`.npmrc`](../.npmrc) (`save-exact=true`, `engine-strict=true`). Do not add Yarn/pnpm lockfiles.
 - **Chromium browser** (Chrome, Edge, Brave, etc.) for loading the unpacked extension.
 
 ## Install
 
 ```bash
-npm ci          # preferred when lockfile is trusted
-# or
+nvm use            # matches .nvmrc
+npm ci             # preferred when lockfile is trusted
+# or, when changing dependencies:
 npm install
 ```
 
@@ -30,7 +31,9 @@ From [`package.json`](../package.json):
 
 Check-only alternatives: `npx eslint -c ./.eslintrc.js "src/**/*.ts*"`, `npx prettier --check "src/**/*.ts*"`, `npx tsc --noEmit`.
 
-TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
+TypeScript config: [`tsconfig.json`](../tsconfig.json) (`strict`, JSX react, path `@src/*`, `skipLibCheck`). ESLint: [`.eslintrc.js`](../.eslintrc.js). Prettier: [`.prettierrc.js`](../.prettierrc.js). Tailwind: [`tailwind.config.js`](../tailwind.config.js) + [`postcss.config.js`](../postcss.config.js). Webpack CSS pipeline uses `style-loader` + `css-loader` + `postcss-loader`.
+
+**Note:** Runtime is Node 24, but `@types/node` remains on a TypeScript 4.5-compatible pin. Bumping `@types/node` to match Node 24 requires upgrading TypeScript first.
 
 ## Loading the unpacked extension
 
@@ -82,7 +85,8 @@ Update snapshots intentionally when UI output changes (`jest -u` / accept in you
 Workflow: [`.github/workflows/release-artifacts.yml`](../.github/workflows/release-artifacts.yml).
 
 - **Trigger:** push of any git tag (`*`).
-- **Steps:** checkout → Node 14 → `npm install` → `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.
+- **Steps:** checkout → Node from `.nvmrc` (24.x) with npm cache → `npm ci` → `npm run build` → zip `dist/` as `dist-<tag>.zip` → upload artifact.
+- Action versions: `actions/checkout@v4`, `actions/setup-node@v4`, `actions/upload-artifact@v4`.
 - Uploads a build artifact only; it does **not** create a GitHub Release or publish to the Chrome Web Store.
 - There is **no** pull-request CI for test/lint/typecheck today.
 
