@@ -46,8 +46,6 @@ export function DeleteAllChatsButton(): JSX.Element {
      * delete-all. Success/failure UI follows the content-script response.
      */
     const requestDeleteAllChats = (): void => {
-        console.log("Sending Message to Content Script: Deleting All Messages");
-
         setIsLoading(true);
         setError(null);
         setSuccessful(null);
@@ -93,45 +91,61 @@ export function DeleteAllChatsButton(): JSX.Element {
     return (
         <div>
             <button
+                type="button"
                 className={showConfirmButtons ? "hidden" : css.bigRedBtn}
                 disabled={isLoading || !!error || !!success}
                 onClick={handleClick}
+                aria-expanded={showConfirmButtons}
+                aria-controls="delete-all-confirm"
             >
                 Delete All Conversations
             </button>
             {(error || success) && (
-                <h1
+                <p
+                    role="status"
+                    aria-live="polite"
                     className={
                         (error && css.errorMsg) || (success && css.successMsg)
                     }
                 >
                     {error || success}
-                </h1>
+                </p>
             )}
             <div
+                id="delete-all-confirm"
                 className={
                     showConfirmButtons
                         ? "grid place-items-center gap-2"
                         : "hidden"
                 }
+                role={showConfirmButtons ? "group" : undefined}
+                aria-labelledby={
+                    showConfirmButtons ? "delete-all-confirm-label" : undefined
+                }
             >
                 <div className="w-full grid grid-cols-2 gap-2">
                     <button
+                        type="button"
                         className={css.yesBtn}
                         disabled={isLoading}
                         onClick={requestDeleteAllChats}
+                        aria-describedby="delete-all-confirm-label"
                     >
                         Yes
                     </button>
                     <button
+                        type="button"
                         className={css.noBtn}
                         disabled={isLoading}
                         onClick={handleClick}
+                        aria-describedby="delete-all-confirm-label"
                     >
                         No
                     </button>
                 </div>
-                <h1 className="text-base">Are you sure?</h1>
+                <p id="delete-all-confirm-label" className="text-base">
+                    Are you sure?
+                </p>
             </div>
         </div>
     );

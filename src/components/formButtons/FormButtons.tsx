@@ -22,8 +22,13 @@ export function FormButtons({
     setSavedSettings,
 }: FormButtonsProps): JSX.Element {
     return (
-        <div className="grid grid-cols-4 gap-1">
+        <div
+            className="grid grid-cols-4 gap-1"
+            role="group"
+            aria-label="Settings actions"
+        >
             <button
+                type="button"
                 className={`${css.btnGrey} col-span-2`}
                 onClick={() => {
                     const nextSettings = { ...defaultSettings };
@@ -35,6 +40,7 @@ export function FormButtons({
                 Restore Defaults
             </button>
             <button
+                type="button"
                 disabled={!isEditing}
                 className={`${css.btn}`}
                 onClick={() => {
@@ -46,6 +52,7 @@ export function FormButtons({
                 Save
             </button>
             <button
+                type="button"
                 disabled={!isEditing}
                 className={`${css.btnRed}`}
                 onClick={() => {

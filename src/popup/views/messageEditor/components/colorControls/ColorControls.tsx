@@ -19,12 +19,15 @@ export function ColorControls({
 
     const mapColorSettings = (userType: string, index: number) => {
         const isUser = userType === "User";
+        const legendId = `${isUser ? "user" : "chatgpt"}-color-legend`;
+
         return (
-            <div
+            <fieldset
                 key={index}
-                className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full"
+                className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
             >
-                <span
+                <legend
+                    id={legendId}
                     className=" text-center p-1 w-24 rounded-md"
                     style={{
                         backgroundColor:
@@ -45,19 +48,22 @@ export function ColorControls({
                     }}
                 >
                     {`${userType} Color`}
-                </span>
-                <div className="grid grid-cols-2 gap-1 w-full text-white">
-                    {colorSettings.map((setting, index) =>
-                        mapSettingInputs(setting, index, isUser),
+                </legend>
+                <div
+                    className="grid grid-cols-2 gap-1 w-full text-white"
+                    role="group"
+                    aria-labelledby={legendId}
+                >
+                    {colorSettings.map((setting, settingIndex) =>
+                        mapSettingInputs(
+                            setting,
+                            settingIndex,
+                            isUser,
+                            userType,
+                        ),
                     )}
-                    <span className="rounded-md font-medium text-center p-0 m-0">
-                        BG
-                    </span>
-                    <span className="rounded-md font-medium text-center p-0 m-0">
-                        Text
-                    </span>
                 </div>
-            </div>
+            </fieldset>
         );
     };
 
@@ -65,10 +71,13 @@ export function ColorControls({
         setting: ColorSetting,
         index: number,
         isUser: boolean,
+        userType: string,
     ) => {
         const settingsKey: keyof Settings = `${setting}${
             isUser ? "User" : "NonUser"
         }Style`;
+        const channelLabel = setting === "messageColor" ? "background" : "text";
+        const labelText = setting === "messageColor" ? "BG" : "Text";
 
         const handleOnChange = (
             e: React.ChangeEvent<HTMLInputElement>,
@@ -82,15 +91,24 @@ export function ColorControls({
             sendMessageToTab(nextSettings);
             setIsEditing(true);
         };
+
         return (
-            <input
-                key={index}
-                className={`text-center w-full rounded-md h-8`}
-                type="color"
-                id={`${settingsKey}`}
-                value={liveSettings[settingsKey]}
-                onChange={(e) => handleOnChange(e, settingsKey)}
-            />
+            <div key={index} className="flex flex-col gap-1 w-full">
+                <label
+                    htmlFor={settingsKey}
+                    className="rounded-md font-medium text-center p-0 m-0"
+                >
+                    {labelText}
+                </label>
+                <input
+                    className="text-center w-full rounded-md h-8"
+                    type="color"
+                    id={settingsKey}
+                    aria-label={`${userType} ${channelLabel} color`}
+                    value={liveSettings[settingsKey]}
+                    onChange={(e) => handleOnChange(e, settingsKey)}
+                />
+            </div>
         );
     };
 

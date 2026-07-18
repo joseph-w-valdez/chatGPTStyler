@@ -55,6 +55,8 @@ export function MessageSliderControls({
     ];
 
     const mapInputSettings = (setting: InputSetting, index: number) => {
+        const rangeId = `${setting.id}-range`;
+
         const handleOnChange = (
             e: React.ChangeEvent<HTMLInputElement>,
             settingKey: keyof Settings,
@@ -86,6 +88,7 @@ export function MessageSliderControls({
                         className={`outline-none px-2 py-2 w-full text-right rounded-l-sm `}
                         type="text"
                         maxLength={3}
+                        inputMode="numeric"
                         style={{
                             backgroundColor: `${setting.bgColor}, 0.1)`,
                         }}
@@ -95,6 +98,7 @@ export function MessageSliderControls({
                     ></input>
                     <input
                         type="range"
+                        id={rangeId}
                         min="1"
                         max="100"
                         value={liveSettings[setting.id].toString()}
@@ -102,6 +106,7 @@ export function MessageSliderControls({
                         onChange={(e) => handleOnChange(e, setting.id)}
                         step={"1"}
                         style={{ accentColor: `${setting.bgColor})` }}
+                        aria-label={`${setting.name} slider`}
                     ></input>
                 </div>
                 <div
@@ -109,6 +114,7 @@ export function MessageSliderControls({
                     style={{
                         backgroundColor: `${setting.bgColor}, 0.1)`,
                     }}
+                    aria-hidden="true"
                 >
                     {setting.valueType}
                 </div>

@@ -3,38 +3,47 @@
 exports[`DeleteAllChatsButton should render the initial button 1`] = `
 <div>
   <button
+    aria-controls="delete-all-confirm"
+    aria-expanded={false}
     className="bigRedBtn"
     disabled={false}
     onClick={[Function]}
+    type="button"
   >
     Delete All Conversations
   </button>
   <div
     className="hidden"
+    id="delete-all-confirm"
   >
     <div
       className="w-full grid grid-cols-2 gap-2"
     >
       <button
+        aria-describedby="delete-all-confirm-label"
         className="yesBtn"
         disabled={false}
         onClick={[Function]}
+        type="button"
       >
         Yes
       </button>
       <button
+        aria-describedby="delete-all-confirm-label"
         className="noBtn"
         disabled={false}
         onClick={[Function]}
+        type="button"
       >
         No
       </button>
     </div>
-    <h1
+    <p
       className="text-base"
+      id="delete-all-confirm-label"
     >
       Are you sure?
-    </h1>
+    </p>
   </div>
 </div>
 `;

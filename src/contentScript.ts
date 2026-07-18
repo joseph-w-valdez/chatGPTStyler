@@ -12,8 +12,6 @@ import {
 } from "@src/lib/utilities/chatDom";
 import { ContentScriptMessage } from "@src/shared/messaging";
 
-console.log("Content script loaded.");
-
 const customStyle = document.createElement("style");
 customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
@@ -30,7 +28,6 @@ chrome.runtime.onMessage.addListener(
         }
 
         if (request.action === "deleteMessages") {
-            console.log("Received Message From Popup: Deleting All Messages");
             deleteAllChats()
                 .then((result) => {
                     sendResponse(result);
