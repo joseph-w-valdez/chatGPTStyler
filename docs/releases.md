@@ -17,22 +17,22 @@ The workflow does **not** publish to the Chrome Web Store.
 
 ## Release candidate
 
-Use an incrementing tag such as `1.2.4-RC1`. A hyphenated tag is automatically published as a GitHub **pre-release**.
+Use an incrementing tag such as `1.3.1-RC1`. A hyphenated tag is automatically published as a GitHub **pre-release**.
 
 The tag must point to a pushed commit that includes the release workflow. From the release branch:
 
 ```bash
 git push -u origin HEAD
-git tag 1.2.4-RC1
-git push origin 1.2.4-RC1
+git tag 1.3.1-RC1
+git push origin 1.3.1-RC1
 ```
 
 After the workflow passes:
 
 1. Open the pre-release on GitHub.
-2. Download and unpack `dist-1.2.4-RC1.zip`.
+2. Download and unpack `dist-1.3.1-RC1.zip`.
 3. Load its `dist/` directory as an unpacked extension and smoke-test it on `chatgpt.com`.
-4. Use `dist-1.2.4-RC1-dev.zip` only when testing dev-only diagnostics.
+4. Use `dist-1.3.1-RC1-dev.zip` only when testing dev-only diagnostics.
 
 Use a new tag (`RC2`, `RC3`, and so on) for each candidate. Do not move or reuse a published tag.
 
@@ -52,8 +52,8 @@ Create a final tag without a hyphen:
 ```bash
 git switch main
 git pull --ff-only
-git tag 1.2.4
-git push origin 1.2.4
+git tag 1.3.1
+git push origin 1.3.1
 ```
 
 The workflow publishes a normal GitHub Release, generates release notes, and attaches the production and development zips. Download the production zip for Chrome Web Store submission.
@@ -63,7 +63,7 @@ The workflow publishes a normal GitHub Release, generates release notes, and att
 Prefer fixing the branch and creating the next RC tag. If an unpublished local tag is wrong, delete it with:
 
 ```bash
-git tag -d 1.2.4-RC1
+git tag -d 1.3.1-RC1
 ```
 
 Deleting a pushed tag or published GitHub Release is disruptive and should be reserved for genuinely invalid releases.

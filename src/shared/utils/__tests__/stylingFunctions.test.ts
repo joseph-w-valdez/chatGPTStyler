@@ -6,13 +6,13 @@ describe("buildCss", () => {
         const css = buildCss(defaultSettings);
 
         expect(css).toContain(
-            `max-width: ${defaultSettings.messageMaxWidthStyle}%`,
+            `max-width: ${defaultSettings.messageMaxWidthStyle}% !important`,
         );
         expect(css).toContain(
-            `padding: ${defaultSettings.messagePaddingStyle}px`,
+            `padding: ${defaultSettings.messagePaddingStyle}px !important`,
         );
         expect(css).toContain(
-            `border-radius: ${defaultSettings.messageBorderRadiusStyle}px`,
+            `border-radius: ${defaultSettings.messageBorderRadiusStyle}px !important`,
         );
         expect(css).toContain(
             `background-color: ${defaultSettings.messageColorUserStyle} !important`,
@@ -20,17 +20,12 @@ describe("buildCss", () => {
         expect(css).toContain(
             `background-color: ${defaultSettings.messageColorNonUserStyle} !important`,
         );
-        expect(css).toContain(`visibility: unset`);
-    });
-
-    it("applies messageButtonsVisibilityStyle false", () => {
-        const settings: Settings = {
-            ...defaultSettings,
-            messageButtonsVisibilityStyle: false,
-        };
-
-        expect(buildCss(settings)).toContain("visibility: invisible");
-        expect(buildCss(settings)).not.toContain("visibility: unset");
+        expect(css).toContain('[data-turn="user"] .user-message-bubble-color');
+        expect(css).toContain(
+            '[data-turn="assistant"] [data-message-author-role="assistant"]',
+        );
+        expect(css).not.toContain(":nth-child(odd) > * > *");
+        expect(css).not.toContain("visibility:");
     });
 
     it("is deterministic for the same settings object", () => {
@@ -63,9 +58,15 @@ describe("buildCss", () => {
     it("includes fixed helper styles", () => {
         const css = buildCss(defaultSettings);
 
+        expect(css).toContain(
+            '[data-testid^="conversation-turn-"] [data-conversation-screenshot-content]',
+        );
+        expect(css).toContain("#thread-bottom > div > div > div > div");
+        expect(css).toContain("max-width: none !important");
         expect(css).toContain("html.light #composer-submit-button");
-        expect(css).toContain("background-color: unset");
-        expect(css).toContain("display: block !important");
+        expect(css).not.toContain(".bg-token-message-surface");
+        expect(css).not.toContain(".bg-token-main-surface-tertiary");
+        expect(css).not.toContain('main > [role="presentation"]');
     });
 
     it("keeps updateStyles as a buildCss alias", () => {

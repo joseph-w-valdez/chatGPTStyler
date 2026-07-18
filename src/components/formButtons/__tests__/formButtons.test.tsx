@@ -12,7 +12,6 @@ const settings = {
     inputBoxMaxWidthStyle: "",
     textColorUserStyle: "",
     textColorNonUserStyle: "",
-    messageButtonsVisibilityStyle: false,
 };
 
 describe("FormButtons", () => {

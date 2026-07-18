@@ -21,7 +21,6 @@ describe("MessageEditor Component", () => {
             inputBoxMaxWidthStyle: "",
             textColorUserStyle: "",
             textColorNonUserStyle: "",
-            messageButtonsVisibilityStyle: true,
         },
         setLiveSettings: jest.fn(),
     };

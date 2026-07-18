@@ -16,9 +16,7 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | Delete all conversations         | DeleteAllChatsButton         | DOM automation on the active ChatGPT tab                                      |
 | Scroll to top                    | Content script + ScrollToTop | Floating button when the thread is scrolled                                   |
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
-| Fixed CSS helpers                | `stylingFunctions`           | Code-snippet width, transparent edit box, hide default message surface, etc.  |
-
-`messageButtonsVisibilityStyle` remains in the settings schema and CSS output (default `true`) but has **no popup control** today. A future Misc-style toggle can wire it back up without a storage migration.
+| Fixed CSS helpers                | `stylingFunctions`           | Content width-cap removal, light-mode submit button color, and related helpers |
 
 ## Settings model
 
@@ -34,21 +32,19 @@ interface Settings {
     inputBoxMaxWidthStyle: string;
     textColorUserStyle: string;
     textColorNonUserStyle: string;
-    messageButtonsVisibilityStyle: boolean;
 }
 ```
 
-| Key                             | Default     |
-| ------------------------------- | ----------- |
-| `messageMaxWidthStyle`          | `"95"`      |
-| `messageColorUserStyle`         | `"#0084FF"` |
-| `messageColorNonUserStyle`      | `"#333333"` |
-| `messagePaddingStyle`           | `"10"`      |
-| `messageBorderRadiusStyle`      | `"5"`       |
-| `inputBoxMaxWidthStyle`         | `"94"`      |
-| `textColorUserStyle`            | `"#FFFFFF"` |
-| `textColorNonUserStyle`         | `"#FFFFFF"` |
-| `messageButtonsVisibilityStyle` | `true`      |
+| Key                        | Default     |
+| -------------------------- | ----------- |
+| `messageMaxWidthStyle`     | `"95"`      |
+| `messageColorUserStyle`    | `"#0084FF"` |
+| `messageColorNonUserStyle` | `"#333333"` |
+| `messagePaddingStyle`      | `"10"`      |
+| `messageBorderRadiusStyle` | `"5"`       |
+| `inputBoxMaxWidthStyle`    | `"94"`      |
+| `textColorUserStyle`       | `"#FFFFFF"` |
+| `textColorNonUserStyle`    | `"#FFFFFF"` |
 
 Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
@@ -83,11 +79,10 @@ The popup does not forward its initial defaults to the background until storage 
 [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) is the single place settings become CSS.
 
 1. `buildCss(settings)` is a **pure** function: the returned CSS string depends only on the provided `Settings` object (no module-level mutable fragments).
-2. Boolean settings such as `messageButtonsVisibilityStyle: false` are applied correctly (`visibility: invisible`).
-3. Fixed helper rules (code-snippet width, hide default message surface, show edit button, transparent edit box, input padding/max-width resets) are always included.
-4. Primary selector root: `[data-testid^="conversation-turn-"]`.
-    - User turns: `:nth-child(odd)`
-    - Assistant turns: `:nth-child(even)`
+2. Fixed helper rules (content width-cap removal, turn sizing helpers, light-mode submit button color) are always included.
+3. Primary selector root: `[data-testid^="conversation-turn-"]`.
+    - User turns: `[data-turn="user"]`
+    - Assistant turns: `[data-turn="assistant"]`
 
 `updateStyles(settings)` remains as a thin alias of `buildCss` for compatibility.
 
@@ -105,7 +100,8 @@ Content script applies `arg` as `customStyle.textContent` — it does not re-par
 
 [`src/components/scrollToTop/ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx), mounted by the content script:
 
--   Finds ChatGPT’s scroll container under `div[role="presentation"] > ...`.
+-   Finds ChatGPT’s scroll container via `[data-scroll-root]`.
+-   Mounts beside the native scroll-to-bottom control under `#thread-bottom-container`.
 -   Shows a circular button when `scrollTop !== 0`.
 -   Smooth-scrolls to top; hides the button while scrolling.
 

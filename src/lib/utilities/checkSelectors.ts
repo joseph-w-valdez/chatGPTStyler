@@ -2,12 +2,14 @@ import { SelectorCheckItem, SelectorCheckReport } from "@src/shared/messaging";
 import {
     CHAT_SCROLL_PARENT_SELECTOR,
     INPUT_BOX_CONTAINER_SELECTOR,
+    SCROLL_CONTROL_HOST_SELECTOR,
     SCROLL_TO_TOP_MOUNT_ID,
     USER_TEXT_CONTAINER_SELECTOR,
 } from "./chatDom";
 import {
     CHAT_HISTORY_SELECTOR,
     CONFIRM_DELETE_BUTTON_SELECTOR,
+    DATA_CONTROLS_TAB_SELECTOR,
     DELETE_ALL_BUTTON_SELECTOR,
     PROFILE_BUTTON_SELECTOR,
     SETTINGS_MENU_ITEM_SELECTOR,
@@ -42,7 +44,7 @@ export const SELECTOR_PROBES: SelectorProbe[] = [
     },
     {
         id: "userTextContainers",
-        label: "User text containers",
+        label: "User message containers",
         selector: USER_TEXT_CONTAINER_SELECTOR,
         expectAtLeast: 0,
         optional: true,
@@ -61,14 +63,21 @@ export const SELECTOR_PROBES: SelectorProbe[] = [
     },
     {
         id: "composerSubmit",
-        label: "Composer submit button",
+        label: "Composer submit button (when text entered)",
         selector: "#composer-submit-button",
-        expectAtLeast: 1,
+        expectAtLeast: 0,
+        optional: true,
     },
     {
         id: "scrollParent",
-        label: "Scroll-to-top parent",
+        label: "Scroll-to-top parent ([data-scroll-root])",
         selector: CHAT_SCROLL_PARENT_SELECTOR,
+        expectAtLeast: 1,
+    },
+    {
+        id: "threadBottomContainer",
+        label: "Native scroll-control host (scroll-to-top mount host)",
+        selector: SCROLL_CONTROL_HOST_SELECTOR,
         expectAtLeast: 1,
     },
     {
@@ -86,7 +95,7 @@ export const SELECTOR_PROBES: SelectorProbe[] = [
     },
     {
         id: "chatHistory",
-        label: "Sidebar chat history",
+        label: "Sidebar chat history (conversations)",
         selector: CHAT_HISTORY_SELECTOR,
         expectAtLeast: 0,
         optional: true,
@@ -99,21 +108,28 @@ export const SELECTOR_PROBES: SelectorProbe[] = [
     },
     {
         id: "settingsMenu",
-        label: "Settings menu item",
+        label: "Settings menu item (when profile menu open)",
         selector: SETTINGS_MENU_ITEM_SELECTOR,
         expectAtLeast: 0,
         optional: true,
     },
     {
+        id: "dataControlsTab",
+        label: "Data controls tab (when Settings open)",
+        selector: DATA_CONTROLS_TAB_SELECTOR,
+        expectAtLeast: 0,
+        optional: true,
+    },
+    {
         id: "deleteAll",
-        label: "Delete-all button",
+        label: "Delete-all button (on Data controls)",
         selector: DELETE_ALL_BUTTON_SELECTOR,
         expectAtLeast: 0,
         optional: true,
     },
     {
         id: "confirmDelete",
-        label: "Confirm delete-all button",
+        label: "Confirm delete-all button (dialog)",
         selector: CONFIRM_DELETE_BUTTON_SELECTOR,
         expectAtLeast: 0,
         optional: true,
