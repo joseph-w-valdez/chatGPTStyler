@@ -39,9 +39,6 @@
     "license": "MIT",
     "homepage": "https://github.com/joseph-w-valdez/chatGPTStyler",
     "devDependencies": {
-        "@babel/core": "7.29.7",
-        "@babel/preset-env": "7.29.7",
-        "@babel/preset-typescript": "7.29.7",
         "@types/chrome": "0.0.124",
         "@types/jest": "26.0.24",
         "@types/node": "14.18.4",
@@ -52,8 +49,6 @@
         "@typescript-eslint/eslint-plugin": "4.33.0",
         "@typescript-eslint/parser": "4.33.0",
         "autoprefixer": "10.4.27",
-        "babel-jest": "26.6.3",
-        "babel-loader": "8.4.1",
         "css-loader": "4.3.0",
         "eslint": "7.32.0",
         "eslint-config-prettier": "6.15.0",
@@ -91,8 +86,6 @@
         "ws": "8.21.1",
         "lodash": "4.18.1",
         "minimatch": "3.1.5",
-        "@babel/core": "7.29.7",
-        "@babel/helpers": "7.29.7",
         "postcss": "8.5.19",
         "@tootallnate/once": "3.0.1"
     }
