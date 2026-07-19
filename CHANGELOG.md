@@ -23,7 +23,10 @@
 -   Removed an unused content-script handshake message
 -   Delete-all now awaits the content-script result and uses a hostname-based ChatGPT tab check
 -   Removed unused HomeMenu / MiscEditor / HomeButton multi-page shell; popup is MessageEditor-only
--   Simplified Header (title only; no vestigial Back / page state)
+-   Redesigned the popup with semantic light/dark theme tokens that follow the operating-system color preference
+-   Modernized slider, color-card, action-button, and delete-all styling while retaining the existing live-preview and save/cancel behavior
+-   Added a compact popup header using the existing extension icon and a theme-aware close control
+-   Improved disabled action states so controls remain visible instead of disappearing
 -   Standardized extension messaging on typed `chrome.*` contracts; removed `webextension-polyfill`
 -   Removed unused popup handshakes and the unused `SETTINGS_CHANGED` storage broadcast
 -   Hardened live-preview tab messaging against missing tabs / `runtime.lastError`

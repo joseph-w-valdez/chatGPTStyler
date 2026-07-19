@@ -23,11 +23,11 @@ export function ColorControls({
         return (
             <fieldset
                 key={index}
-                className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
+                className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
             >
                 <legend className="sr-only">{`${userType} color settings`}</legend>
                 <div
-                    className="text-center p-1 w-24 rounded-md"
+                    className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
                     aria-hidden="true"
                     style={{
                         backgroundColor:
@@ -49,7 +49,7 @@ export function ColorControls({
                 >
                     {`${userType} Color`}
                 </div>
-                <div className="grid grid-cols-2 gap-1 w-full text-white">
+                <div className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs">
                     {colorSettings.map((setting, settingIndex) =>
                         mapSettingInputs(
                             setting,
@@ -58,10 +58,8 @@ export function ColorControls({
                             userType,
                         ),
                     )}
-                    <span className="rounded-md font-medium text-center p-0 m-0">
-                        BG
-                    </span>
-                    <span className="rounded-md font-medium text-center p-0 m-0">
+                    <span className="text-center font-medium p-0 m-0">BG</span>
+                    <span className="text-center font-medium p-0 m-0">
                         Text
                     </span>
                 </div>
@@ -96,7 +94,7 @@ export function ColorControls({
         return (
             <input
                 key={index}
-                className="text-center w-full rounded-md h-8"
+                className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
                 type="color"
                 id={settingsKey}
                 aria-label={`${userType} ${channelLabel} color`}

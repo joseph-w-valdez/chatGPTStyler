@@ -39,7 +39,7 @@ exports[`DeleteAllChatsButton should render the initial button 1`] = `
       </button>
     </div>
     <p
-      className="text-base"
+      className="text-sm text-ink-muted"
       id="delete-all-confirm-label"
     >
       Are you sure?

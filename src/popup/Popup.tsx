@@ -59,7 +59,6 @@ export function Popup(): JSX.Element {
         <div className={css.popupContainer}>
             <div className="w-full">
                 <Header />
-                <hr className="mb-2" />
                 <MessageEditor
                     liveSettings={liveSettings}
                     setLiveSettings={setLiveSettings}

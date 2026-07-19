@@ -5,7 +5,7 @@ exports[`ColorControls component renders correctly 1`] = `
   className="grid grid-cols-2 gap-2 place-items-center w-full"
 >
   <fieldset
-    className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
+    className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
   >
     <legend
       className="sr-only"
@@ -14,7 +14,7 @@ exports[`ColorControls component renders correctly 1`] = `
     </legend>
     <div
       aria-hidden="true"
-      className="text-center p-1 w-24 rounded-md"
+      className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
       style={
         {
           "backgroundColor": "#386d9f",
@@ -25,11 +25,11 @@ exports[`ColorControls component renders correctly 1`] = `
       User Color
     </div>
     <div
-      className="grid grid-cols-2 gap-1 w-full text-white"
+      className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
     >
       <input
         aria-label="User background color"
-        className="text-center w-full rounded-md h-8"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
         id="messageColorUserStyle"
         onChange={[Function]}
         type="color"
@@ -37,26 +37,26 @@ exports[`ColorControls component renders correctly 1`] = `
       />
       <input
         aria-label="User text color"
-        className="text-center w-full rounded-md h-8"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
         id="textColorUserStyle"
         onChange={[Function]}
         type="color"
         value="#FFFFFF"
       />
       <span
-        className="rounded-md font-medium text-center p-0 m-0"
+        className="text-center font-medium p-0 m-0"
       >
         BG
       </span>
       <span
-        className="rounded-md font-medium text-center p-0 m-0"
+        className="text-center font-medium p-0 m-0"
       >
         Text
       </span>
     </div>
   </fieldset>
   <fieldset
-    className="flex flex-col justify-center items-center bg-violet-500 rounded-md p-3 gap-1 font-medium w-full border-0 m-0 min-w-0"
+    className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
   >
     <legend
       className="sr-only"
@@ -65,7 +65,7 @@ exports[`ColorControls component renders correctly 1`] = `
     </legend>
     <div
       aria-hidden="true"
-      className="text-center p-1 w-24 rounded-md"
+      className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
       style={
         {
           "backgroundColor": "#333333",
@@ -76,11 +76,11 @@ exports[`ColorControls component renders correctly 1`] = `
       ChatGPT Color
     </div>
     <div
-      className="grid grid-cols-2 gap-1 w-full text-white"
+      className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
     >
       <input
         aria-label="ChatGPT background color"
-        className="text-center w-full rounded-md h-8"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
         id="messageColorNonUserStyle"
         onChange={[Function]}
         type="color"
@@ -88,19 +88,19 @@ exports[`ColorControls component renders correctly 1`] = `
       />
       <input
         aria-label="ChatGPT text color"
-        className="text-center w-full rounded-md h-8"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
         id="textColorNonUserStyle"
         onChange={[Function]}
         type="color"
         value="#FFFFFF"
       />
       <span
-        className="rounded-md font-medium text-center p-0 m-0"
+        className="text-center font-medium p-0 m-0"
       >
         BG
       </span>
       <span
-        className="rounded-md font-medium text-center p-0 m-0"
+        className="text-center font-medium p-0 m-0"
       >
         Text
       </span>

@@ -2,6 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --surface: #f7f7f8;
+    --surface-raised: #ffffff;
+    --border: #e5e5e5;
+    --text: #0d0d0d;
+    --text-muted: #6b6b6b;
+    --accent: #0d0d0d;
+    --accent-contrast: #ffffff;
+    --danger: #c43c3c;
+    --danger-contrast: #ffffff;
+    --success: #1f7a4c;
+    --track: #d9d9d9;
+    --thumb: #0d0d0d;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface: #212121;
+        --surface-raised: #2f2f2f;
+        --border: #444444;
+        --text: #ececec;
+        --text-muted: #a0a0a0;
+        --accent: #ececec;
+        --accent-contrast: #0d0d0d;
+        --danger: #ef6868;
+        --danger-contrast: #1a1a1a;
+        --success: #3db87a;
+        --track: #4a4a4a;
+        --thumb: #ececec;
+    }
+}
+
 body {
-    @apply bg-gray-200;
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+/* Visible range sliders (native styling Tailwind can't express) */
+input[type="range"].control-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 1.25rem;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"].control-range:focus {
+    outline: none;
+}
+
+input[type="range"].control-range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+input[type="range"].control-range:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+input[type="range"].control-range::-webkit-slider-runnable-track {
+    height: 0.25rem;
+    border-radius: 9999px;
+    background: var(--track);
+}
+
+input[type="range"].control-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: -0.3125rem;
+    border-radius: 9999px;
+    background: var(--thumb);
+    border: none;
+}
+
+input[type="range"].control-range::-moz-range-track {
+    height: 0.25rem;
+    border-radius: 9999px;
+    background: var(--track);
+}
+
+input[type="range"].control-range::-moz-range-thumb {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 9999px;
+    background: var(--thumb);
+    border: none;
 }
