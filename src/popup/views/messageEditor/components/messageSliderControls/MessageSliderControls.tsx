@@ -8,53 +8,41 @@ export interface MessageSliderControlsProps {
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type InputSetting = {
+    name: string;
+    id: keyof Settings;
+    valueType: "px" | "%";
+};
+
+const inputSettings: InputSetting[] = [
+    {
+        name: "Message Width",
+        id: "messageMaxWidthStyle",
+        valueType: "%",
+    },
+    {
+        name: "Message Padding",
+        id: "messagePaddingStyle",
+        valueType: "px",
+    },
+    {
+        name: "Message Border",
+        id: "messageBorderRadiusStyle",
+        valueType: "px",
+    },
+    {
+        name: "Input Box Width",
+        id: "inputBoxMaxWidthStyle",
+        valueType: "%",
+    },
+];
+
 export function MessageSliderControls({
     setLiveSettings,
     liveSettings,
     setIsEditing,
 }: MessageSliderControlsProps): JSX.Element {
-    // using this to create data we need so we can map through and have clean callback
-    class InputSetting {
-        name = "";
-        id: keyof Settings = "messageMaxWidthStyle";
-        valueType: "px" | "%" = "px";
-        bgColor = "";
-
-        constructor(settingsProperties: InputSetting) {
-            this.name = settingsProperties.name;
-            this.id = settingsProperties.id;
-            this.valueType = settingsProperties.valueType;
-            this.bgColor = settingsProperties.bgColor;
-        }
-    }
-    const inputSettings = [
-        new InputSetting({
-            name: "Message Width",
-            id: "messageMaxWidthStyle",
-            valueType: "%",
-            bgColor: "rgba(145, 10, 103",
-        }),
-        new InputSetting({
-            name: "Message Padding",
-            id: "messagePaddingStyle",
-            valueType: "px",
-            bgColor: "rgba(114, 4, 85",
-        }),
-        new InputSetting({
-            name: "Message Border",
-            id: "messageBorderRadiusStyle",
-            valueType: "px",
-            bgColor: "rgba(60, 7, 83",
-        }),
-        new InputSetting({
-            name: "Input Box Width",
-            id: "inputBoxMaxWidthStyle",
-            valueType: "%",
-            bgColor: "rgba(3, 6, 55",
-        }),
-    ];
-
-    const mapInputSettings = (setting: InputSetting, index: number) => {
+    const mapInputSettings = (setting: InputSetting) => {
         const rangeId = `${setting.id}-range`;
 
         const handleOnChange = (
@@ -74,56 +62,51 @@ export function MessageSliderControls({
                 sendMessageToTab(nextSettings);
             }
         };
+
         return (
-            <div className="flex justify-between items-center" key={index}>
-                <label
-                    htmlFor={setting.id}
-                    className={`basis-1/2 p-2 text-white rounded-md font-medium text-center mr-2`}
-                    style={{
-                        backgroundColor: `${setting.bgColor})`,
-                    }}
-                >{`${setting.name}:`}</label>{" "}
-                <div className="relative flex">
-                    <input
-                        className={`outline-none px-2 py-2 w-full text-right rounded-l-sm `}
-                        type="text"
-                        maxLength={3}
-                        inputMode="numeric"
-                        style={{
-                            backgroundColor: `${setting.bgColor}, 0.1)`,
-                        }}
-                        value={liveSettings[setting.id].toString()}
-                        id={setting.id}
-                        onChange={(e) => handleOnChange(e, setting.id)}
-                    ></input>
-                    <input
-                        type="range"
-                        id={rangeId}
-                        min="1"
-                        max="100"
-                        value={liveSettings[setting.id].toString()}
-                        className="absolute w-full h-0.5 left-0 bottom-0"
-                        onChange={(e) => handleOnChange(e, setting.id)}
-                        step={"1"}
-                        style={{ accentColor: `${setting.bgColor})` }}
-                        aria-label={`${setting.name} slider`}
-                    ></input>
+            <div className="grid gap-1.5" key={setting.id}>
+                <div className="flex items-center justify-between gap-2">
+                    <label
+                        htmlFor={setting.id}
+                        className="text-sm font-medium text-ink"
+                    >
+                        {setting.name}
+                    </label>
+                    <div className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden">
+                        <input
+                            className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
+                            type="text"
+                            maxLength={3}
+                            inputMode="numeric"
+                            value={liveSettings[setting.id].toString()}
+                            id={setting.id}
+                            onChange={(e) => handleOnChange(e, setting.id)}
+                        />
+                        <span
+                            className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
+                            aria-hidden="true"
+                        >
+                            {setting.valueType}
+                        </span>
+                    </div>
                 </div>
-                <div
-                    className={`py-2 rounded-r-sm`}
-                    style={{
-                        backgroundColor: `${setting.bgColor}, 0.1)`,
-                    }}
-                    aria-hidden="true"
-                >
-                    {setting.valueType}
-                </div>
+                <input
+                    type="range"
+                    id={rangeId}
+                    min="1"
+                    max="100"
+                    value={liveSettings[setting.id].toString()}
+                    className="control-range"
+                    onChange={(e) => handleOnChange(e, setting.id)}
+                    step={"1"}
+                    aria-label={`${setting.name} slider`}
+                />
             </div>
         );
     };
 
     return (
-        <div className={`grid grid-cols-1 gap-y-3 `}>
+        <div className="grid grid-cols-1 gap-y-3">
             {inputSettings.map(mapInputSettings)}
         </div>
     );

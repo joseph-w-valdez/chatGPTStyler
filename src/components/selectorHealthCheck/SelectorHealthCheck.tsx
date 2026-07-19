@@ -86,23 +86,23 @@ export function SelectorHealthCheck(): JSX.Element | null {
     };
 
     return (
-        <div className="grid gap-2 border border-dashed border-gray-500 rounded-md p-2">
+        <div className="grid gap-2 border border-dashed border-edge rounded-md p-2 bg-surface-raised">
             <button
                 type="button"
-                className="w-full px-3 py-2 text-sm font-medium text-white bg-indigo-700 rounded-md hover:bg-indigo-800 disabled:opacity-50"
+                className="w-full px-3 py-2 text-sm font-medium text-accent-contrast bg-accent rounded-md hover:opacity-90 disabled:opacity-40"
                 disabled={isLoading}
                 onClick={runCheck}
             >
                 {isLoading ? "Checking selectors…" : "Check ChatGPT Selectors"}
             </button>
             {error && (
-                <p role="status" className="text-sm text-red-700 text-center">
+                <p role="status" className="text-sm text-danger text-center">
                     {error}
                 </p>
             )}
             {report && (
-                <div className="text-xs text-gray-800 grid gap-1">
-                    <p className="font-medium">
+                <div className="text-xs text-ink grid gap-1">
+                    <p className="font-medium text-ink-muted">
                         Required {report.requiredOk} ok / {report.requiredFail}{" "}
                         fail · optional present {report.optionalPresent}
                     </p>
@@ -116,7 +116,7 @@ export function SelectorHealthCheck(): JSX.Element | null {
                     </ul>
                     <button
                         type="button"
-                        className="w-full mt-1 px-3 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-800"
+                        className="w-full mt-1 px-3 py-2 text-sm font-medium text-ink bg-surface border border-edge rounded-md hover:bg-surface-raised"
                         onClick={copyResults}
                     >
                         {copyStatus === "copied" ? "Copied!" : "Copy Results"}

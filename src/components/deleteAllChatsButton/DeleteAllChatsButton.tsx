@@ -143,7 +143,10 @@ export function DeleteAllChatsButton(): JSX.Element {
                         No
                     </button>
                 </div>
-                <p id="delete-all-confirm-label" className="text-base">
+                <p
+                    id="delete-all-confirm-label"
+                    className="text-sm text-ink-muted"
+                >
                     Are you sure?
                 </p>
             </div>

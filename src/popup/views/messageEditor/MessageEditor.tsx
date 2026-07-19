@@ -30,7 +30,7 @@ export function MessageEditor({
 
     return (
         <div
-            className={`grid grid-cols-1 gap-y-3 px-3 pb-2 select-none ${
+            className={`grid grid-cols-1 gap-y-3 px-3 pt-3 pb-3 select-none ${
                 !isEditing ? "animate-fade-in" : ""
             }`}
         >
