@@ -124,12 +124,7 @@ export function BackgroundControls({
                         </div>
                     )}
                 </>
-            ) : (
-                <p className="text-sm text-ink-muted">
-                    Leave off to keep ChatGPT’s native conversation and sidebar
-                    colors.
-                </p>
-            )}
+            ) : null}
         </div>
     );
 }

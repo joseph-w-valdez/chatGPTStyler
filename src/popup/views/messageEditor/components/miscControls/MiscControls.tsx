@@ -30,12 +30,7 @@ export function MiscControls({
     return (
         <div className="grid gap-4">
             <label className="flex items-center justify-between gap-3 rounded-lg border border-edge bg-surface-raised p-3 text-sm text-ink cursor-pointer">
-                <span>
-                    <span className="block font-medium">Scroll to top</span>
-                    <span className="block text-xs text-ink-muted">
-                        Show the shortcut beside ChatGPT’s scroll control.
-                    </span>
-                </span>
+                <span className="font-medium">Scroll to top button</span>
                 <input
                     type="checkbox"
                     aria-label="Enable scroll to top button"

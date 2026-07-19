@@ -8,7 +8,7 @@ exports[`component renders 1`] = `
     className="w-full"
   >
     <header
-      className="px-3 pt-3 pb-2 border-b border-edge"
+      className="px-3 pt-3"
     >
       <div
         className="flex items-center justify-between gap-2"
@@ -64,13 +64,13 @@ exports[`component renders 1`] = `
     >
       <div
         aria-label="Settings sections"
-        className="grid grid-cols-3 gap-2"
+        className="grid grid-cols-3 border-b border-edge -mx-3 px-3"
         role="tablist"
       >
         <button
           aria-controls="messages-panel"
           aria-selected={true}
-          className="px-3 py-1.5 text-sm font-medium rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-accent text-accent-contrast border-transparent"
+          className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface text-ink font-semibold border-edge border-b-surface"
           id="messages-tab"
           onClick={[Function]}
           role="tab"
@@ -81,7 +81,7 @@ exports[`component renders 1`] = `
         <button
           aria-controls="background-panel"
           aria-selected={false}
-          className="px-3 py-1.5 text-sm font-medium rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface-raised text-ink border-edge hover:bg-surface"
+          className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-ink-muted font-normal border-transparent hover:text-ink hover:bg-surface-raised"
           id="background-tab"
           onClick={[Function]}
           role="tab"
@@ -92,7 +92,7 @@ exports[`component renders 1`] = `
         <button
           aria-controls="misc-panel"
           aria-selected={false}
-          className="px-3 py-1.5 text-sm font-medium rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface-raised text-ink border-edge hover:bg-surface"
+          className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-ink-muted font-normal border-transparent hover:text-ink hover:bg-surface-raised"
           id="misc-tab"
           onClick={[Function]}
           role="tab"

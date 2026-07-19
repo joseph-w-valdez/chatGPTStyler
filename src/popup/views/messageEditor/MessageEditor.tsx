@@ -33,11 +33,13 @@ export function MessageEditor({
         }
     }, [liveSettings, isEditing]);
 
+    // Active tab draws top/side borders and hides the tablist baseline by
+    // overlapping it with a surface-colored bottom border (-mb-px).
     const tabButtonClass = (tab: EditorTab): string =>
-        `px-3 py-1.5 text-sm font-medium rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+        `-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
             activeTab === tab
-                ? "bg-accent text-accent-contrast border-transparent"
-                : "bg-surface-raised text-ink border-edge hover:bg-surface"
+                ? "bg-surface text-ink font-semibold border-edge border-b-surface"
+                : "bg-transparent text-ink-muted font-normal border-transparent hover:text-ink hover:bg-surface-raised"
         }`;
 
     const restoreCurrentTabDefaults = (): void => {
@@ -89,7 +91,7 @@ export function MessageEditor({
             <div
                 role="tablist"
                 aria-label="Settings sections"
-                className="grid grid-cols-3 gap-2"
+                className="grid grid-cols-3 border-b border-edge -mx-3 px-3"
             >
                 <button
                     type="button"

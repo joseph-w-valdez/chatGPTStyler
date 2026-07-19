@@ -161,10 +161,5 @@ exports[`BackgroundControls renders the opt-in state by default 1`] = `
     />
     Customize backgrounds
   </label>
-  <p
-    className="text-sm text-ink-muted"
-  >
-    Leave off to keep ChatGPT’s native conversation and sidebar colors.
-  </p>
 </div>
 `;

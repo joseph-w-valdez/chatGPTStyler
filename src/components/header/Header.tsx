@@ -2,7 +2,7 @@ import React from "react";
 
 export function Header(): JSX.Element {
     return (
-        <header className="px-3 pt-3 pb-2 border-b border-edge">
+        <header className="px-3 pt-3">
             <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">
                     <h1 className="text-base font-semibold tracking-tight text-ink">
