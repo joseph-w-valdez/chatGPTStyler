@@ -6,7 +6,7 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 
 **ChatGPT Styler** is a Chromium Manifest V3 extension that customizes the ChatGPT UI (`chatgpt.com`). Users adjust message colors, widths, padding, border radius, and input-box width from a React popup. A content script injects generated CSS into the page, mounts a scroll-to-top control, and can drive ChatGPT’s “delete all chats” UI via DOM automation.
 
--   Package name / version: `chatgpt-styler` `1.2.3` ([`package.json`](package.json))
+-   Package name / version: `chatgpt-styler` `1.3.1` ([`package.json`](package.json))
 -   Store / product context: see [`README.md`](README.md)
 -   Release history: [`CHANGELOG.md`](CHANGELOG.md)
 
@@ -124,7 +124,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 2. Update `CHANGELOG.md`.
 3. `npm run build:prod` and smoke-test unpacked `dist/` (build alone does **not** recreate manifest/HTML/icons).
 4. Run `npm run validate && npm run test:ci`.
-5. Push an RC tag such as `1.2.4-RC1` for a pre-release, or a final tag such as `1.2.4` after approval.
+5. Push an RC tag such as `1.3.1-RC1` for a pre-release, or a final tag such as `1.3.1` after approval.
 6. The Release workflow builds dev/prod concurrently and attaches both zips to a GitHub Release; only the prod zip is a store deliverable. See [docs/releases.md](docs/releases.md).
 
 ## What to avoid

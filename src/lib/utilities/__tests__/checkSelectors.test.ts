@@ -14,12 +14,15 @@ describe("checkSelectors", () => {
     it("passes required probes when expected nodes are present", () => {
         document.body.innerHTML = `
             <div data-testid="conversation-turn-1"></div>
+            <div data-scroll-root></div>
+            <div id="thread-bottom-container">
+                <div style="--thread-scroll-to-bottom-banner-offset: 0px;"></div>
+            </div>
             <div id="thread-bottom"><div><div></div></div></div>
             <form></form>
             <button id="composer-submit-button"></button>
-            <div role="presentation"><div><div><div><div></div></div></div></div></div>
             <style id="custom-style"></style>
-            <button aria-label="Open Profile Menu"></button>
+            <div data-testid="accounts-profile-button" role="button"></div>
         `;
 
         const report = checkSelectors(document);

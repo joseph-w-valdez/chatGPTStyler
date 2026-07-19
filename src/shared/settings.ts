@@ -7,7 +7,6 @@ export interface Settings {
     inputBoxMaxWidthStyle: string;
     textColorUserStyle: string;
     textColorNonUserStyle: string;
-    messageButtonsVisibilityStyle: boolean;
 }
 
 export const defaultSettings: Settings = {
@@ -19,5 +18,4 @@ export const defaultSettings: Settings = {
     inputBoxMaxWidthStyle: "94",
     textColorUserStyle: "#FFFFFF",
     textColorNonUserStyle: "#FFFFFF",
-    messageButtonsVisibilityStyle: true,
 };

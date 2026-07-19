@@ -29,28 +29,25 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | Purpose              | Selector / target                                                                  |
 | -------------------- | ---------------------------------------------------------------------------------- |
 | Style injection      | `#custom-style` created under `document.head`                                      |
-| User text containers | `[data-testid^="conversation-turn-"]:nth-child(odd) > * > * > * > * > * > * > div` |
-| Input box container  | `#thread-bottom > * > div`                                                         |
-| Scroll-to-top parent | `div[role="presentation"] > div > div > div > div`                                 |
-| Mount node id        | `#scroll-to-top-mount`                                                             |
+| User text containers | `[data-message-author-role="user"]`                                            |
+| Input box container  | `#thread-bottom > * > div`                                                     |
+| Scroll-to-top parent | `[data-scroll-root]`                                                           |
+| Scroll-to-top mount host | `#thread-bottom-container [style*="--thread-scroll-to-bottom-banner-offset"]` |
+| Mount node id        | `#scroll-to-top-mount`                                                         |
 
 ### Generated CSS root ([`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts))
 
 | Purpose                              | Selector pattern                                                          |
 | ------------------------------------ | ------------------------------------------------------------------------- |
-| All message bubbles                  | `[data-testid^="conversation-turn-"]` (variable `messageBubbles`)         |
-| User bubble background               | `...:nth-child(odd) > * > *`                                              |
-| Assistant bubble background          | `...:nth-child(even) > * > *`                                             |
-| User text color                      | `:nth-child(odd) .bg-token-message-surface`                               |
-| Assistant text color                 | Even turns: nested `div`, `p`, lists, code, headings                      |
-| Message max-width / padding / radius | `${messageBubbles} > * > div`                                             |
+| All message turns                    | `[data-testid^="conversation-turn-"]` (variable `messageBubbles`)         |
+| User bubble background / text / radius / padding / width | `[data-turn="user"] .user-message-bubble-color` |
+| Assistant message background / padding / width / radius | `[data-turn="assistant"] [data-message-author-role="assistant"]` |
+| Assistant text color                 | `[data-turn="assistant"]` nested `p`, lists, code, headings               |
 | Input form width                     | `form`                                                                    |
-| Message action buttons visibility    | `${messageBubbles} button`                                                |
+| Content width cap removal            | `[data-conversation-screenshot-content]`, `#thread-bottom > div > div > div > div` |
 | Code / composer helpers              | nth-child(2) under bubbles; `#composer-submit-button`                     |
-| Default surface / edit UI            | `.bg-token-message-surface`, `.hidden`, `.bg-token-main-surface-tertiary` |
-| Input chrome resets                  | `main > [role="presentation"] > div:nth-child(2) > ...`                   |
 
-Odd/even turn indexing assumes ChatGPT’s conversation list order; if that order flips, colors appear swapped (historically fixed in changelog entries).
+Turns are role-tagged via `data-turn="user"|"assistant"` (not odd/even sibling index). Odd/even broke after ChatGPT wrapped each turn in `data-turn-id-container`.
 
 ### Layout class removals ([`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts))
 
@@ -68,24 +65,26 @@ If ChatGPT renames these utilities, cleanup becomes a no-op and widths may look 
 
 ### Scroll to top ([`ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx))
 
-| Purpose            | Selector                                                                                      |
-| ------------------ | --------------------------------------------------------------------------------------------- |
-| Scroll parent      | Same presentation chain as content script: `div[role="presentation"] > div > div > div > div` |
-| Injected button id | `#scroll-to-top-btn`                                                                          |
+| Purpose            | Selector / behavior                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------- |
+| Scroll parent      | `[data-scroll-root]`                                                                              |
+| Mount host         | `#thread-bottom-container` control area (beside native scroll-to-bottom)                          |
+| Injected button id | `#scroll-to-top-btn`                                                                              |
 
-Uses site design tokens in button classes (`border-token-border-light`, `bg-token-main-surface-primary`, etc.) so the control blends with ChatGPT chrome.
+Uses ChatGPT page token/button classes plus known absolute positioning so the control sits beside the native scroll-to-bottom button.
 
 ### Delete all chats ([`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts))
 
 Comments in source note that selectors may need updates after domain HTML changes.
 
-| Step                   | Selector / action                                              |
-| ---------------------- | -------------------------------------------------------------- |
-| Detect history present | `div.group\\/sidebar > div:nth-child(3)` (must have children)  |
-| Open profile           | `[aria-label="Open Profile Menu"]` via pointerdown/pointerup   |
-| Open settings          | `[data-testid="settings-menu-item"]` click                     |
-| Delete all             | `[data-testid="delete-all-chats-button"]` (awaited, timed out) |
-| Confirm                | `[data-testid="confirm-delete-all-chats-button"]` (awaited)    |
+| Step                   | Selector / action                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| Detect history present | `#history a[href^="/c/"]` (at least one conversation link)                         |
+| Open profile           | Visible (non-`inert`) `[data-testid="accounts-profile-button"]` via pointer events |
+| Open settings          | `[data-testid="settings-menu-item"]` click                                         |
+| Open Data controls     | `[data-testid="data-controls-tab"]` click                                          |
+| Delete all             | `button.btn-danger-outline[aria-label^="Delete all"]` (awaited)                    |
+| Confirm                | `[data-testid="confirm-delete-all-chats-button"]` (awaited)                        |
 
 Popup gate: active tab hostname is `chatgpt.com` / `*.chatgpt.com` ([`DeleteAllChatsButton.tsx`](../src/components/deleteAllChatsButton/DeleteAllChatsButton.tsx)). Automation uses bounded waits and always clears timers; SUCCESS is only returned after the confirm click.
 

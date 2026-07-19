@@ -2,60 +2,50 @@ import { Settings } from "@src/shared/settings";
 import { UpdateStylesMessage } from "@src/shared/messaging";
 
 const messageBubbles = '[data-testid^="conversation-turn-"]';
+const userTurns = '[data-turn="user"]';
+const assistantTurns = '[data-turn="assistant"]';
+const userBubble = `${userTurns} .user-message-bubble-color`;
+const assistantMessage = `${assistantTurns} [data-message-author-role="assistant"]`;
 
 const fixedStyles = `
+    /* Remove ChatGPT's shared 40/48rem cap while preserving responsive gutters. */
+    ${messageBubbles} [data-conversation-screenshot-content],
+    #thread-bottom > div > div > div > div {
+        width: 100% !important;
+        max-width: none !important;
+    }
     ${messageBubbles} > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
     }
     html.light #composer-submit-button { color:white }
-    ${messageBubbles} .bg-token-message-surface {
-        background-color: unset;
-    }
-    ${messageBubbles} .hidden {
-        display: block !important;
-    }
-    ${messageBubbles} .bg-token-message-surface {
-        max-width: calc(100% - 40px);
-        width: calc(100% - 40px);
-    }
-    ${messageBubbles} .bg-token-main-surface-tertiary {
-        background: transparent;
-    }
-    main > [role="presentation"] > div:nth-child(2) > div > div {
-        padding-left: 0;
-    }
-    main > [role="presentation"] > div:nth-child(2) > div > div > div {
-        max-width: unset;
-    }
 `;
 
 const buildDynamicStyles = (settings: Settings): string => {
-    const buttonVisibility = settings.messageButtonsVisibilityStyle
-        ? "unset"
-        : "invisible";
-
     return `
-            ${messageBubbles} > * > div { max-width: ${settings.messageMaxWidthStyle}% }
-          ${messageBubbles} > * > div { padding: ${settings.messagePaddingStyle}px; }
-          ${messageBubbles} > * > div { border-radius: ${settings.messageBorderRadiusStyle}px; }
+          ${userBubble}, ${assistantMessage} {
+            max-width: ${settings.messageMaxWidthStyle}% !important;
+            padding: ${settings.messagePaddingStyle}px !important;
+            border-radius: ${settings.messageBorderRadiusStyle}px !important;
+          }
           form {
             max-width: ${settings.inputBoxMaxWidthStyle}% !important;
             margin: auto !important;
             min-width: 300px
         }
-          :nth-child(odd) .bg-token-message-surface { color: ${settings.textColorUserStyle}}
-            ${messageBubbles}:nth-child(even) {
+          ${userBubble} {
+            color: ${settings.textColorUserStyle};
+            background-color: ${settings.messageColorUserStyle} !important;
+          }
+            ${assistantTurns} {
                 div > div > div:nth-child(2) > div, p, ul, li, strong, p > code, ul code, li::before, h1, h2, h3, h4 {
                     color: ${settings.textColorNonUserStyle};}}
-          ${messageBubbles} button { visibility: ${buttonVisibility} }
-          ${messageBubbles}:nth-child(odd) > * > * { background-color: ${settings.messageColorUserStyle} !important }
           ${messageBubbles} textarea {
             padding: 3px;
             background-color: rgba(0, 0, 0, 0.4);;
             border-radius: 5px
         }
-          ${messageBubbles}:nth-child(even) > * > * { background-color: ${settings.messageColorNonUserStyle} !important }
+          ${assistantMessage} { background-color: ${settings.messageColorNonUserStyle} !important }
         `;
 };
 

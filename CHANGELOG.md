@@ -1,24 +1,24 @@
 # Changelog
 
-## [1.2.4] - 2026-07-18
+## [1.3.1] - 2026-07-18
 
 ### Fixed
 
 -   Cancel now restores the last saved settings instead of built-in defaults
 -   Prevented a race where closing the popup before settings finished loading could overwrite saved options with defaults
 -   Merged stored settings with defaults so missing keys from older installs are filled in
--   Applied `messageButtonsVisibilityStyle: false` correctly after settings reload
 -   Prevented content-script console errors when ChatGPT layout nodes are missing
--   Made scroll-to-top remount correctly when ChatGPT replaces its scroll container
--   Made delete-all report success only after the ChatGPT UI flow completes
--   Stopped delete-all polling from throwing forever when buttons never appear
+-   Restored message colors, padding, radius, and widths against the current ChatGPT turn markup (`data-turn` / role attributes)
+-   Removed ChatGPT’s shared content-width cap so message and input-box width sliders can reach 100%
+-   Restored delete-all for the current Profile → Settings → Data controls flow, with reliable success/failure reporting
+-   Restored scroll-to-top on ChatGPT’s real scroll root and placed it beside the native scroll-to-bottom control
 -   Restored the color controls' original visual layout while preserving their accessible names
 -   Restored popup button backgrounds after `type="button"` lost to Tailwind preflight specificity
 
 ### Changed
 
 -   Made CSS generation deterministic by building styles from the complete settings object
--   Added regression coverage for generated CSS and boolean settings
+-   Added regression coverage for generated CSS
 -   Hardened the content-script 1s integration loop to skip missing DOM and avoid stale mounts
 -   Removed an unused content-script handshake message
 -   Delete-all now awaits the content-script result and uses a hostname-based ChatGPT tab check
@@ -29,6 +29,7 @@
 -   Hardened live-preview tab messaging against missing tabs / `runtime.lastError`
 -   Fixed popup mount so React waits for `#popup` (script no longer races ahead of the DOM)
 -   Colocated the `Settings` model and defaults; renamed the Chrome storage adapter for clearer ownership
+-   Storage reads and writes now keep only known settings keys
 -   Standardized popup prop naming on `liveSettings` / `setLiveSettings`
 -   Renamed popup views to named files (`Popup`, `MessageEditor`, `ColorControls`, `MessageSliderControls`)
 -   Renamed `colorControl` → `colorControls` and `scrollToTop.tsx` → `ScrollToTop.tsx`
@@ -39,9 +40,20 @@
 -   Upgraded Jest to 29.7 with matching `ts-jest`, `@types/jest`, and `jest-environment-jsdom`
 -   Replaced `jest-css-modules` with `identity-obj-proxy` for CSS module mocks
 -   Upgraded React and ReactDOM to 18.3; migrated popup and content-script mounts to `createRoot`
--   Added a development-only ChatGPT selector health check with copyable JSON results
+-   Added a development-only ChatGPT selector health check with copyable JSON results; probes track the current DOM
 -   Added explicit `build:dev` / `build:prod` flavors driven by one mode-aware Webpack config; production strips debug console calls
 -   Added concurrent development/production CI builds and automated tagged GitHub Releases with separate production and debugging artifacts; RC tags publish as pre-releases
+
+### Removed
+
+-   Removed the unused message-button visibility setting because ChatGPT now always displays message actions and the extension no longer provides a control for it
+-   Removed obsolete ChatGPT CSS helpers that no longer match the current DOM (legacy message-surface classes and old presentation-chain layout resets)
+
+## [1.3.0] - 2025-10-17
+
+### Changed
+
+-   Published the existing 1.2.3 build under the 1.3.0 release tag; no additional code changes were included and the packaged version metadata remained 1.2.3
 
 ## [1.2.3] - 2025-06-25
 

@@ -60,7 +60,7 @@ Dev vs prod: [`webpack.config.js`](../webpack.config.js) reads Webpack's `--mode
 -   Views under [`src/popup/views/messageEditor/`](../src/popup/views/messageEditor/) — active controls.
 -   Shared controls under [`src/components/`](../src/components/) — Header, FormButtons, DeleteAllChatsButton, etc.
 
-**Note:** Multi-page navigation (HomeMenu / MiscEditor / HomeButton) was removed from the source tree. `messageButtonsVisibilityStyle` remains in settings + CSS with no UI control for now.
+**Note:** Multi-page navigation (HomeMenu / MiscEditor / HomeButton) was removed from the source tree.
 
 ### Background service worker
 
@@ -92,7 +92,7 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 | [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts)               | Get/set `options` under `chrome.storage.sync`                  |
 | [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
 | [`messaging/`](../src/shared/messaging/)                                      | Typed popup / content / port message contracts                 |
-| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile menu → Settings → delete-all click sequence            |
+| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → Data controls → delete-all → confirm      |
 | [`chatDom.ts`](../src/lib/utilities/chatDom.ts)                               | Shared ChatGPT DOM selectors / mount ids                       |
 | [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width            |
 
@@ -143,17 +143,16 @@ sequenceDiagram
 ## Persistence model
 
 -   Key: `options` in `chrome.storage.sync`.
--   Shape and defaults: [`Settings` / `defaultSettings`](../src/shared/settings.ts) (string numeric-looking values for widths/padding/radius; hex colors; one boolean for button visibility).
+-   Shape and defaults: [`Settings` / `defaultSettings`](../src/shared/settings.ts) (string numeric-looking values for widths/padding/radius; hex colors).
 -   Storage adapter: [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts), which merges stored values over defaults so new/missing keys are filled.
 
 ## Known implementation caveats
 
 These are **current code realities**, not goals:
 
-1. **No UI for `messageButtonsVisibilityStyle`** — the boolean still ships in storage defaults and `buildCss`, but nothing in the popup toggles it. Revisit if product wants that control back.
-2. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
-3. **Delete-all DOM fragility** — automation still depends on ChatGPT’s menu markup and can time out when selectors drift; failures are now reported honestly instead of as false success. See [dom-integration.md](dom-integration.md).
-4. **General DOM fragility** — Styling and layout helpers also depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
+1. **Intentional dual save paths** — Save writes immediately; closing the popup also persists the current live settings.
+2. **Delete-all DOM fragility** — automation still depends on ChatGPT’s menu markup and can time out when selectors drift; failures are now reported honestly instead of as false success. See [dom-integration.md](dom-integration.md).
+3. **General DOM fragility** — Styling and layout helpers also depend on ChatGPT’s markup (`data-testid`, deep child selectors). Expect breakage when OpenAI ships UI changes; see [dom-integration.md](dom-integration.md).
 
 ## Related docs
 

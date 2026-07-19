@@ -117,7 +117,7 @@ Workflow: [`.github/workflows/release.yml`](../.github/workflows/release.yml).
 -   **Validation:** typecheck, lint, format check, and tests run once.
 -   **Builds:** production and development flavors build concurrently.
 -   **Outputs:** both zips are retained as workflow artifacts and attached to an automatically created GitHub Release.
--   Tags containing a hyphen (for example, `1.2.4-RC1`) become pre-releases; final tags such as `1.2.4` become normal releases.
+-   Tags containing a hyphen (for example, `1.3.1-RC1`) become pre-releases; final tags such as `1.3.1` become normal releases.
 -   The production zip is the Chrome Web Store deliverable. The development zip is for sideloading and diagnostics.
 -   The workflow does **not** publish to the Chrome Web Store.
 

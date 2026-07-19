@@ -11,6 +11,7 @@ import { removeUnnecessarySpace } from "@src/lib/utilities";
 import {
     CHAT_SCROLL_PARENT_SELECTOR,
     INPUT_BOX_CONTAINER_SELECTOR,
+    SCROLL_CONTROL_HOST_SELECTOR,
     SCROLL_TO_TOP_MOUNT_ID,
     USER_TEXT_CONTAINER_SELECTOR,
 } from "@src/lib/utilities/chatDom";
@@ -105,17 +106,21 @@ const unmountScrollToTop = (mountPoint: Element): void => {
 };
 
 const syncScrollToTop = (): void => {
-    const parentDiv = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    const scrollParent = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    const mountHost = document.querySelector(SCROLL_CONTROL_HOST_SELECTOR);
     const existingMount = document.getElementById(SCROLL_TO_TOP_MOUNT_ID);
 
-    if (!(parentDiv instanceof HTMLElement)) {
+    if (
+        !(scrollParent instanceof HTMLElement) ||
+        !(mountHost instanceof HTMLElement)
+    ) {
         if (existingMount) {
             unmountScrollToTop(existingMount);
         }
         return;
     }
 
-    if (existingMount && parentDiv.contains(existingMount)) {
+    if (existingMount && mountHost.contains(existingMount)) {
         return;
     }
 
@@ -125,7 +130,7 @@ const syncScrollToTop = (): void => {
 
     const mountPoint = document.createElement("div");
     mountPoint.id = SCROLL_TO_TOP_MOUNT_ID;
-    parentDiv.appendChild(mountPoint);
+    mountHost.appendChild(mountPoint);
     const root = createRoot(mountPoint);
     scrollToTopRoots.set(mountPoint, root);
     root.render(React.createElement(ScrollToTop));
