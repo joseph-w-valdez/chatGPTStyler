@@ -6,13 +6,13 @@ exports[`MessageEditor Component renders correctly 1`] = `
 >
   <div
     aria-label="Settings sections"
-    className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-chrome shadow-chrome"
+    className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-brand shadow-chrome"
     role="tablist"
   >
     <button
       aria-controls="messages-panel"
       aria-selected={true}
-      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface text-ink font-semibold border-edge border-b-surface"
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface text-ink font-semibold border-chrome-edge border-b-surface underline decoration-teal-400 decoration-[1.5px] underline-offset-4"
       id="messages-tab"
       onClick={[Function]}
       role="tab"
@@ -23,7 +23,7 @@ exports[`MessageEditor Component renders correctly 1`] = `
     <button
       aria-controls="background-panel"
       aria-selected={false}
-      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-ink-muted font-normal border-transparent hover:text-ink"
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-white/70 font-normal border-transparent hover:text-white"
       id="background-tab"
       onClick={[Function]}
       role="tab"
@@ -34,7 +34,7 @@ exports[`MessageEditor Component renders correctly 1`] = `
     <button
       aria-controls="misc-panel"
       aria-selected={false}
-      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-ink-muted font-normal border-transparent hover:text-ink"
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-white/70 font-normal border-transparent hover:text-white"
       id="misc-tab"
       onClick={[Function]}
       role="tab"

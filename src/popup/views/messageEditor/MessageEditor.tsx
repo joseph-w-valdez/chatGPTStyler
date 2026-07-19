@@ -38,8 +38,8 @@ export function MessageEditor({
     const tabButtonClass = (tab: EditorTab): string =>
         `-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
             activeTab === tab
-                ? "bg-surface text-ink font-semibold border-edge border-b-surface"
-                : "bg-transparent text-ink-muted font-normal border-transparent hover:text-ink"
+                ? "bg-surface text-ink font-semibold border-chrome-edge border-b-surface underline decoration-teal-400 decoration-[1.5px] underline-offset-4"
+                : "bg-transparent text-white/70 font-normal border-transparent hover:text-white"
         }`;
 
     const restoreCurrentTabDefaults = (): void => {
@@ -92,7 +92,7 @@ export function MessageEditor({
             <div
                 role="tablist"
                 aria-label="Settings sections"
-                className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-chrome shadow-chrome"
+                className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-brand shadow-chrome"
             >
                 <button
                     type="button"

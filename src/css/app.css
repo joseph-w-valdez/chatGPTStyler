@@ -14,9 +14,10 @@
         var(--surface) 100%
     );
     --border: rgba(16, 24, 22, 0.1);
-    /* Brand banner from the marketing site header: black -> teal-500 */
+    /* Brand banner from the marketing site header: black -> teal-500.
+       Shared by the header and tab strip so they form one gradient block,
+       identical in light and dark mode. */
     --brand-gradient: linear-gradient(90deg, #030712 0%, #14b8a6 100%);
-    --chrome: linear-gradient(135deg, #d7f0e9 0%, #e9f6f2 100%);
     --chrome-border: rgba(20, 184, 166, 0.3);
     --text: #101816;
     --text-muted: #5d6b68;
@@ -44,8 +45,6 @@
             var(--surface) 100%
         );
         --border: rgba(255, 255, 255, 0.1);
-        --chrome: linear-gradient(135deg, #0e2622 0%, #0b1513 100%);
-        --chrome-border: rgba(20, 184, 166, 0.35);
         --text: #ececec;
         --text-muted: #9caba7;
         --accent: #14b8a6;
@@ -72,8 +71,6 @@
         var(--surface) 100%
     );
     --border: rgba(16, 24, 22, 0.1);
-    --chrome: linear-gradient(135deg, #d7f0e9 0%, #e9f6f2 100%);
-    --chrome-border: rgba(20, 184, 166, 0.3);
     --text: #101816;
     --text-muted: #5d6b68;
     --accent: #14b8a6;
@@ -99,8 +96,6 @@
         var(--surface) 100%
     );
     --border: rgba(255, 255, 255, 0.1);
-    --chrome: linear-gradient(135deg, #0e2622 0%, #0b1513 100%);
-    --chrome-border: rgba(20, 184, 166, 0.35);
     --text: #ececec;
     --text-muted: #9caba7;
     --accent: #14b8a6;

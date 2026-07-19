@@ -30,7 +30,6 @@ module.exports = {
                 chrome: "var(--chrome-shadow)",
             },
             backgroundImage: {
-                chrome: "var(--chrome)",
                 brand: "var(--brand-gradient)",
             },
             animation: {
