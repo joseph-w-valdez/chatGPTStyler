@@ -23,8 +23,17 @@ const fixedStyles = `
 
 const buildDynamicStyles = (settings: Settings): string => {
     return `
-          ${userBubble}, ${assistantMessage} {
+          /* ChatGPT sizes user bubbles and image wrappers from this inherited variable. */
+          ${userTurns} {
+            --user-chat-width: ${settings.messageMaxWidthStyle}% !important;
+          }
+          ${assistantMessage} {
             max-width: ${settings.messageMaxWidthStyle}% !important;
+          }
+          ${userBubble} {
+            width: var(--user-chat-width) !important;
+          }
+          ${userBubble}, ${assistantMessage} {
             padding: ${settings.messagePaddingStyle}px !important;
             border-radius: ${settings.messageBorderRadiusStyle}px !important;
           }
