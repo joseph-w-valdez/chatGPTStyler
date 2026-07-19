@@ -39,7 +39,7 @@ export function MessageEditor({
         `-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
             activeTab === tab
                 ? "bg-surface text-ink font-semibold border-edge border-b-surface"
-                : "bg-transparent text-ink-muted font-normal border-transparent hover:text-ink hover:bg-surface-raised"
+                : "bg-transparent text-ink-muted font-normal border-transparent hover:text-ink"
         }`;
 
     const restoreCurrentTabDefaults = (): void => {
@@ -91,7 +91,7 @@ export function MessageEditor({
             <div
                 role="tablist"
                 aria-label="Settings sections"
-                className="grid grid-cols-3 border-b border-edge -mx-3 px-3"
+                className="grid grid-cols-3 border-b border-edge -mx-3 -mt-3 px-3 pt-2 bg-surface-raised"
             >
                 <button
                     type="button"
