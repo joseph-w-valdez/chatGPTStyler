@@ -17,6 +17,7 @@ describe("FormButtons", () => {
                     setLiveSettings={mockFunction}
                     savedSettings={settings}
                     setSavedSettings={mockFunction}
+                    onRestoreDefaults={mockFunction}
                 />,
             )
             .toJSON();

@@ -13,7 +13,7 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | User / ChatGPT bubble colors     | ColorControls                | Background colors for odd/even turns                                          |
 | User / ChatGPT text colors       | ColorControls                | Text colors for user vs assistant content                                     |
 | Conversation / sidebar backgrounds | BackgroundControls         | Opt-in surface colors; optional sync into one shared app background           |
-| Restore defaults / Save / Cancel | FormButtons                  | Reset preview, persist immediately, or restore the last saved/loaded settings |
+| Restore defaults / Save / Cancel | FormButtons                  | Reset the active tab, persist immediately, or restore the saved settings      |
 | Delete all conversations         | Misc tab                     | DOM automation on the active ChatGPT tab                                      |
 | Scroll to top                    | Misc tab + ScrollToTop       | Enabled by default; optional floating button when the thread is scrolled       |
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
@@ -72,7 +72,7 @@ flowchart TD
   Live --> Dirty[isEditing = true]
   Dirty --> Save[Save: storage.sync + clear dirty]
   Dirty --> Cancel[Cancel: restore savedSettings + preview]
-  Dirty --> Defaults[Restore Defaults: defaultSettings + preview, stays dirty]
+  Dirty --> Defaults[Restore Defaults: active tab defaults + preview, stays dirty]
 ```
 
 ### Control behavior
@@ -83,7 +83,7 @@ flowchart TD
 -   **Misc** ([`MiscControls`](../src/popup/views/messageEditor/components/miscControls/MiscControls.tsx)): toggles scroll-to-top visibility and contains the delete-all action.
 -   **Tabs** ([`MessageEditor`](../src/popup/views/messageEditor/MessageEditor.tsx)): Messages, Background, and Misc panels share Save / Cancel / Defaults.
 -   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
-    -   **Restore Defaults** — set live state to `defaultSettings`, preview via `sendMessageToTab(defaultSettings)`, leave `isEditing` true.
+    -   **Restore Defaults** — reset only the active Messages, Background, or Misc fields; preserve settings from other tabs, preview the merged settings, and leave `isEditing` true.
     -   **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.
     -   **Cancel** — restore the settings last loaded from storage or explicitly saved, preview them, and clear editing.
 -   **Background disconnect** — closing the popup intentionally persists the latest live settings, even without clicking Save. The Save button provides an immediate persistence option while the popup remains open.

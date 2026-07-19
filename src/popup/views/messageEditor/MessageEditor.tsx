@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Settings } from "@src/shared/settings";
+import { defaultSettings, Settings } from "@src/shared/settings";
+import { sendMessageToTab } from "@src/shared/utils";
 import { ColorControls } from "./components/colorControls";
 import { BackgroundControls } from "./components/backgroundControls";
 import { MiscControls } from "./components/miscControls";
@@ -38,6 +39,46 @@ export function MessageEditor({
                 ? "bg-accent text-accent-contrast border-transparent"
                 : "bg-surface-raised text-ink border-edge hover:bg-surface"
         }`;
+
+    const restoreCurrentTabDefaults = (): void => {
+        let nextSettings: Settings;
+
+        if (activeTab === "messages") {
+            nextSettings = {
+                ...liveSettings,
+                messageMaxWidthStyle: defaultSettings.messageMaxWidthStyle,
+                messageColorUserStyle: defaultSettings.messageColorUserStyle,
+                messageColorNonUserStyle:
+                    defaultSettings.messageColorNonUserStyle,
+                messagePaddingStyle: defaultSettings.messagePaddingStyle,
+                messageBorderRadiusStyle:
+                    defaultSettings.messageBorderRadiusStyle,
+                inputBoxMaxWidthStyle: defaultSettings.inputBoxMaxWidthStyle,
+                textColorUserStyle: defaultSettings.textColorUserStyle,
+                textColorNonUserStyle: defaultSettings.textColorNonUserStyle,
+            };
+        } else if (activeTab === "background") {
+            nextSettings = {
+                ...liveSettings,
+                customBackgroundsEnabled:
+                    defaultSettings.customBackgroundsEnabled,
+                syncBackgroundColors: defaultSettings.syncBackgroundColors,
+                conversationBackgroundStyle:
+                    defaultSettings.conversationBackgroundStyle,
+                sidebarBackgroundStyle: defaultSettings.sidebarBackgroundStyle,
+                syncedBackgroundStyle: defaultSettings.syncedBackgroundStyle,
+            };
+        } else {
+            nextSettings = {
+                ...liveSettings,
+                scrollToTopEnabled: defaultSettings.scrollToTopEnabled,
+            };
+        }
+
+        setLiveSettings(nextSettings);
+        sendMessageToTab(nextSettings);
+        setIsEditing(true);
+    };
 
     return (
         <div
@@ -132,6 +173,7 @@ export function MessageEditor({
                 setLiveSettings={setLiveSettings}
                 savedSettings={savedSettings}
                 setSavedSettings={setSavedSettings}
+                onRestoreDefaults={restoreCurrentTabDefaults}
             />
             {process.env.NODE_ENV === "development" ? (
                 <SelectorHealthCheck />

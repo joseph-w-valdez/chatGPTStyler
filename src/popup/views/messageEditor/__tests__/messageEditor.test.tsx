@@ -5,6 +5,7 @@ import { MessageSliderControls } from "../components/messageSliderControls";
 import { ColorControls } from "../components/colorControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { defaultSettings } from "@src/shared/settings";
+import { sendMessageToTab } from "@src/shared/utils";
 
 jest.mock("@src/shared/utils", () => ({
     sendMessageToTab: jest.fn(),
@@ -18,6 +19,7 @@ describe("MessageEditor Component", () => {
     };
 
     beforeEach(() => {
+        jest.clearAllMocks();
         component = renderer.create(<MessageEditor {...mockProps} />);
     });
 
@@ -101,6 +103,88 @@ describe("MessageEditor Component", () => {
                     button.children.includes("Delete All Conversations"),
                 ),
         ).toBe(true);
+    });
+
+    it.each([
+        [
+            "messages",
+            "messages-tab",
+            {
+                messageMaxWidthStyle: defaultSettings.messageMaxWidthStyle,
+                messageColorUserStyle: defaultSettings.messageColorUserStyle,
+                messageColorNonUserStyle:
+                    defaultSettings.messageColorNonUserStyle,
+                messagePaddingStyle: defaultSettings.messagePaddingStyle,
+                messageBorderRadiusStyle:
+                    defaultSettings.messageBorderRadiusStyle,
+                inputBoxMaxWidthStyle: defaultSettings.inputBoxMaxWidthStyle,
+                textColorUserStyle: defaultSettings.textColorUserStyle,
+                textColorNonUserStyle: defaultSettings.textColorNonUserStyle,
+            },
+        ],
+        [
+            "background",
+            "background-tab",
+            {
+                customBackgroundsEnabled:
+                    defaultSettings.customBackgroundsEnabled,
+                syncBackgroundColors: defaultSettings.syncBackgroundColors,
+                conversationBackgroundStyle:
+                    defaultSettings.conversationBackgroundStyle,
+                sidebarBackgroundStyle: defaultSettings.sidebarBackgroundStyle,
+                syncedBackgroundStyle: defaultSettings.syncedBackgroundStyle,
+            },
+        ],
+        [
+            "misc",
+            "misc-tab",
+            {
+                scrollToTopEnabled: defaultSettings.scrollToTopEnabled,
+            },
+        ],
+    ])("restores only %s tab defaults", (_tab, tabId, defaultSubset) => {
+        const customSettings = {
+            ...defaultSettings,
+            messageMaxWidthStyle: "44",
+            messageColorUserStyle: "#111111",
+            customBackgroundsEnabled: true,
+            syncBackgroundColors: true,
+            conversationBackgroundStyle: "#222222",
+            sidebarBackgroundStyle: "#333333",
+            syncedBackgroundStyle: "#444444",
+            scrollToTopEnabled: false,
+        };
+
+        act(() => {
+            component.update(
+                <MessageEditor
+                    liveSettings={customSettings}
+                    setLiveSettings={mockProps.setLiveSettings}
+                />,
+            );
+        });
+
+        if (tabId !== "messages-tab") {
+            const tab = component.root.findByProps({ id: tabId });
+            act(() => {
+                tab.props.onClick();
+            });
+        }
+
+        const restoreButton = component.root
+            .findAllByType("button")
+            .find((button) => button.children.includes("Restore Defaults"));
+        if (!restoreButton) {
+            throw new Error("Restore Defaults button not found");
+        }
+
+        act(() => {
+            restoreButton.props.onClick();
+        });
+
+        const expected = { ...customSettings, ...defaultSubset };
+        expect(mockProps.setLiveSettings).toHaveBeenCalledWith(expected);
+        expect(sendMessageToTab).toHaveBeenCalledWith(expected);
     });
 
     it("restores storage-loaded settings when Cancel is clicked", () => {
