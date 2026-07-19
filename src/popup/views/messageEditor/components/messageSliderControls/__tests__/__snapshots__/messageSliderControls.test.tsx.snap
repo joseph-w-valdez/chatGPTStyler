@@ -17,7 +17,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         Message Width
       </label>
       <div
-        className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+        className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
       >
         <input
           className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -61,7 +61,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         Message Padding
       </label>
       <div
-        className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+        className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
       >
         <input
           className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -105,7 +105,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         Message Border
       </label>
       <div
-        className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+        className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
       >
         <input
           className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -149,7 +149,7 @@ exports[`MessageSliderControls component renders correctly 1`] = `
         Input Box Width
       </label>
       <div
-        className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+        className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
       >
         <input
           className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"

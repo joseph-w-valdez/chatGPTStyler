@@ -49,7 +49,7 @@ export function BackgroundControls({
         const value = liveSettings[settingsKey];
 
         return (
-            <fieldset className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full">
+            <fieldset className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full">
                 <legend className="sr-only">{`${label} background color`}</legend>
                 <div
                     className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge text-ink"

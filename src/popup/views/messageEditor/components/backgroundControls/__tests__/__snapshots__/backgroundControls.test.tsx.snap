@@ -27,7 +27,7 @@ exports[`BackgroundControls renders a single synced picker when sync is enabled 
     Sync colors
   </label>
   <fieldset
-    className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+    className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
   >
     <legend
       className="sr-only"
@@ -87,7 +87,7 @@ exports[`BackgroundControls renders separate conversation and sidebar pickers wh
     className="grid grid-cols-2 gap-2 place-items-center w-full"
   >
     <fieldset
-      className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+      className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
     >
       <legend
         className="sr-only"
@@ -115,7 +115,7 @@ exports[`BackgroundControls renders separate conversation and sidebar pickers wh
       />
     </fieldset>
     <fieldset
-      className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+      className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
     >
       <legend
         className="sr-only"

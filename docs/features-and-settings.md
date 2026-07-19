@@ -16,6 +16,7 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | Restore defaults / Save / Cancel | FormButtons                  | Reset the active tab, persist immediately, or restore the saved settings      |
 | Delete all conversations         | Misc tab                     | DOM automation on the active ChatGPT tab                                      |
 | Scroll to top                    | Misc tab + ScrollToTop       | Enabled by default; optional floating button when the thread is scrolled       |
+| Popup appearance                 | Misc tab                     | System, Light, or Dark theme preference                                       |
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
 | Fixed CSS helpers                | `stylingFunctions`           | Content width-cap removal, light-mode submit button color, and related helpers |
 
@@ -39,6 +40,7 @@ interface Settings {
     sidebarBackgroundStyle: string;
     syncedBackgroundStyle: string;
     scrollToTopEnabled: boolean;
+    themePreference: "system" | "light" | "dark";
 }
 ```
 
@@ -58,6 +60,7 @@ interface Settings {
 | `sidebarBackgroundStyle`       | `"#171717"` |
 | `syncedBackgroundStyle`        | `"#212121"` |
 | `scrollToTopEnabled`           | `true`      |
+| `themePreference`              | `"system"`  |
 
 Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
@@ -80,7 +83,7 @@ flowchart TD
 -   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/MessageSliderControls.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
 -   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControls/ColorControls.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
 -   **Backgrounds** ([`BackgroundControls`](../src/popup/views/messageEditor/components/backgroundControls/BackgroundControls.tsx)): opt-in conversation/sidebar surface colors. Sync replaces both pickers with one App Background control while keeping the separate values persisted for restore.
--   **Misc** ([`MiscControls`](../src/popup/views/messageEditor/components/miscControls/MiscControls.tsx)): toggles scroll-to-top visibility and contains the delete-all action.
+-   **Misc** ([`MiscControls`](../src/popup/views/messageEditor/components/miscControls/MiscControls.tsx)): selects the popup appearance, toggles scroll-to-top visibility, and contains the delete-all action. System appearance follows `prefers-color-scheme`; Light and Dark override it.
 -   **Tabs** ([`MessageEditor`](../src/popup/views/messageEditor/MessageEditor.tsx)): Messages, Background, and Misc panels share Save / Cancel / Defaults.
 -   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
     -   **Restore Defaults** — reset only the active Messages, Background, or Misc fields; preserve settings from other tabs, preview the merged settings, and leave `isEditing` true.

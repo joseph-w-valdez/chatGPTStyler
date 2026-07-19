@@ -5,7 +5,38 @@ exports[`MiscControls renders with scroll to top enabled by default 1`] = `
   className="grid gap-4"
 >
   <label
-    className="flex items-center justify-between gap-3 rounded-lg border border-edge bg-surface-raised p-3 text-sm text-ink cursor-pointer"
+    className="grid gap-2 rounded-lg border border-edge bg-surface-elevated p-3 text-sm text-ink"
+  >
+    <span
+      className="font-medium"
+    >
+      Appearance
+    </span>
+    <select
+      aria-label="Color theme"
+      className="w-full rounded-md border border-edge bg-surface-raised px-2.5 py-2 text-sm text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      onChange={[Function]}
+      value="system"
+    >
+      <option
+        value="system"
+      >
+        System settings
+      </option>
+      <option
+        value="light"
+      >
+        Light mode
+      </option>
+      <option
+        value="dark"
+      >
+        Dark mode
+      </option>
+    </select>
+  </label>
+  <label
+    className="flex items-center justify-between gap-3 rounded-lg border border-edge bg-surface-elevated p-3 text-sm text-ink cursor-pointer"
   >
     <span
       className="font-medium"

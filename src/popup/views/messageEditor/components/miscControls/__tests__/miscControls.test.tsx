@@ -9,6 +9,10 @@ jest.mock("@src/shared/utils", () => ({
 }));
 
 describe("MiscControls", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it("renders with scroll to top enabled by default", () => {
         const tree = renderer
             .create(
@@ -48,5 +52,33 @@ describe("MiscControls", () => {
         expect(setLiveSettings).toHaveBeenCalledWith(expected);
         expect(sendMessageToTab).toHaveBeenCalledWith(expected);
         expect(setIsEditing).toHaveBeenCalledWith(true);
+    });
+
+    it("changes the popup theme without messaging the ChatGPT tab", () => {
+        const setLiveSettings = jest.fn();
+        const setIsEditing = jest.fn();
+        const component = renderer.create(
+            <MiscControls
+                liveSettings={defaultSettings}
+                setLiveSettings={setLiveSettings}
+                setIsEditing={setIsEditing}
+            />,
+        );
+        const themeSelect = component.root.findByProps({
+            "aria-label": "Color theme",
+        });
+
+        act(() => {
+            themeSelect.props.onChange({
+                currentTarget: { value: "dark" },
+            });
+        });
+
+        expect(setLiveSettings).toHaveBeenCalledWith({
+            ...defaultSettings,
+            themePreference: "dark",
+        });
+        expect(setIsEditing).toHaveBeenCalledWith(true);
+        expect(sendMessageToTab).not.toHaveBeenCalled();
     });
 });

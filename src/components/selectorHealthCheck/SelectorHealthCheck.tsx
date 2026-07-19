@@ -86,7 +86,7 @@ export function SelectorHealthCheck(): JSX.Element | null {
     };
 
     return (
-        <div className="grid gap-2 border border-dashed border-edge rounded-md p-2 bg-surface-raised">
+        <div className="grid gap-2 border border-dashed border-edge rounded-md p-2 bg-surface-elevated">
             <button
                 type="button"
                 className="w-full px-3 py-2 text-sm font-medium text-accent-contrast bg-accent rounded-md hover:opacity-90 disabled:opacity-40"

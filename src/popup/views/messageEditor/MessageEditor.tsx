@@ -74,6 +74,7 @@ export function MessageEditor({
             nextSettings = {
                 ...liveSettings,
                 scrollToTopEnabled: defaultSettings.scrollToTopEnabled,
+                themePreference: defaultSettings.themePreference,
             };
         }
 
@@ -91,7 +92,7 @@ export function MessageEditor({
             <div
                 role="tablist"
                 aria-label="Settings sections"
-                className="grid grid-cols-3 border-b border-edge -mx-3 -mt-3 px-3 pt-2 bg-surface-raised"
+                className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-chrome shadow-chrome"
             >
                 <button
                     type="button"

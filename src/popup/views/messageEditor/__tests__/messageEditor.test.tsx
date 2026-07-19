@@ -140,6 +140,7 @@ describe("MessageEditor Component", () => {
             "misc-tab",
             {
                 scrollToTopEnabled: defaultSettings.scrollToTopEnabled,
+                themePreference: defaultSettings.themePreference,
             },
         ],
     ])("restores only %s tab defaults", (_tab, tabId, defaultSubset) => {
@@ -153,6 +154,7 @@ describe("MessageEditor Component", () => {
             sidebarBackgroundStyle: "#333333",
             syncedBackgroundStyle: "#444444",
             scrollToTopEnabled: false,
+            themePreference: "dark" as const,
         };
 
         act(() => {

@@ -8,7 +8,7 @@ exports[`component renders 1`] = `
     className="w-full"
   >
     <header
-      className="px-3 pt-3 pb-2 bg-surface-raised"
+      className="px-3 py-2.5 bg-brand"
     >
       <div
         className="flex items-center justify-between gap-2"
@@ -17,7 +17,7 @@ exports[`component renders 1`] = `
           className="flex items-center gap-1.5"
         >
           <h1
-            className="text-base font-semibold tracking-tight text-ink"
+            className="text-base font-semibold tracking-tight text-accent"
           >
             ChatGPT Styler
           </h1>
@@ -30,7 +30,7 @@ exports[`component renders 1`] = `
         </div>
         <button
           aria-label="Close popup"
-          className="w-6 h-6 flex items-center justify-center rounded-md text-ink hover:bg-surface-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="w-6 h-6 flex items-center justify-center rounded-md text-white hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           onClick={[Function]}
           type="button"
         >
@@ -64,7 +64,7 @@ exports[`component renders 1`] = `
     >
       <div
         aria-label="Settings sections"
-        className="grid grid-cols-3 border-b border-edge -mx-3 -mt-3 px-3 pt-2 bg-surface-raised"
+        className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-chrome shadow-chrome"
         role="tablist"
       >
         <button
@@ -123,7 +123,7 @@ exports[`component renders 1`] = `
                 Message Width
               </label>
               <div
-                className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+                className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
               >
                 <input
                   className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -167,7 +167,7 @@ exports[`component renders 1`] = `
                 Message Padding
               </label>
               <div
-                className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+                className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
               >
                 <input
                   className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -211,7 +211,7 @@ exports[`component renders 1`] = `
                 Message Border
               </label>
               <div
-                className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+                className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
               >
                 <input
                   className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -255,7 +255,7 @@ exports[`component renders 1`] = `
                 Input Box Width
               </label>
               <div
-                className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
+                className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
               >
                 <input
                   className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
@@ -291,7 +291,7 @@ exports[`component renders 1`] = `
           className="grid grid-cols-2 gap-2 place-items-center w-full"
         >
           <fieldset
-            className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+            className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
           >
             <legend
               className="sr-only"
@@ -342,7 +342,7 @@ exports[`component renders 1`] = `
             </div>
           </fieldset>
           <fieldset
-            className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+            className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
           >
             <legend
               className="sr-only"

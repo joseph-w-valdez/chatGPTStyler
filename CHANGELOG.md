@@ -10,6 +10,7 @@
 
 -   Background settings tab with opt-in conversation and sidebar surface colors, plus a sync mode that collapses both into one App Background picker
 -   Misc settings tab containing delete-all and an enabled-by-default toggle for the scroll-to-top button
+-   System, Light, and Dark popup appearance options in the Misc tab
 -   Tab-aware Restore Defaults behavior that resets only the active settings section
 
 ## [1.3.1] - 2026-07-18

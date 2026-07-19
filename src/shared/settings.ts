@@ -1,3 +1,5 @@
+export type ThemePreference = "system" | "light" | "dark";
+
 export interface Settings {
     messageMaxWidthStyle: string;
     messageColorUserStyle: string;
@@ -13,6 +15,7 @@ export interface Settings {
     sidebarBackgroundStyle: string;
     syncedBackgroundStyle: string;
     scrollToTopEnabled: boolean;
+    themePreference: ThemePreference;
 }
 
 export const defaultSettings: Settings = {
@@ -30,4 +33,5 @@ export const defaultSettings: Settings = {
     sidebarBackgroundStyle: "#171717",
     syncedBackgroundStyle: "#212121",
     scrollToTopEnabled: true,
+    themePreference: "system",
 };
