@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.2] - 2026-07-19
+
+### Fixed
+
+-   Message width now resizes user text bubbles by setting an explicit width from ChatGPT’s `--user-chat-width` layout variable, so user and assistant messages scale together
+
 ## [1.3.1] - 2026-07-18
 
 ### Fixed

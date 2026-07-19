@@ -40,7 +40,8 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | Purpose                              | Selector pattern                                                          |
 | ------------------------------------ | ------------------------------------------------------------------------- |
 | All message turns                    | `[data-testid^="conversation-turn-"]` (variable `messageBubbles`)         |
-| User bubble background / text / radius / padding / width | `[data-turn="user"] .user-message-bubble-color` |
+| User message width                   | `[data-turn="user"]` sets inherited `--user-chat-width`                   |
+| User bubble background / text / radius / padding | `[data-turn="user"] .user-message-bubble-color` |
 | Assistant message background / padding / width / radius | `[data-turn="assistant"] [data-message-author-role="assistant"]` |
 | Assistant text color                 | `[data-turn="assistant"]` nested `p`, lists, code, headings               |
 | Input form width                     | `form`                                                                    |
@@ -48,6 +49,8 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | Code / composer helpers              | nth-child(2) under bubbles; `#composer-submit-button`                     |
 
 Turns are role-tagged via `data-turn="user"|"assistant"` (not odd/even sibling index). Odd/even broke after ChatGPT wrapped each turn in `data-turn-id-container`.
+
+User image wrappers consume ChatGPT's `--user-chat-width` custom property as their width, while text bubbles use it only as a native maximum. The extension therefore sets the variable on the user turn and applies it as the explicit width of `.user-message-bubble-color`. Do not constrain `[data-message-author-role="user"]`, which is a shared full-width layout parent.
 
 ### Layout class removals ([`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts))
 

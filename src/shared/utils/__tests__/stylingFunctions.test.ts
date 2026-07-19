@@ -9,6 +9,10 @@ describe("buildCss", () => {
             `max-width: ${defaultSettings.messageMaxWidthStyle}% !important`,
         );
         expect(css).toContain(
+            `--user-chat-width: ${defaultSettings.messageMaxWidthStyle}% !important`,
+        );
+        expect(css).toContain("width: var(--user-chat-width) !important");
+        expect(css).toContain(
             `padding: ${defaultSettings.messagePaddingStyle}px !important`,
         );
         expect(css).toContain(
