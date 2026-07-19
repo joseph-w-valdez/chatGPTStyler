@@ -46,11 +46,16 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | Assistant text color                 | `[data-turn="assistant"]` nested `p`, lists, code, headings               |
 | Input form width                     | `form`                                                                    |
 | Content width cap removal            | `[data-conversation-screenshot-content]`, `#thread-bottom > div > div > div > div` |
+| Conversation surface (opt-in)        | `--main-surface-primary` on light/dark theme scopes                               |
+| Sidebar surface (opt-in)             | `.bg-token-sidebar-surface-primary`, `.bg-\(--sidebar-surface-primary\)`          |
+| Scroll-to-top visibility             | `#scroll-to-top-btn` (`display: none` when disabled)                              |
 | Code / composer helpers              | nth-child(2) under bubbles; `#composer-submit-button`                     |
 
 Turns are role-tagged via `data-turn="user"|"assistant"` (not odd/even sibling index). Odd/even broke after ChatGPT wrapped each turn in `data-turn-id-container`.
 
 User image wrappers consume ChatGPT's `--user-chat-width` custom property as their width, while text bubbles use it only as a native maximum. The extension therefore sets the variable on the user turn and applies it as the explicit width of `.user-message-bubble-color`. Do not constrain `[data-message-author-role="user"]`, which is a shared full-width layout parent.
+
+Background surface overrides are emitted only when `customBackgroundsEnabled` is true. Sync mode uses `syncedBackgroundStyle` for both conversation and sidebar; unsynced mode uses the retained separate values.
 
 ### Layout class removals ([`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts))
 
@@ -75,6 +80,8 @@ If ChatGPT renames these utilities, cleanup becomes a no-op and widths may look 
 | Injected button id | `#scroll-to-top-btn`                                                                              |
 
 Uses ChatGPT page token/button classes plus known absolute positioning so the control sits beside the native scroll-to-bottom button.
+
+The button remains mounted for lightweight lifecycle stability; disabling `scrollToTopEnabled` hides it through generated CSS, so live preview and persisted settings use the existing style-update path.
 
 ### Delete all chats ([`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts))
 

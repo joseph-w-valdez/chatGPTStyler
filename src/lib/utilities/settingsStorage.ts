@@ -1,15 +1,16 @@
 import { defaultSettings, Settings } from "@src/shared/settings";
 
 const pickSettings = (stored: Partial<Settings> | undefined): Settings => {
-    const options = { ...defaultSettings };
-    if (!stored) return options;
+    if (!stored) {
+        return { ...defaultSettings };
+    }
 
-    (Object.keys(defaultSettings) as Array<keyof Settings>).forEach((key) => {
-        const value = stored[key];
-        if (value !== undefined) {
-            options[key] = value as Settings[typeof key];
+    const options = { ...defaultSettings };
+    for (const key of Object.keys(defaultSettings) as Array<keyof Settings>) {
+        if (stored[key] !== undefined) {
+            Object.assign(options, { [key]: stored[key] });
         }
-    });
+    }
 
     return options;
 };

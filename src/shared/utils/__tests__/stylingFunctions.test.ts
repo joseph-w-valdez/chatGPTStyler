@@ -76,6 +76,61 @@ describe("buildCss", () => {
     it("keeps updateStyles as a buildCss alias", () => {
         expect(updateStyles(defaultSettings)).toBe(buildCss(defaultSettings));
     });
+
+    it("omits background surface overrides while customization is disabled", () => {
+        const css = buildCss(defaultSettings);
+
+        expect(css).not.toContain("--main-surface-primary");
+        expect(css).not.toContain(".bg-token-sidebar-surface-primary");
+    });
+
+    it("applies separate conversation and sidebar colors when enabled", () => {
+        const settings: Settings = {
+            ...defaultSettings,
+            customBackgroundsEnabled: true,
+            syncBackgroundColors: false,
+            conversationBackgroundStyle: "#111111",
+            sidebarBackgroundStyle: "#222222",
+            syncedBackgroundStyle: "#333333",
+        };
+        const css = buildCss(settings);
+
+        expect(css).toContain("--main-surface-primary: #111111 !important");
+        expect(css).toContain("background-color: #222222 !important");
+        expect(css).toContain(".bg-token-sidebar-surface-primary");
+        expect(css).toContain(".bg-\\(--sidebar-surface-primary\\)");
+        expect(css).not.toContain("--main-surface-primary: #333333");
+    });
+
+    it("applies the synced color to both surfaces when sync is enabled", () => {
+        const settings: Settings = {
+            ...defaultSettings,
+            customBackgroundsEnabled: true,
+            syncBackgroundColors: true,
+            conversationBackgroundStyle: "#111111",
+            sidebarBackgroundStyle: "#222222",
+            syncedBackgroundStyle: "#abcdef",
+        };
+        const css = buildCss(settings);
+
+        expect(css).toContain("--main-surface-primary: #abcdef !important");
+        expect(css).toContain("background-color: #abcdef !important");
+    });
+
+    it("shows scroll to top by default and hides it when disabled", () => {
+        expect(buildCss(defaultSettings)).not.toContain(
+            "#scroll-to-top-btn { display: none !important; }",
+        );
+
+        const css = buildCss({
+            ...defaultSettings,
+            scrollToTopEnabled: false,
+        });
+
+        expect(css).toContain(
+            "#scroll-to-top-btn { display: none !important; }",
+        );
+    });
 });
 
 describe("sendMessageToTab", () => {

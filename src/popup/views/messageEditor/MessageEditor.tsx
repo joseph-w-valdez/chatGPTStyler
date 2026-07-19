@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Settings } from "@src/shared/settings";
 import { ColorControls } from "./components/colorControls";
+import { BackgroundControls } from "./components/backgroundControls";
+import { MiscControls } from "./components/miscControls";
 import { FormButtons } from "@src/components/formButtons/FormButtons";
 import { MessageSliderControls } from "./components/messageSliderControls";
-import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
 import { SelectorHealthCheck } from "@src/components/selectorHealthCheck";
 
 export interface MessageEditorProps {
@@ -11,11 +12,14 @@ export interface MessageEditorProps {
     setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
 }
 
+type EditorTab = "messages" | "background" | "misc";
+
 export function MessageEditor({
     liveSettings,
     setLiveSettings,
 }: MessageEditorProps): JSX.Element {
     const [isEditing, setIsEditing] = useState(false);
+    const [activeTab, setActiveTab] = useState<EditorTab>("messages");
     const [savedSettings, setSavedSettings] = useState<Settings>({
         ...liveSettings,
     });
@@ -28,22 +32,99 @@ export function MessageEditor({
         }
     }, [liveSettings, isEditing]);
 
+    const tabButtonClass = (tab: EditorTab): string =>
+        `px-3 py-1.5 text-sm font-medium rounded-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+            activeTab === tab
+                ? "bg-accent text-accent-contrast border-transparent"
+                : "bg-surface-raised text-ink border-edge hover:bg-surface"
+        }`;
+
     return (
         <div
             className={`grid grid-cols-1 gap-y-3 px-3 pt-3 pb-3 select-none ${
                 !isEditing ? "animate-fade-in" : ""
             }`}
         >
-            <MessageSliderControls
-                setLiveSettings={setLiveSettings}
-                liveSettings={liveSettings}
-                setIsEditing={setIsEditing}
-            />
-            <ColorControls
-                setLiveSettings={setLiveSettings}
-                liveSettings={liveSettings}
-                setIsEditing={setIsEditing}
-            />
+            <div
+                role="tablist"
+                aria-label="Settings sections"
+                className="grid grid-cols-3 gap-2"
+            >
+                <button
+                    type="button"
+                    role="tab"
+                    id="messages-tab"
+                    aria-selected={activeTab === "messages"}
+                    aria-controls="messages-panel"
+                    className={tabButtonClass("messages")}
+                    onClick={() => setActiveTab("messages")}
+                >
+                    Messages
+                </button>
+                <button
+                    type="button"
+                    role="tab"
+                    id="background-tab"
+                    aria-selected={activeTab === "background"}
+                    aria-controls="background-panel"
+                    className={tabButtonClass("background")}
+                    onClick={() => setActiveTab("background")}
+                >
+                    Background
+                </button>
+                <button
+                    type="button"
+                    role="tab"
+                    id="misc-tab"
+                    aria-selected={activeTab === "misc"}
+                    aria-controls="misc-panel"
+                    className={tabButtonClass("misc")}
+                    onClick={() => setActiveTab("misc")}
+                >
+                    Misc
+                </button>
+            </div>
+
+            {activeTab === "messages" ? (
+                <div
+                    role="tabpanel"
+                    id="messages-panel"
+                    aria-labelledby="messages-tab"
+                    className="grid grid-cols-1 gap-y-3"
+                >
+                    <MessageSliderControls
+                        setLiveSettings={setLiveSettings}
+                        liveSettings={liveSettings}
+                        setIsEditing={setIsEditing}
+                    />
+                    <ColorControls
+                        setLiveSettings={setLiveSettings}
+                        liveSettings={liveSettings}
+                        setIsEditing={setIsEditing}
+                    />
+                </div>
+            ) : activeTab === "background" ? (
+                <div
+                    role="tabpanel"
+                    id="background-panel"
+                    aria-labelledby="background-tab"
+                >
+                    <BackgroundControls
+                        setLiveSettings={setLiveSettings}
+                        liveSettings={liveSettings}
+                        setIsEditing={setIsEditing}
+                    />
+                </div>
+            ) : (
+                <div role="tabpanel" id="misc-panel" aria-labelledby="misc-tab">
+                    <MiscControls
+                        setLiveSettings={setLiveSettings}
+                        liveSettings={liveSettings}
+                        setIsEditing={setIsEditing}
+                    />
+                </div>
+            )}
+
             <FormButtons
                 isEditing={isEditing}
                 setIsEditing={setIsEditing}
@@ -52,7 +133,6 @@ export function MessageEditor({
                 savedSettings={savedSettings}
                 setSavedSettings={setSavedSettings}
             />
-            <DeleteAllChatsButton />
             {process.env.NODE_ENV === "development" ? (
                 <SelectorHealthCheck />
             ) : null}

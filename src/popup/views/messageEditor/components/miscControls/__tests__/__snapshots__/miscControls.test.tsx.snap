@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MiscControls renders with scroll to top enabled by default 1`] = `
+<div
+  className="grid gap-4"
+>
+  <label
+    className="flex items-center justify-between gap-3 rounded-lg border border-edge bg-surface-raised p-3 text-sm text-ink cursor-pointer"
+  >
+    <span>
+      <span
+        className="block font-medium"
+      >
+        Scroll to top
+      </span>
+      <span
+        className="block text-xs text-ink-muted"
+      >
+        Show the shortcut beside ChatGPT’s scroll control.
+      </span>
+    </span>
+    <input
+      aria-label="Enable scroll to top button"
+      checked={true}
+      onChange={[Function]}
+      type="checkbox"
+    />
+  </label>
+  <div
+    className="grid gap-2"
+  >
+    <p
+      className="text-xs font-medium uppercase tracking-wide text-ink-muted"
+    >
+      Conversation data
+    </p>
+    <div>
+      <button
+        aria-controls="delete-all-confirm"
+        aria-expanded={false}
+        className="bigRedBtn"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete All Conversations
+      </button>
+      <div
+        className="hidden"
+        id="delete-all-confirm"
+      >
+        <div
+          className="w-full grid grid-cols-2 gap-2"
+        >
+          <button
+            aria-describedby="delete-all-confirm-label"
+            className="yesBtn"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Yes
+          </button>
+          <button
+            aria-describedby="delete-all-confirm-label"
+            className="noBtn"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            No
+          </button>
+        </div>
+        <p
+          className="text-sm text-ink-muted"
+          id="delete-all-confirm-label"
+        >
+          Are you sure?
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

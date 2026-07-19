@@ -12,9 +12,10 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | Input box width                  | MessageEditor sliders        | `%` max-width on `form`                                                       |
 | User / ChatGPT bubble colors     | ColorControls                | Background colors for odd/even turns                                          |
 | User / ChatGPT text colors       | ColorControls                | Text colors for user vs assistant content                                     |
+| Conversation / sidebar backgrounds | BackgroundControls         | Opt-in surface colors; optional sync into one shared app background           |
 | Restore defaults / Save / Cancel | FormButtons                  | Reset preview, persist immediately, or restore the last saved/loaded settings |
-| Delete all conversations         | DeleteAllChatsButton         | DOM automation on the active ChatGPT tab                                      |
-| Scroll to top                    | Content script + ScrollToTop | Floating button when the thread is scrolled                                   |
+| Delete all conversations         | Misc tab                     | DOM automation on the active ChatGPT tab                                      |
+| Scroll to top                    | Misc tab + ScrollToTop       | Enabled by default; optional floating button when the thread is scrolled       |
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
 | Fixed CSS helpers                | `stylingFunctions`           | Content width-cap removal, light-mode submit button color, and related helpers |
 
@@ -32,19 +33,31 @@ interface Settings {
     inputBoxMaxWidthStyle: string;
     textColorUserStyle: string;
     textColorNonUserStyle: string;
+    customBackgroundsEnabled: boolean;
+    syncBackgroundColors: boolean;
+    conversationBackgroundStyle: string;
+    sidebarBackgroundStyle: string;
+    syncedBackgroundStyle: string;
+    scrollToTopEnabled: boolean;
 }
 ```
 
-| Key                        | Default     |
-| -------------------------- | ----------- |
-| `messageMaxWidthStyle`     | `"95"`      |
-| `messageColorUserStyle`    | `"#0084FF"` |
-| `messageColorNonUserStyle` | `"#333333"` |
-| `messagePaddingStyle`      | `"10"`      |
-| `messageBorderRadiusStyle` | `"5"`       |
-| `inputBoxMaxWidthStyle`    | `"94"`      |
-| `textColorUserStyle`       | `"#FFFFFF"` |
-| `textColorNonUserStyle`    | `"#FFFFFF"` |
+| Key                            | Default     |
+| ------------------------------ | ----------- |
+| `messageMaxWidthStyle`         | `"95"`      |
+| `messageColorUserStyle`        | `"#0084FF"` |
+| `messageColorNonUserStyle`     | `"#333333"` |
+| `messagePaddingStyle`          | `"10"`      |
+| `messageBorderRadiusStyle`     | `"5"`       |
+| `inputBoxMaxWidthStyle`        | `"94"`      |
+| `textColorUserStyle`           | `"#FFFFFF"` |
+| `textColorNonUserStyle`        | `"#FFFFFF"` |
+| `customBackgroundsEnabled`     | `false`     |
+| `syncBackgroundColors`         | `false`     |
+| `conversationBackgroundStyle`  | `"#212121"` |
+| `sidebarBackgroundStyle`       | `"#171717"` |
+| `syncedBackgroundStyle`        | `"#212121"` |
+| `scrollToTopEnabled`           | `true`      |
 
 Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
@@ -66,6 +79,9 @@ flowchart TD
 
 -   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/MessageSliderControls.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
 -   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControls/ColorControls.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
+-   **Backgrounds** ([`BackgroundControls`](../src/popup/views/messageEditor/components/backgroundControls/BackgroundControls.tsx)): opt-in conversation/sidebar surface colors. Sync replaces both pickers with one App Background control while keeping the separate values persisted for restore.
+-   **Misc** ([`MiscControls`](../src/popup/views/messageEditor/components/miscControls/MiscControls.tsx)): toggles scroll-to-top visibility and contains the delete-all action.
+-   **Tabs** ([`MessageEditor`](../src/popup/views/messageEditor/MessageEditor.tsx)): Messages, Background, and Misc panels share Save / Cancel / Defaults.
 -   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
     -   **Restore Defaults** — set live state to `defaultSettings`, preview via `sendMessageToTab(defaultSettings)`, leave `isEditing` true.
     -   **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.

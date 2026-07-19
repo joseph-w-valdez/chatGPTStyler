@@ -6,6 +6,11 @@
 
 -   Message width now resizes user text bubbles by setting an explicit width from ChatGPT’s `--user-chat-width` layout variable, so user and assistant messages scale together
 
+### Added
+
+-   Background settings tab with opt-in conversation and sidebar surface colors, plus a sync mode that collapses both into one App Background picker
+-   Misc settings tab containing delete-all and an enabled-by-default toggle for the scroll-to-top button
+
 ## [1.3.1] - 2026-07-18
 
 ### Fixed

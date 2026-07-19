@@ -21,7 +21,36 @@ const fixedStyles = `
     html.light #composer-submit-button { color:white }
 `;
 
+const buildBackgroundStyles = (settings: Settings): string => {
+    if (!settings.customBackgroundsEnabled) {
+        return "";
+    }
+
+    const conversationBackground = settings.syncBackgroundColors
+        ? settings.syncedBackgroundStyle
+        : settings.conversationBackgroundStyle;
+    const sidebarBackground = settings.syncBackgroundColors
+        ? settings.syncedBackgroundStyle
+        : settings.sidebarBackgroundStyle;
+
+    return `
+          html.light, html.dark,
+          html.light :not(:where(.dark,.dark *)),
+          html.dark :not(:where(.light,.light *)) {
+            --main-surface-primary: ${conversationBackground} !important;
+          }
+          .bg-token-sidebar-surface-primary,
+          .bg-\\(--sidebar-surface-primary\\) {
+            background-color: ${sidebarBackground} !important;
+          }
+        `;
+};
+
 const buildDynamicStyles = (settings: Settings): string => {
+    const scrollToTopStyles = settings.scrollToTopEnabled
+        ? ""
+        : "#scroll-to-top-btn { display: none !important; }";
+
     return `
           /* ChatGPT sizes user bubbles and image wrappers from this inherited variable. */
           ${userTurns} {
@@ -54,7 +83,11 @@ const buildDynamicStyles = (settings: Settings): string => {
             background-color: rgba(0, 0, 0, 0.4);;
             border-radius: 5px
         }
-          ${assistantMessage} { background-color: ${settings.messageColorNonUserStyle} !important }
+          ${assistantMessage} {
+            background-color: ${settings.messageColorNonUserStyle} !important;
+          }
+          ${buildBackgroundStyles(settings)}
+          ${scrollToTopStyles}
         `;
 };
 
