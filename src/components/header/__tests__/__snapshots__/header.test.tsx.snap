@@ -2,7 +2,7 @@
 
 exports[`component renders 1`] = `
 <header
-  className="px-3 pt-3 pb-2 border-b border-edge"
+  className="px-3 py-2.5 bg-brand"
 >
   <div
     className="flex items-center justify-between gap-2"
@@ -11,7 +11,7 @@ exports[`component renders 1`] = `
       className="flex items-center gap-1.5"
     >
       <h1
-        className="text-base font-semibold tracking-tight text-ink"
+        className="text-base font-semibold tracking-tight text-accent"
       >
         ChatGPT Styler
       </h1>
@@ -24,7 +24,7 @@ exports[`component renders 1`] = `
     </div>
     <button
       aria-label="Close popup"
-      className="w-6 h-6 flex items-center justify-center rounded-md text-ink hover:bg-surface-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="w-6 h-6 flex items-center justify-center rounded-md text-white hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       onClick={[Function]}
       type="button"
     >

@@ -1,7 +1,7 @@
 import React from "react";
 import css from "./styles.module.css";
 import { saveOptionsToStorage } from "@src/lib/utilities/settingsStorage";
-import { defaultSettings, Settings } from "@src/shared/settings";
+import { Settings } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 
 export interface FormButtonsProps {
@@ -11,6 +11,7 @@ export interface FormButtonsProps {
     setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;
     savedSettings: Settings;
     setSavedSettings: React.Dispatch<React.SetStateAction<Settings>>;
+    onRestoreDefaults: () => void;
 }
 
 export function FormButtons({
@@ -20,6 +21,7 @@ export function FormButtons({
     setLiveSettings,
     savedSettings,
     setSavedSettings,
+    onRestoreDefaults,
 }: FormButtonsProps): JSX.Element {
     return (
         <div
@@ -30,12 +32,7 @@ export function FormButtons({
             <button
                 type="button"
                 className={`${css.btnGrey} col-span-2`}
-                onClick={() => {
-                    const nextSettings = { ...defaultSettings };
-                    setLiveSettings(nextSettings);
-                    sendMessageToTab(nextSettings);
-                    setIsEditing(true);
-                }}
+                onClick={onRestoreDefaults}
             >
                 Restore Defaults
             </button>

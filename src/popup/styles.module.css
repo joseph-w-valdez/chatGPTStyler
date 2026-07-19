@@ -1,7 +1,7 @@
 .popupContainer {
-    min-width: 340px;
+    min-width: 380px;
     min-height: 300px;
     display: flex;
-    background-color: var(--surface);
+    background: var(--surface-gradient);
     color: var(--text);
 }

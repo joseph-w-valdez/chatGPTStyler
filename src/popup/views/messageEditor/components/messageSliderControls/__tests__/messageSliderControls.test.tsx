@@ -1,6 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { MessageSliderControls } from "../MessageSliderControls";
+import { defaultSettings } from "@src/shared/settings";
 
 jest.mock("@src/shared/utils", () => ({
     sendMessageToTab: jest.fn(),
@@ -16,14 +17,8 @@ describe("MessageSliderControls component", () => {
                 <MessageSliderControls
                     setLiveSettings={setLiveSettingsMock}
                     liveSettings={{
-                        messageMaxWidthStyle: "95",
-                        messagePaddingStyle: "10",
-                        messageBorderRadiusStyle: "5",
+                        ...defaultSettings,
                         messageColorUserStyle: "#386d9f",
-                        messageColorNonUserStyle: "#333333",
-                        inputBoxMaxWidthStyle: "94",
-                        textColorUserStyle: "#FFFFFF",
-                        textColorNonUserStyle: "#FFFFFF",
                     }}
                     setIsEditing={setIsEditingMock}
                 />,

@@ -1,18 +1,13 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { ColorControls } from "../ColorControls";
+import { defaultSettings } from "@src/shared/settings";
 
 test("ColorControls component renders correctly", () => {
     const setLiveSettings = jest.fn();
     const liveSettings = {
-        messageMaxWidthStyle: "95",
-        messagePaddingStyle: "10",
-        messageBorderRadiusStyle: "5",
+        ...defaultSettings,
         messageColorUserStyle: "#386d9f",
-        messageColorNonUserStyle: "#333333",
-        inputBoxMaxWidthStyle: "94",
-        textColorUserStyle: "#FFFFFF",
-        textColorNonUserStyle: "#FFFFFF",
     };
     const setIsEditing = jest.fn();
 

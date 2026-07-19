@@ -16,10 +16,21 @@ export type CheckSelectorsMessage = {
     action: "checkSelectors";
 };
 
+/**
+ * Popup → content script: refresh the injected background-image layer.
+ * `dataUrl` is the stored image, or null to remove it. Kept separate from
+ * `updateStyles` so the large data URL is only sent when the image changes.
+ */
+export type UpdateBackgroundImageMessage = {
+    action: "updateBackgroundImage";
+    dataUrl: string | null;
+};
+
 export type ContentScriptMessage =
     | UpdateStylesMessage
     | DeleteMessagesMessage
-    | CheckSelectorsMessage;
+    | CheckSelectorsMessage
+    | UpdateBackgroundImageMessage;
 
 export type DeleteMessagesResponse =
     | { status: "SUCCESS" }

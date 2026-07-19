@@ -1,5 +1,11 @@
-import { buildCss, updateStyles, sendMessageToTab } from "../stylingFunctions";
+import {
+    buildCss,
+    updateStyles,
+    sendMessageToTab,
+    sendBackgroundImageToTab,
+} from "../stylingFunctions";
 import { defaultSettings, Settings } from "@src/shared/settings";
+import { BACKGROUND_LAYER_ID } from "@src/shared/backgroundImage";
 
 describe("buildCss", () => {
     it("includes default width, padding, and color values", () => {
@@ -76,6 +82,112 @@ describe("buildCss", () => {
     it("keeps updateStyles as a buildCss alias", () => {
         expect(updateStyles(defaultSettings)).toBe(buildCss(defaultSettings));
     });
+
+    it("omits background surface overrides while customization is disabled", () => {
+        const css = buildCss(defaultSettings);
+
+        expect(css).not.toContain("--main-surface-primary");
+        expect(css).not.toContain(".bg-token-sidebar-surface-primary");
+    });
+
+    it("applies separate conversation and sidebar colors when enabled", () => {
+        const settings: Settings = {
+            ...defaultSettings,
+            customBackgroundsEnabled: true,
+            syncBackgroundColors: false,
+            conversationBackgroundStyle: "#111111",
+            sidebarBackgroundStyle: "#222222",
+            syncedBackgroundStyle: "#333333",
+        };
+        const css = buildCss(settings);
+
+        expect(css).toContain("--main-surface-primary: #111111 !important");
+        expect(css).toContain("background-color: #222222 !important");
+        expect(css).toContain(".bg-token-sidebar-surface-primary");
+        expect(css).toContain(".bg-\\(--sidebar-surface-primary\\)");
+        expect(css).not.toContain("--main-surface-primary: #333333");
+    });
+
+    it("applies the synced color to both surfaces when sync is enabled", () => {
+        const settings: Settings = {
+            ...defaultSettings,
+            customBackgroundsEnabled: true,
+            syncBackgroundColors: true,
+            conversationBackgroundStyle: "#111111",
+            sidebarBackgroundStyle: "#222222",
+            syncedBackgroundStyle: "#abcdef",
+        };
+        const css = buildCss(settings);
+
+        expect(css).toContain("--main-surface-primary: #abcdef !important");
+        expect(css).toContain("background-color: #abcdef !important");
+    });
+
+    it("omits the background image layer while disabled", () => {
+        const css = buildCss(defaultSettings);
+
+        expect(css).not.toContain(`#${BACKGROUND_LAYER_ID}`);
+        expect(css).not.toContain("--main-surface-primary: transparent");
+    });
+
+    it("makes the conversation surface transparent and sets image opacity when enabled", () => {
+        const css = buildCss({
+            ...defaultSettings,
+            backgroundImageEnabled: true,
+            backgroundImageOpacity: "40",
+        });
+
+        expect(css).toContain("--main-surface-primary: transparent !important");
+        expect(css).toContain(`#${BACKGROUND_LAYER_ID}`);
+        expect(css).toContain("display: block !important");
+        expect(css).toContain("opacity: 0.4 !important");
+    });
+
+    it("paints the conversation color under the image so it shows through", () => {
+        const css = buildCss({
+            ...defaultSettings,
+            customBackgroundsEnabled: true,
+            backgroundImageEnabled: true,
+            conversationBackgroundStyle: "#123456",
+            sidebarBackgroundStyle: "#654321",
+        });
+
+        expect(css).toContain("--main-surface-primary: transparent !important");
+        expect(css).toContain(
+            `#${BACKGROUND_LAYER_ID} {\n            display: block !important;\n            background-color: #123456 !important;`,
+        );
+        expect(css).toContain("background-color: #654321 !important");
+    });
+
+    it("keeps the image layer transparent when no custom color is enabled", () => {
+        const css = buildCss({
+            ...defaultSettings,
+            backgroundImageEnabled: true,
+            conversationBackgroundStyle: "#123456",
+        });
+
+        expect(css).toContain(
+            `#${BACKGROUND_LAYER_ID} {\n            display: block !important;\n            background-color: transparent !important;`,
+        );
+        expect(css).not.toContain(
+            `#${BACKGROUND_LAYER_ID} {\n            display: block !important;\n            background-color: #123456 !important;`,
+        );
+    });
+
+    it("shows scroll to top by default and hides it when disabled", () => {
+        expect(buildCss(defaultSettings)).not.toContain(
+            "#scroll-to-top-btn { display: none !important; }",
+        );
+
+        const css = buildCss({
+            ...defaultSettings,
+            scrollToTopEnabled: false,
+        });
+
+        expect(css).toContain(
+            "#scroll-to-top-btn { display: none !important; }",
+        );
+    });
 });
 
 describe("sendMessageToTab", () => {
@@ -125,5 +237,24 @@ describe("sendMessageToTab", () => {
         sendMessageToTab(defaultSettings);
 
         expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
+    });
+
+    it("sends the background image (and its removal) to the active tab", () => {
+        sendBackgroundImageToTab("data:image/png;base64,AAAA");
+        expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(
+            7,
+            {
+                action: "updateBackgroundImage",
+                dataUrl: "data:image/png;base64,AAAA",
+            },
+            expect.any(Function),
+        );
+
+        sendBackgroundImageToTab(null);
+        expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(
+            7,
+            { action: "updateBackgroundImage", dataUrl: null },
+            expect.any(Function),
+        );
     });
 });

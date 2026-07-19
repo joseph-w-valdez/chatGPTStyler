@@ -41,6 +41,18 @@ export function Popup(): JSX.Element {
     }, [liveSettings, settingsLoaded]);
 
     useEffect(() => {
+        const root = document.documentElement;
+
+        if (liveSettings.themePreference === "system") {
+            root.removeAttribute("data-theme");
+        } else {
+            root.dataset.theme = liveSettings.themePreference;
+        }
+
+        return () => root.removeAttribute("data-theme");
+    }, [liveSettings.themePreference]);
+
+    useEffect(() => {
         const port = chrome.runtime.connect({ name: POPUP_PORT_NAME });
         portRef.current = port;
 

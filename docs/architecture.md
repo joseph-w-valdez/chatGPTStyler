@@ -33,7 +33,7 @@ Source of truth in-repo: [`dist/manifest.json`](../dist/manifest.json).
 | `background.service_worker` | `js/backgroundPage.js`                       |
 | `content_scripts`           | `js/contentScript.js` on `*://chatgpt.com/*` |
 | `host_permissions`          | `*://chatgpt.com/*`                          |
-| `permissions`               | `activeTab`, `storage`                       |
+| `permissions`               | `activeTab`, `storage`, `unlimitedStorage`   |
 
 Webpack does **not** copy or generate the manifest. Static files under `dist/` (manifest, `popup.html`, icons) are maintained alongside built JS in `dist/js/`.
 
