@@ -23,7 +23,7 @@ export function ColorControls({
         return (
             <fieldset
                 key={index}
-                className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+                className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
             >
                 <legend className="sr-only">{`${userType} color settings`}</legend>
                 <div

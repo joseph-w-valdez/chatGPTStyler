@@ -16,6 +16,26 @@ const chromeMock = {
                 },
             ),
         },
+        local: {
+            get: jest.fn(
+                (
+                    _keys: string | string[] | Record<string, unknown>,
+                    callback: (result: Record<string, unknown>) => void,
+                ) => {
+                    callback({});
+                },
+            ),
+            set: jest.fn(
+                (_items: Record<string, unknown>, callback?: () => void) => {
+                    if (callback) callback();
+                },
+            ),
+            remove: jest.fn(
+                (_keys: string | string[], callback?: () => void) => {
+                    if (callback) callback();
+                },
+            ),
+        },
     },
     tabs: {
         query: jest.fn(

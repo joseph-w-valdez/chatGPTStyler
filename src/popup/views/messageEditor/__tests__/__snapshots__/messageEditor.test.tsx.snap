@@ -5,290 +5,336 @@ exports[`MessageEditor Component renders correctly 1`] = `
   className="grid grid-cols-1 gap-y-3 px-3 pt-3 pb-3 select-none animate-fade-in"
 >
   <div
-    className="grid grid-cols-1 gap-y-3"
+    aria-label="Settings sections"
+    className="grid grid-cols-3 border-b border-chrome-edge -mx-3 -mt-3 px-3 pt-2 bg-brand shadow-chrome"
+    role="tablist"
   >
-    <div
-      className="grid gap-1.5"
+    <button
+      aria-controls="messages-panel"
+      aria-selected={true}
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-surface text-ink font-semibold border-chrome-edge border-b-surface underline decoration-teal-400 decoration-[1.5px] underline-offset-4"
+      id="messages-tab"
+      onClick={[Function]}
+      role="tab"
+      type="button"
     >
-      <div
-        className="flex items-center justify-between gap-2"
-      >
-        <label
-          className="text-sm font-medium text-ink"
-          htmlFor="messageMaxWidthStyle"
-        >
-          Message Width
-        </label>
-        <div
-          className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
-        >
-          <input
-            className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
-            id="messageMaxWidthStyle"
-            inputMode="numeric"
-            maxLength={3}
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
-          >
-            %
-          </span>
-        </div>
-      </div>
-      <input
-        aria-label="Message Width slider"
-        className="control-range"
-        id="messageMaxWidthStyle-range"
-        max="100"
-        min="1"
-        onChange={[Function]}
-        step="1"
-        type="range"
-        value=""
-      />
-    </div>
-    <div
-      className="grid gap-1.5"
+      Messages
+    </button>
+    <button
+      aria-controls="background-panel"
+      aria-selected={false}
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-white/70 font-normal border-transparent hover:text-white"
+      id="background-tab"
+      onClick={[Function]}
+      role="tab"
+      type="button"
     >
-      <div
-        className="flex items-center justify-between gap-2"
-      >
-        <label
-          className="text-sm font-medium text-ink"
-          htmlFor="messagePaddingStyle"
-        >
-          Message Padding
-        </label>
-        <div
-          className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
-        >
-          <input
-            className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
-            id="messagePaddingStyle"
-            inputMode="numeric"
-            maxLength={3}
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
-          >
-            px
-          </span>
-        </div>
-      </div>
-      <input
-        aria-label="Message Padding slider"
-        className="control-range"
-        id="messagePaddingStyle-range"
-        max="100"
-        min="1"
-        onChange={[Function]}
-        step="1"
-        type="range"
-        value=""
-      />
-    </div>
-    <div
-      className="grid gap-1.5"
+      Background
+    </button>
+    <button
+      aria-controls="misc-panel"
+      aria-selected={false}
+      className="-mb-px px-3 py-1.5 text-sm rounded-t-md border focus:outline-none focus-visible:ring-2 focus-visible:ring-accent bg-transparent text-white/70 font-normal border-transparent hover:text-white"
+      id="misc-tab"
+      onClick={[Function]}
+      role="tab"
+      type="button"
     >
-      <div
-        className="flex items-center justify-between gap-2"
-      >
-        <label
-          className="text-sm font-medium text-ink"
-          htmlFor="messageBorderRadiusStyle"
-        >
-          Message Border
-        </label>
-        <div
-          className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
-        >
-          <input
-            className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
-            id="messageBorderRadiusStyle"
-            inputMode="numeric"
-            maxLength={3}
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
-          >
-            px
-          </span>
-        </div>
-      </div>
-      <input
-        aria-label="Message Border slider"
-        className="control-range"
-        id="messageBorderRadiusStyle-range"
-        max="100"
-        min="1"
-        onChange={[Function]}
-        step="1"
-        type="range"
-        value=""
-      />
-    </div>
-    <div
-      className="grid gap-1.5"
-    >
-      <div
-        className="flex items-center justify-between gap-2"
-      >
-        <label
-          className="text-sm font-medium text-ink"
-          htmlFor="inputBoxMaxWidthStyle"
-        >
-          Input Box Width
-        </label>
-        <div
-          className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden"
-        >
-          <input
-            className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
-            id="inputBoxMaxWidthStyle"
-            inputMode="numeric"
-            maxLength={3}
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-          <span
-            aria-hidden="true"
-            className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
-          >
-            %
-          </span>
-        </div>
-      </div>
-      <input
-        aria-label="Input Box Width slider"
-        className="control-range"
-        id="inputBoxMaxWidthStyle-range"
-        max="100"
-        min="1"
-        onChange={[Function]}
-        step="1"
-        type="range"
-        value=""
-      />
-    </div>
+      Misc
+    </button>
   </div>
   <div
-    className="grid grid-cols-2 gap-2 place-items-center w-full"
+    aria-labelledby="messages-tab"
+    className="grid grid-cols-1 gap-y-3"
+    id="messages-panel"
+    role="tabpanel"
   >
-    <fieldset
-      className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+    <div
+      className="grid grid-cols-1 gap-y-3"
     >
-      <legend
-        className="sr-only"
-      >
-        User color settings
-      </legend>
       <div
-        aria-hidden="true"
-        className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
-        style={
-          {
-            "backgroundColor": "",
-            "color": "",
-          }
-        }
+        className="grid gap-1.5"
       >
-        User Color
+        <div
+          className="flex items-center justify-between gap-2"
+        >
+          <label
+            className="text-sm font-medium text-ink"
+            htmlFor="messageMaxWidthStyle"
+          >
+            Message Width
+          </label>
+          <div
+            className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
+          >
+            <input
+              className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
+              id="messageMaxWidthStyle"
+              inputMode="numeric"
+              maxLength={3}
+              onChange={[Function]}
+              type="text"
+              value="95"
+            />
+            <span
+              aria-hidden="true"
+              className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
+            >
+              %
+            </span>
+          </div>
+        </div>
+        <input
+          aria-label="Message Width slider"
+          className="control-range"
+          id="messageMaxWidthStyle-range"
+          max="100"
+          min="1"
+          onChange={[Function]}
+          step="1"
+          type="range"
+          value="95"
+        />
       </div>
       <div
-        className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
+        className="grid gap-1.5"
       >
-        <input
-          aria-label="User background color"
-          className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
-          id="messageColorUserStyle"
-          onChange={[Function]}
-          type="color"
-          value=""
-        />
-        <input
-          aria-label="User text color"
-          className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
-          id="textColorUserStyle"
-          onChange={[Function]}
-          type="color"
-          value=""
-        />
-        <span
-          className="text-center font-medium p-0 m-0"
+        <div
+          className="flex items-center justify-between gap-2"
         >
-          BG
-        </span>
-        <span
-          className="text-center font-medium p-0 m-0"
-        >
-          Text
-        </span>
+          <label
+            className="text-sm font-medium text-ink"
+            htmlFor="messagePaddingStyle"
+          >
+            Message Padding
+          </label>
+          <div
+            className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
+          >
+            <input
+              className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
+              id="messagePaddingStyle"
+              inputMode="numeric"
+              maxLength={3}
+              onChange={[Function]}
+              type="text"
+              value="10"
+            />
+            <span
+              aria-hidden="true"
+              className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
+            >
+              px
+            </span>
+          </div>
+        </div>
+        <input
+          aria-label="Message Padding slider"
+          className="control-range"
+          id="messagePaddingStyle-range"
+          max="100"
+          min="1"
+          onChange={[Function]}
+          step="1"
+          type="range"
+          value="10"
+        />
       </div>
-    </fieldset>
-    <fieldset
-      className="flex flex-col justify-center items-center bg-surface-raised border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+      <div
+        className="grid gap-1.5"
+      >
+        <div
+          className="flex items-center justify-between gap-2"
+        >
+          <label
+            className="text-sm font-medium text-ink"
+            htmlFor="messageBorderRadiusStyle"
+          >
+            Message Border
+          </label>
+          <div
+            className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
+          >
+            <input
+              className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
+              id="messageBorderRadiusStyle"
+              inputMode="numeric"
+              maxLength={3}
+              onChange={[Function]}
+              type="text"
+              value="5"
+            />
+            <span
+              aria-hidden="true"
+              className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
+            >
+              px
+            </span>
+          </div>
+        </div>
+        <input
+          aria-label="Message Border slider"
+          className="control-range"
+          id="messageBorderRadiusStyle-range"
+          max="100"
+          min="1"
+          onChange={[Function]}
+          step="1"
+          type="range"
+          value="5"
+        />
+      </div>
+      <div
+        className="grid gap-1.5"
+      >
+        <div
+          className="flex items-center justify-between gap-2"
+        >
+          <label
+            className="text-sm font-medium text-ink"
+            htmlFor="inputBoxMaxWidthStyle"
+          >
+            Input Box Width
+          </label>
+          <div
+            className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden"
+          >
+            <input
+              className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
+              id="inputBoxMaxWidthStyle"
+              inputMode="numeric"
+              maxLength={3}
+              onChange={[Function]}
+              type="text"
+              value="94"
+            />
+            <span
+              aria-hidden="true"
+              className="px-2 py-1 text-xs text-ink-muted border-l border-edge select-none"
+            >
+              %
+            </span>
+          </div>
+        </div>
+        <input
+          aria-label="Input Box Width slider"
+          className="control-range"
+          id="inputBoxMaxWidthStyle-range"
+          max="100"
+          min="1"
+          onChange={[Function]}
+          step="1"
+          type="range"
+          value="94"
+        />
+      </div>
+    </div>
+    <div
+      className="grid grid-cols-2 gap-2 place-items-center w-full"
     >
-      <legend
-        className="sr-only"
+      <fieldset
+        className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
       >
-        ChatGPT color settings
-      </legend>
-      <div
-        aria-hidden="true"
-        className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
-        style={
-          {
-            "backgroundColor": "",
-            "color": "",
+        <legend
+          className="sr-only"
+        >
+          User color settings
+        </legend>
+        <div
+          aria-hidden="true"
+          className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
+          style={
+            {
+              "backgroundColor": "#0084FF",
+              "color": "#FFFFFF",
+            }
           }
-        }
-      >
-        ChatGPT Color
-      </div>
-      <div
-        className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
-      >
-        <input
-          aria-label="ChatGPT background color"
-          className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
-          id="messageColorNonUserStyle"
-          onChange={[Function]}
-          type="color"
-          value=""
-        />
-        <input
-          aria-label="ChatGPT text color"
-          className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
-          id="textColorNonUserStyle"
-          onChange={[Function]}
-          type="color"
-          value=""
-        />
-        <span
-          className="text-center font-medium p-0 m-0"
         >
-          BG
-        </span>
-        <span
-          className="text-center font-medium p-0 m-0"
+          User Color
+        </div>
+        <div
+          className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
         >
-          Text
-        </span>
-      </div>
-    </fieldset>
+          <input
+            aria-label="User background color"
+            className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+            id="messageColorUserStyle"
+            onChange={[Function]}
+            type="color"
+            value="#0084FF"
+          />
+          <input
+            aria-label="User text color"
+            className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+            id="textColorUserStyle"
+            onChange={[Function]}
+            type="color"
+            value="#FFFFFF"
+          />
+          <span
+            className="text-center font-medium p-0 m-0"
+          >
+            BG
+          </span>
+          <span
+            className="text-center font-medium p-0 m-0"
+          >
+            Text
+          </span>
+        </div>
+      </fieldset>
+      <fieldset
+        className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium w-full m-0 min-w-0"
+      >
+        <legend
+          className="sr-only"
+        >
+          ChatGPT color settings
+        </legend>
+        <div
+          aria-hidden="true"
+          className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge"
+          style={
+            {
+              "backgroundColor": "#333333",
+              "color": "#FFFFFF",
+            }
+          }
+        >
+          ChatGPT Color
+        </div>
+        <div
+          className="grid grid-cols-2 gap-2 w-full text-ink-muted text-xs"
+        >
+          <input
+            aria-label="ChatGPT background color"
+            className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+            id="messageColorNonUserStyle"
+            onChange={[Function]}
+            type="color"
+            value="#333333"
+          />
+          <input
+            aria-label="ChatGPT text color"
+            className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+            id="textColorNonUserStyle"
+            onChange={[Function]}
+            type="color"
+            value="#FFFFFF"
+          />
+          <span
+            className="text-center font-medium p-0 m-0"
+          >
+            BG
+          </span>
+          <span
+            className="text-center font-medium p-0 m-0"
+          >
+            Text
+          </span>
+        </div>
+      </fieldset>
+    </div>
   </div>
   <div
     aria-label="Settings actions"
@@ -318,51 +364,6 @@ exports[`MessageEditor Component renders correctly 1`] = `
     >
       Cancel
     </button>
-  </div>
-  <div>
-    <button
-      aria-controls="delete-all-confirm"
-      aria-expanded={false}
-      className="bigRedBtn"
-      disabled={false}
-      onClick={[Function]}
-      type="button"
-    >
-      Delete All Conversations
-    </button>
-    <div
-      className="hidden"
-      id="delete-all-confirm"
-    >
-      <div
-        className="w-full grid grid-cols-2 gap-2"
-      >
-        <button
-          aria-describedby="delete-all-confirm-label"
-          className="yesBtn"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
-        >
-          Yes
-        </button>
-        <button
-          aria-describedby="delete-all-confirm-label"
-          className="noBtn"
-          disabled={false}
-          onClick={[Function]}
-          type="button"
-        >
-          No
-        </button>
-      </div>
-      <p
-        className="text-sm text-ink-muted"
-        id="delete-all-confirm-label"
-      >
-        Are you sure?
-      </p>
-    </div>
   </div>
 </div>
 `;

@@ -1,5 +1,12 @@
 import { Settings } from "@src/shared/settings";
-import { UpdateStylesMessage } from "@src/shared/messaging";
+import {
+    UpdateStylesMessage,
+    UpdateBackgroundImageMessage,
+} from "@src/shared/messaging";
+import {
+    BACKGROUND_LAYER_ID,
+    BACKGROUND_LAYER_IMAGE_CLASS,
+} from "@src/shared/backgroundImage";
 
 const messageBubbles = '[data-testid^="conversation-turn-"]';
 const userTurns = '[data-turn="user"]';
@@ -21,7 +28,71 @@ const fixedStyles = `
     html.light #composer-submit-button { color:white }
 `;
 
+const clampOpacityFraction = (raw: string): number => {
+    const parsed = Number.parseInt(raw, 10);
+    if (Number.isNaN(parsed)) {
+        return 0.25;
+    }
+    return Math.min(100, Math.max(0, parsed)) / 100;
+};
+
+const buildBackgroundStyles = (settings: Settings): string => {
+    const conversationBackground = settings.syncBackgroundColors
+        ? settings.syncedBackgroundStyle
+        : settings.conversationBackgroundStyle;
+    const sidebarBackground = settings.syncBackgroundColors
+        ? settings.syncedBackgroundStyle
+        : settings.sidebarBackgroundStyle;
+
+    let css = "";
+
+    if (settings.customBackgroundsEnabled) {
+        css += `
+          html.light, html.dark,
+          html.light :not(:where(.dark,.dark *)),
+          html.dark :not(:where(.light,.light *)) {
+            --main-surface-primary: ${conversationBackground} !important;
+          }
+          .bg-token-sidebar-surface-primary,
+          .bg-\\(--sidebar-surface-primary\\) {
+            background-color: ${sidebarBackground} !important;
+          }
+        `;
+    }
+
+    if (settings.backgroundImageEnabled) {
+        // Transparent ChatGPT surface so the injected layer is visible. The
+        // chosen conversation/app color paints the layer *under* the image so
+        // it shows through PNG alpha and the opacity slider.
+        const layerBase = settings.customBackgroundsEnabled
+            ? conversationBackground
+            : "transparent";
+        const opacity = clampOpacityFraction(settings.backgroundImageOpacity);
+
+        css += `
+          html.light, html.dark,
+          html.light :not(:where(.dark,.dark *)),
+          html.dark :not(:where(.light,.light *)) {
+            --main-surface-primary: transparent !important;
+          }
+          #${BACKGROUND_LAYER_ID} {
+            display: block !important;
+            background-color: ${layerBase} !important;
+          }
+          #${BACKGROUND_LAYER_ID} .${BACKGROUND_LAYER_IMAGE_CLASS} {
+            opacity: ${opacity} !important;
+          }
+        `;
+    }
+
+    return css;
+};
+
 const buildDynamicStyles = (settings: Settings): string => {
+    const scrollToTopStyles = settings.scrollToTopEnabled
+        ? ""
+        : "#scroll-to-top-btn { display: none !important; }";
+
     return `
           /* ChatGPT sizes user bubbles and image wrappers from this inherited variable. */
           ${userTurns} {
@@ -54,7 +125,11 @@ const buildDynamicStyles = (settings: Settings): string => {
             background-color: rgba(0, 0, 0, 0.4);;
             border-radius: 5px
         }
-          ${assistantMessage} { background-color: ${settings.messageColorNonUserStyle} !important }
+          ${assistantMessage} {
+            background-color: ${settings.messageColorNonUserStyle} !important;
+          }
+          ${buildBackgroundStyles(settings)}
+          ${scrollToTopStyles}
         `;
 };
 
@@ -68,12 +143,9 @@ export const updateStyles = (settings: Settings): string => {
     return buildCss(settings);
 };
 
-export const sendMessageToTab = (settings: Settings): void => {
-    const message: UpdateStylesMessage = {
-        action: "updateStyles",
-        arg: buildCss(settings),
-    };
-
+const sendToActiveTab = (
+    message: UpdateStylesMessage | UpdateBackgroundImageMessage,
+): void => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (chrome.runtime.lastError) {
             return;
@@ -88,5 +160,20 @@ export const sendMessageToTab = (settings: Settings): void => {
             // Active tab may not be chatgpt.com / have no content script.
             void chrome.runtime.lastError;
         });
+    });
+};
+
+export const sendMessageToTab = (settings: Settings): void => {
+    sendToActiveTab({
+        action: "updateStyles",
+        arg: buildCss(settings),
+    });
+};
+
+/** Live-preview the injected background image (or its removal via null). */
+export const sendBackgroundImageToTab = (dataUrl: string | null): void => {
+    sendToActiveTab({
+        action: "updateBackgroundImage",
+        dataUrl,
     });
 };

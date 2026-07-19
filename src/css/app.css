@@ -3,35 +3,110 @@
 @tailwind utilities;
 
 :root {
-    --surface: #f7f7f8;
-    --surface-raised: #ffffff;
-    --border: #e5e5e5;
-    --text: #0d0d0d;
-    --text-muted: #6b6b6b;
-    --accent: #0d0d0d;
+    color-scheme: light;
+    --surface: #f4f8f7;
+    --surface-raised: #fbfdfc;
+    --surface-elevated: #ffffff;
+    --surface-gradient: linear-gradient(
+        180deg,
+        var(--surface-raised) 0%,
+        var(--surface) 48%,
+        var(--surface) 100%
+    );
+    --border: rgba(16, 24, 22, 0.1);
+    /* Brand banner from the marketing site header: black -> teal-500.
+       Shared by the header and tab strip so they form one gradient block,
+       identical in light and dark mode. */
+    --brand-gradient: linear-gradient(90deg, #030712 0%, #14b8a6 100%);
+    --chrome-border: rgba(20, 184, 166, 0.3);
+    --text: #101816;
+    --text-muted: #5d6b68;
+    --accent: #14b8a6;
     --accent-contrast: #ffffff;
     --danger: #c43c3c;
     --danger-contrast: #ffffff;
-    --success: #1f7a4c;
-    --track: #d9d9d9;
-    --thumb: #0d0d0d;
+    --success: #0d9488;
+    --track: #cfe0db;
+    --thumb: #14b8a6;
+    --chrome-shadow: 0 1px 0 rgba(16, 24, 22, 0.04),
+        0 8px 18px rgba(18, 150, 125, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --surface: #212121;
-        --surface-raised: #2f2f2f;
-        --border: #444444;
+        color-scheme: dark;
+        --surface: #121716;
+        --surface-raised: #18201e;
+        --surface-elevated: #202926;
+        --surface-gradient: linear-gradient(
+            180deg,
+            #151b19 0%,
+            var(--surface) 42%,
+            var(--surface) 100%
+        );
+        --border: rgba(255, 255, 255, 0.1);
         --text: #ececec;
-        --text-muted: #a0a0a0;
-        --accent: #ececec;
-        --accent-contrast: #0d0d0d;
+        --text-muted: #9caba7;
+        --accent: #14b8a6;
+        --accent-contrast: #ffffff;
         --danger: #ef6868;
         --danger-contrast: #1a1a1a;
-        --success: #3db87a;
-        --track: #4a4a4a;
-        --thumb: #ececec;
+        --success: #2dd4bf;
+        --track: #2c3532;
+        --thumb: #14b8a6;
+        --chrome-shadow: 0 1px 0 rgba(46, 196, 163, 0.08),
+            0 10px 22px rgba(0, 0, 0, 0.35);
     }
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+    --surface: #f4f8f7;
+    --surface-raised: #fbfdfc;
+    --surface-elevated: #ffffff;
+    --surface-gradient: linear-gradient(
+        180deg,
+        var(--surface-raised) 0%,
+        var(--surface) 48%,
+        var(--surface) 100%
+    );
+    --border: rgba(16, 24, 22, 0.1);
+    --text: #101816;
+    --text-muted: #5d6b68;
+    --accent: #14b8a6;
+    --accent-contrast: #ffffff;
+    --danger: #c43c3c;
+    --danger-contrast: #ffffff;
+    --success: #0d9488;
+    --track: #cfe0db;
+    --thumb: #14b8a6;
+    --chrome-shadow: 0 1px 0 rgba(16, 24, 22, 0.04),
+        0 8px 18px rgba(18, 150, 125, 0.08);
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface: #121716;
+    --surface-raised: #18201e;
+    --surface-elevated: #202926;
+    --surface-gradient: linear-gradient(
+        180deg,
+        #151b19 0%,
+        var(--surface) 42%,
+        var(--surface) 100%
+    );
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #ececec;
+    --text-muted: #9caba7;
+    --accent: #14b8a6;
+    --accent-contrast: #ffffff;
+    --danger: #ef6868;
+    --danger-contrast: #1a1a1a;
+    --success: #2dd4bf;
+    --track: #2c3532;
+    --thumb: #14b8a6;
+    --chrome-shadow: 0 1px 0 rgba(46, 196, 163, 0.08),
+        0 10px 22px rgba(0, 0, 0, 0.35);
 }
 
 body {

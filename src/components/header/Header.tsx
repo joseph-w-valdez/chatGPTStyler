@@ -2,10 +2,10 @@ import React from "react";
 
 export function Header(): JSX.Element {
     return (
-        <header className="px-3 pt-3 pb-2 border-b border-edge">
+        <header className="px-3 py-2.5 bg-brand">
             <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5">
-                    <h1 className="text-base font-semibold tracking-tight text-ink">
+                    <h1 className="text-base font-semibold tracking-tight text-accent">
                         ChatGPT Styler
                     </h1>
                     <img
@@ -18,7 +18,7 @@ export function Header(): JSX.Element {
                 <button
                     type="button"
                     aria-label="Close popup"
-                    className="w-6 h-6 flex items-center justify-center rounded-md text-ink hover:bg-surface-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    className="w-6 h-6 flex items-center justify-center rounded-md text-white hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     onClick={() => window.close()}
                 >
                     <svg

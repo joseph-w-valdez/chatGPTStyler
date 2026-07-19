@@ -61,7 +61,7 @@ button.btnGrey {
     @apply whitespace-nowrap;
     @apply rounded-md;
     @apply text-ink;
-    @apply bg-surface-raised;
+    @apply bg-surface-elevated;
     @apply hover:bg-surface;
     @apply focus:outline-none;
     @apply focus-visible:ring-2;

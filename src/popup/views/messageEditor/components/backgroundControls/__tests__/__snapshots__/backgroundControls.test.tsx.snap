@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControls renders a single synced picker when sync is enabled 1`] = `
+<div
+  className="grid grid-cols-1 gap-y-3 w-full"
+>
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={true}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Customize backgrounds
+  </label>
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={true}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Sync colors
+  </label>
+  <fieldset
+    className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+  >
+    <legend
+      className="sr-only"
+    >
+      App Background background color
+    </legend>
+    <div
+      aria-hidden="true"
+      className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge text-ink"
+      style={
+        {
+          "backgroundColor": "#212121",
+        }
+      }
+    >
+      App Background
+    </div>
+    <input
+      aria-label="App Background background color"
+      className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+      id="syncedBackgroundStyle"
+      onChange={[Function]}
+      type="color"
+      value="#212121"
+    />
+  </fieldset>
+  <hr
+    className="border-edge"
+  />
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={false}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Use background image
+  </label>
+</div>
+`;
+
+exports[`BackgroundControls renders separate conversation and sidebar pickers when enabled 1`] = `
+<div
+  className="grid grid-cols-1 gap-y-3 w-full"
+>
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={true}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Customize backgrounds
+  </label>
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={false}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Sync colors
+  </label>
+  <div
+    className="grid grid-cols-2 gap-2 place-items-center w-full"
+  >
+    <fieldset
+      className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+    >
+      <legend
+        className="sr-only"
+      >
+        Conversation background color
+      </legend>
+      <div
+        aria-hidden="true"
+        className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge text-ink"
+        style={
+          {
+            "backgroundColor": "#212121",
+          }
+        }
+      >
+        Conversation
+      </div>
+      <input
+        aria-label="Conversation background color"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+        id="conversationBackgroundStyle"
+        onChange={[Function]}
+        type="color"
+        value="#212121"
+      />
+    </fieldset>
+    <fieldset
+      className="flex flex-col justify-center items-center bg-surface-elevated border border-edge rounded-lg p-3 gap-2 font-medium m-0 min-w-0 w-full"
+    >
+      <legend
+        className="sr-only"
+      >
+        Sidebar background color
+      </legend>
+      <div
+        aria-hidden="true"
+        className="text-center text-sm px-2 py-1.5 w-full rounded-md border border-edge text-ink"
+        style={
+          {
+            "backgroundColor": "#171717",
+          }
+        }
+      >
+        Sidebar
+      </div>
+      <input
+        aria-label="Sidebar background color"
+        className="text-center w-full rounded-md h-8 border border-edge bg-surface cursor-pointer"
+        id="sidebarBackgroundStyle"
+        onChange={[Function]}
+        type="color"
+        value="#171717"
+      />
+    </fieldset>
+  </div>
+  <hr
+    className="border-edge"
+  />
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={false}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Use background image
+  </label>
+</div>
+`;
+
+exports[`BackgroundControls renders the opt-in state by default 1`] = `
+<div
+  className="grid grid-cols-1 gap-y-3 w-full"
+>
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={false}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Customize backgrounds
+  </label>
+  <hr
+    className="border-edge"
+  />
+  <label
+    className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none"
+  >
+    <input
+      checked={false}
+      className="rounded border-edge"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    Use background image
+  </label>
+</div>
+`;

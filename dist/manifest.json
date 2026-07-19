@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "chatgpt-styler",
     "description": "Extension to allow users to change the styling for their ChatGPT experience.",
-    "version": "1.3.2",
+    "version": "1.4.0",
     "action": {
         "default_icon": {
             "16": "icon-16.png",
@@ -20,7 +20,7 @@
         "128": "icon-128.png"
     },
     "host_permissions": ["*://chatgpt.com/*"],
-    "permissions": ["activeTab", "storage"],
+    "permissions": ["activeTab", "storage", "unlimitedStorage"],
     "content_scripts": [
         {
             "matches": ["*://chatgpt.com/*"],

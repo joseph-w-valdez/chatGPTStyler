@@ -72,7 +72,7 @@ export function MessageSliderControls({
                     >
                         {setting.name}
                     </label>
-                    <div className="flex items-center rounded-md border border-edge bg-surface-raised overflow-hidden">
+                    <div className="flex items-center rounded-md border border-edge bg-surface-elevated overflow-hidden">
                         <input
                             className="w-12 px-2 py-1 text-sm text-right text-ink bg-transparent outline-none"
                             type="text"

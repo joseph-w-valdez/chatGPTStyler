@@ -8,7 +8,7 @@ exports[`FormButtons renders correctly 1`] = `
 >
   <button
     className="btnGrey col-span-2"
-    onClick={[Function]}
+    onClick={[MockFunction]}
     type="button"
   >
     Restore Defaults

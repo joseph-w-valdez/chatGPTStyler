@@ -6,8 +6,12 @@ module.exports = {
                 surface: {
                     DEFAULT: "var(--surface)",
                     raised: "var(--surface-raised)",
+                    elevated: "var(--surface-elevated)",
                 },
                 edge: "var(--border)",
+                chrome: {
+                    edge: "var(--chrome-border)",
+                },
                 ink: {
                     DEFAULT: "var(--text)",
                     muted: "var(--text-muted)",
@@ -21,6 +25,12 @@ module.exports = {
                     contrast: "var(--danger-contrast)",
                 },
                 success: "var(--success)",
+            },
+            boxShadow: {
+                chrome: "var(--chrome-shadow)",
+            },
+            backgroundImage: {
+                brand: "var(--brand-gradient)",
             },
             animation: {
                 "fade-in": "fadeIn 0.4s ease-out",

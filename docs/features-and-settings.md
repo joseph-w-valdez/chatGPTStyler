@@ -12,9 +12,12 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 | Input box width                  | MessageEditor sliders        | `%` max-width on `form`                                                       |
 | User / ChatGPT bubble colors     | ColorControls                | Background colors for odd/even turns                                          |
 | User / ChatGPT text colors       | ColorControls                | Text colors for user vs assistant content                                     |
-| Restore defaults / Save / Cancel | FormButtons                  | Reset preview, persist immediately, or restore the last saved/loaded settings |
-| Delete all conversations         | DeleteAllChatsButton         | DOM automation on the active ChatGPT tab                                      |
-| Scroll to top                    | Content script + ScrollToTop | Floating button when the thread is scrolled                                   |
+| Conversation / sidebar backgrounds | BackgroundControls         | Opt-in surface colors; optional sync into one shared app background           |
+| Conversation background image    | BackgroundControls           | Opt-in uploaded image with opacity; injected fixed layer behind the conversation |
+| Restore defaults / Save / Cancel | FormButtons                  | Reset the active tab, persist immediately, or restore the saved settings      |
+| Delete all conversations         | Misc tab                     | DOM automation on the active ChatGPT tab                                      |
+| Scroll to top                    | Misc tab + ScrollToTop       | Enabled by default; optional floating button when the thread is scrolled       |
+| Popup appearance                 | Misc tab                     | System, Light, or Dark theme preference                                       |
 | Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
 | Fixed CSS helpers                | `stylingFunctions`           | Content width-cap removal, light-mode submit button color, and related helpers |
 
@@ -32,19 +35,41 @@ interface Settings {
     inputBoxMaxWidthStyle: string;
     textColorUserStyle: string;
     textColorNonUserStyle: string;
+    customBackgroundsEnabled: boolean;
+    syncBackgroundColors: boolean;
+    conversationBackgroundStyle: string;
+    sidebarBackgroundStyle: string;
+    syncedBackgroundStyle: string;
+    backgroundImageEnabled: boolean;
+    backgroundImageOpacity: string;
+    scrollToTopEnabled: boolean;
+    themePreference: "system" | "light" | "dark";
 }
 ```
 
-| Key                        | Default     |
-| -------------------------- | ----------- |
-| `messageMaxWidthStyle`     | `"95"`      |
-| `messageColorUserStyle`    | `"#0084FF"` |
-| `messageColorNonUserStyle` | `"#333333"` |
-| `messagePaddingStyle`      | `"10"`      |
-| `messageBorderRadiusStyle` | `"5"`       |
-| `inputBoxMaxWidthStyle`    | `"94"`      |
-| `textColorUserStyle`       | `"#FFFFFF"` |
-| `textColorNonUserStyle`    | `"#FFFFFF"` |
+The uploaded background image itself is **not** part of `Settings`. It is stored
+as a data URL under `backgroundImage` in `chrome.storage.local` (sync's per-item
+quota is too small for image data).
+
+| Key                            | Default     |
+| ------------------------------ | ----------- |
+| `messageMaxWidthStyle`         | `"95"`      |
+| `messageColorUserStyle`        | `"#0084FF"` |
+| `messageColorNonUserStyle`     | `"#333333"` |
+| `messagePaddingStyle`          | `"10"`      |
+| `messageBorderRadiusStyle`     | `"5"`       |
+| `inputBoxMaxWidthStyle`        | `"94"`      |
+| `textColorUserStyle`           | `"#FFFFFF"` |
+| `textColorNonUserStyle`        | `"#FFFFFF"` |
+| `customBackgroundsEnabled`     | `false`     |
+| `syncBackgroundColors`         | `false`     |
+| `conversationBackgroundStyle`  | `"#212121"` |
+| `sidebarBackgroundStyle`       | `"#171717"` |
+| `syncedBackgroundStyle`        | `"#212121"` |
+| `backgroundImageEnabled`       | `false`     |
+| `backgroundImageOpacity`       | `"25"`      |
+| `scrollToTopEnabled`           | `true`      |
+| `themePreference`              | `"system"`  |
 
 Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
@@ -59,15 +84,18 @@ flowchart TD
   Live --> Dirty[isEditing = true]
   Dirty --> Save[Save: storage.sync + clear dirty]
   Dirty --> Cancel[Cancel: restore savedSettings + preview]
-  Dirty --> Defaults[Restore Defaults: defaultSettings + preview, stays dirty]
+  Dirty --> Defaults[Restore Defaults: active tab defaults + preview, stays dirty]
 ```
 
 ### Control behavior
 
 -   **Sliders** ([`MessageSliderControls`](../src/popup/views/messageEditor/components/messageSliderControls/MessageSliderControls.tsx)): numeric text + range inputs (1–100). Digits only; values capped at 100. Each change calls `sendMessageToTab` and marks editing.
 -   **Colors** ([`ColorControls`](../src/popup/views/messageEditor/components/colorControls/ColorControls.tsx)): HTML color inputs for User and ChatGPT × (BG, Text). Same live-update pattern.
+-   **Backgrounds** ([`BackgroundControls`](../src/popup/views/messageEditor/components/backgroundControls/BackgroundControls.tsx)): opt-in conversation/sidebar surface colors. Sync replaces both pickers with one App Background control while keeping the separate values persisted for restore. Also hosts the opt-in background **image** (PNG/JPEG/WebP/GIF up to 15 MB) with an opacity slider. Image upload/removal persist immediately to `chrome.storage.local` and preview live via the `updateBackgroundImage` message; the enabled toggle and opacity are Settings and follow Save/Cancel. Restore Defaults on this tab also clears the stored image. The 15 MB cap exceeds the default local storage quota, so the extension declares `unlimitedStorage`.
+-   **Misc** ([`MiscControls`](../src/popup/views/messageEditor/components/miscControls/MiscControls.tsx)): selects the popup appearance, toggles scroll-to-top visibility, and contains the delete-all action. System appearance follows `prefers-color-scheme`; Light and Dark override it.
+-   **Tabs** ([`MessageEditor`](../src/popup/views/messageEditor/MessageEditor.tsx)): Messages, Background, and Misc panels share Save / Cancel / Defaults.
 -   **FormButtons** ([`FormButtons.tsx`](../src/components/formButtons/FormButtons.tsx)):
-    -   **Restore Defaults** — set live state to `defaultSettings`, preview via `sendMessageToTab(defaultSettings)`, leave `isEditing` true.
+    -   **Restore Defaults** — reset only the active Messages, Background, or Misc fields; preserve settings from other tabs, preview the merged settings, and leave `isEditing` true.
     -   **Save** — `saveOptionsToStorage(liveSettings)`, copy into `savedSettings`, clear editing.
     -   **Cancel** — restore the settings last loaded from storage or explicitly saved, preview them, and clear editing.
 -   **Background disconnect** — closing the popup intentionally persists the latest live settings, even without clicking Save. The Save button provides an immediate persistence option while the popup remains open.

@@ -46,11 +46,19 @@ Always prefer updating selectors in the smallest surface that broke, then smoke-
 | Assistant text color                 | `[data-turn="assistant"]` nested `p`, lists, code, headings               |
 | Input form width                     | `form`                                                                    |
 | Content width cap removal            | `[data-conversation-screenshot-content]`, `#thread-bottom > div > div > div > div` |
+| Conversation surface (opt-in)        | `--main-surface-primary` on light/dark theme scopes                               |
+| Sidebar surface (opt-in)             | `.bg-token-sidebar-surface-primary`, `.bg-\(--sidebar-surface-primary\)`          |
+| Background image layer (opt-in)      | `#chatgpt-styler-bg-layer` + inner `.chatgpt-styler-bg-image` (injected)          |
+| Scroll-to-top visibility             | `#scroll-to-top-btn` (`display: none` when disabled)                              |
 | Code / composer helpers              | nth-child(2) under bubbles; `#composer-submit-button`                     |
 
 Turns are role-tagged via `data-turn="user"|"assistant"` (not odd/even sibling index). Odd/even broke after ChatGPT wrapped each turn in `data-turn-id-container`.
 
 User image wrappers consume ChatGPT's `--user-chat-width` custom property as their width, while text bubbles use it only as a native maximum. The extension therefore sets the variable on the user turn and applies it as the explicit width of `.user-message-bubble-color`. Do not constrain `[data-message-author-role="user"]`, which is a shared full-width layout parent.
+
+Background surface overrides are emitted only when `customBackgroundsEnabled` is true. Sync mode uses `syncedBackgroundStyle` for both conversation and sidebar; unsynced mode uses the retained separate values. When a background image is also enabled, the conversation/app color is painted on the injected layer *under* the image (so it shows through PNG transparency and the opacity slider), while ChatGPT’s `--main-surface-primary` is forced transparent so it does not cover the layer. The sidebar color still applies normally.
+
+Background image (opt-in via `backgroundImageEnabled`): the content script injects `#chatgpt-styler-bg-layer` (absolute, `pointer-events:none`, first child) into the scrollport's non-scrolling parent — `[data-scroll-root]`'s `parentElement`, falling back to `main` — so it is bounded to the conversation column and stays fixed while the thread scrolls. The host is set `position: relative` if static. `buildCss` forces `--main-surface-primary: transparent` so the layer shows, sets the layer base color from the conversation/app color when customization is on, and sets the inner `.chatgpt-styler-bg-image` opacity. The image data URL lives in `chrome.storage.local` and is applied to the inner element by the content script (kept out of the CSS string). If ChatGPT changes its scroll/main structure, re-verify the host and that the transparent `--main-surface-primary` still reveals the layer.
 
 ### Layout class removals ([`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts))
 
@@ -76,6 +84,8 @@ If ChatGPT renames these utilities, cleanup becomes a no-op and widths may look 
 
 Uses ChatGPT page token/button classes plus known absolute positioning so the control sits beside the native scroll-to-bottom button.
 
+The button remains mounted for lightweight lifecycle stability; disabling `scrollToTopEnabled` hides it through generated CSS, so live preview and persisted settings use the existing style-update path.
+
 ### Delete all chats ([`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts))
 
 Comments in source note that selectors may need updates after domain HTML changes.
@@ -96,6 +106,7 @@ Popup gate: active tab hostname is `chatgpt.com` / `*.chatgpt.com` ([`DeleteAllC
 | Message                                   | Direction  | Content script effect                                               |
 | ----------------------------------------- | ---------- | ------------------------------------------------------------------- |
 | `{ action: "updateStyles", arg: string }` | Popup → CS | Replace `#custom-style` text                                        |
+| `{ action: "updateBackgroundImage", dataUrl: string \| null }` | Popup → CS | Set/clear the injected background-image layer's source |
 | `{ action: "deleteMessages" }`            | Popup → CS | Run async `deleteAllChats()`; respond SUCCESS/FAILURE when finished |
 
 Typed contracts live in [`src/shared/messaging/`](../src/shared/messaging/). On load, CS still applies styles from `getOptionsFromStorage` → `buildCss(settings)`.

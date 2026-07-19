@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.0] - 2026-07-19
+
+### Added
+
+-   Tabbed popup settings organized into Messages, Background, and Misc sections
+-   Opt-in conversation and sidebar background colors with separate and synchronized modes
+-   Optional conversation background images with opacity control and support for PNG, JPEG, WebP, and animated GIF files up to 15 MB
+-   System, Light, and Dark popup appearance options
+-   Setting to enable or disable the scroll-to-top button
+
+### Changed
+
+-   Redesigned the popup header and tabs with the ChatGPT Styler brand gradient and updated theme tokens
+-   Moved Delete All Conversations into the Misc tab
+-   Restore Defaults now resets only the active tab
+-   Background images are stored in `chrome.storage.local` and rendered on a non-scrolling conversation layer
+-   Added the `unlimitedStorage` permission for large background images
+
 ## [1.3.2] - 2026-07-19
 
 ### Fixed

@@ -11,6 +11,9 @@ export const INPUT_BOX_CONTAINER_SELECTOR = "#thread-bottom > * > div";
 
 export const SCROLL_TO_TOP_MOUNT_ID = "scroll-to-top-mount";
 
+// ChatGPT's main conversation column (excludes the sidebar). Very stable.
+export const CONVERSATION_MAIN_SELECTOR = "main";
+
 /**
  * Known CSS from ChatGPT's native scroll-to-bottom control.
  * Native applies the same bottom calc on BOTH the absolute wrapper and the
