@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.5.0] - 2026-10-19
+
+### Fixed
+
+-   Restored styling on ChatGPT's October 2026 redesign: message colors, widths, padding, corner radius, input box width, background colors, scroll-to-top, and delete-all
+
+### Changed
+
+-   All ChatGPT page selectors now live in one registry, and each keeps its older variants as fallbacks so the extension keeps working while ChatGPT rolls a redesign out or back
+-   Live preview builds styles on the page, so previews always match what is saved
+
+### Added
+
+-   Development builds include selector tools for future ChatGPT updates: an on-page inspector and workbench, a Repair button that finds working replacements, a repair drill that simulates breakage, and an export that produces a ready-to-paste registry patch
+
+### Removed
+
+-   The development-only selector health check, replaced by the new selector tools
+-   Layout cleanup for ChatGPT's previous layout, which no longer applies
+
 ## [1.4.0] - 2026-07-19
 
 ### Added

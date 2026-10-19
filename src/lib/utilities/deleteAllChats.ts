@@ -1,3 +1,5 @@
+import { getActiveSelector } from "./activeSelectors";
+
 export type DeleteAllChatsResult =
     | { status: "SUCCESS" }
     | { status: "FAILURE"; message: string };
@@ -5,17 +7,12 @@ export type DeleteAllChatsResult =
 const POLL_INTERVAL_MS = 100;
 const DEFAULT_TIMEOUT_MS = 10000;
 
-export const CHAT_HISTORY_SELECTOR = '#history a[href^="/c/"]';
-export const PROFILE_BUTTON_SELECTOR =
-    '[data-testid="accounts-profile-button"]';
-export const SETTINGS_MENU_ITEM_SELECTOR = '[data-testid="settings-menu-item"]';
-export const DATA_CONTROLS_TAB_SELECTOR =
-    '[role="dialog"][data-state="open"] [data-testid="data-controls-tab"]';
-/** No data-testid on the current ChatGPT button; match the danger outline label. */
-export const DELETE_ALL_BUTTON_SELECTOR =
-    '[role="dialog"][data-state="open"] button.btn-danger-outline[aria-label^="Delete all"]';
-export const CONFIRM_DELETE_BUTTON_SELECTOR =
-    '[role="dialog"][data-state="open"] [data-testid="confirm-delete-all-chats-button"]';
+/** Appends `suffix` to every item of a selector list. */
+const withSuffix = (selector: string, suffix: string): string =>
+    selector
+        .split(",")
+        .map((part) => `${part.trim()}${suffix}`)
+        .join(", ");
 
 /**
  * ChatGPT renders two profile buttons: one in the collapsed rail
@@ -24,7 +21,9 @@ export const CONFIRM_DELETE_BUTTON_SELECTOR =
  */
 const findVisibleProfileButton = (): HTMLElement | null => {
     const buttons = Array.from(
-        document.querySelectorAll<HTMLElement>(PROFILE_BUTTON_SELECTOR),
+        document.querySelectorAll<HTMLElement>(
+            getActiveSelector("profileButton"),
+        ),
     );
     return buttons.find((el) => !el.closest("[inert]")) ?? buttons[0] ?? null;
 };
@@ -128,7 +127,9 @@ export const deleteAllChatsRuntime = {
  */
 export const deleteAllChats = async (): Promise<DeleteAllChatsResult> => {
     try {
-        const chatHistory = document.querySelectorAll(CHAT_HISTORY_SELECTOR);
+        const chatHistory = document.querySelectorAll(
+            getActiveSelector("chatHistory"),
+        );
         if (chatHistory.length === 0) {
             return { status: "FAILURE", message: "No chat history found" };
         }
@@ -141,27 +142,34 @@ export const deleteAllChats = async (): Promise<DeleteAllChatsResult> => {
         openProfileMenu(profileButton);
 
         const settingsMenuItem = await waitForElement<HTMLElement>(
-            SETTINGS_MENU_ITEM_SELECTOR,
+            getActiveSelector("settingsMenuItem"),
         );
         activateElement(settingsMenuItem);
 
+        const dataControlsTabSelector = getActiveSelector("dataControlsTab");
         const dataControlsTab = await waitForElement<HTMLElement>(
-            DATA_CONTROLS_TAB_SELECTOR,
+            dataControlsTabSelector,
         );
         activateElement(dataControlsTab);
 
         // Ensure the tab actually became active before looking for Delete all.
         await waitForElement<HTMLElement>(
-            `${DATA_CONTROLS_TAB_SELECTOR}[data-state="active"], ${DATA_CONTROLS_TAB_SELECTOR}[aria-selected="true"]`,
+            `${withSuffix(
+                dataControlsTabSelector,
+                '[data-state="active"]',
+            )}, ${withSuffix(
+                dataControlsTabSelector,
+                '[aria-selected="true"]',
+            )}`,
         );
 
         const deleteAllChatsButton = await waitForElement<HTMLElement>(
-            DELETE_ALL_BUTTON_SELECTOR,
+            getActiveSelector("deleteAllButton"),
         );
         activateElement(deleteAllChatsButton);
 
         const confirmDeleteButton = await waitForElement<HTMLElement>(
-            CONFIRM_DELETE_BUTTON_SELECTOR,
+            getActiveSelector("confirmDeleteButton"),
         );
         activateElement(confirmDeleteButton);
 

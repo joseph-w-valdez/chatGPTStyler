@@ -7,26 +7,31 @@ import {
     BACKGROUND_LAYER_ID,
     BACKGROUND_LAYER_IMAGE_CLASS,
 } from "@src/shared/backgroundImage";
+import {
+    asCompound,
+    DEFAULT_SELECTORS,
+    SelectorMap,
+} from "@src/shared/selectors";
 
-const messageBubbles = '[data-testid^="conversation-turn-"]';
-const userTurns = '[data-turn="user"]';
-const assistantTurns = '[data-turn="assistant"]';
-const userBubble = `${userTurns} .user-message-bubble-color`;
-const assistantMessage = `${assistantTurns} [data-message-author-role="assistant"]`;
+// Pre-app-shell turns held one message each. On the app-shell layout the same
+// child path lands on an exchange's content blocks, so keep this rule scoped.
+const LEGACY_MESSAGE_TURN = '[data-testid^="conversation-turn-"]';
 
-const fixedStyles = `
+const buildFixedStyles = (selectors: SelectorMap): string => {
+    return `
     /* Remove ChatGPT's shared 40/48rem cap while preserving responsive gutters. */
-    ${messageBubbles} [data-conversation-screenshot-content],
-    #thread-bottom > div > div > div > div {
+    ${selectors.turnContentWidthCap},
+    ${selectors.composerWidthCap} {
         width: 100% !important;
         max-width: none !important;
     }
-    ${messageBubbles} > * > * > *:nth-child(2) {
+    ${LEGACY_MESSAGE_TURN} > * > * > *:nth-child(2) {
         width: 100%;
         max-width: calc(100% - 72px);
     }
-    html.light #composer-submit-button { color:white }
+    html.light ${asCompound(selectors.composerSubmit)} { color:white }
 `;
+};
 
 const clampOpacityFraction = (raw: string): number => {
     const parsed = Number.parseInt(raw, 10);
@@ -36,7 +41,10 @@ const clampOpacityFraction = (raw: string): number => {
     return Math.min(100, Math.max(0, parsed)) / 100;
 };
 
-const buildBackgroundStyles = (settings: Settings): string => {
+const buildBackgroundStyles = (
+    settings: Settings,
+    selectors: SelectorMap,
+): string => {
     const conversationBackground = settings.syncBackgroundColors
         ? settings.syncedBackgroundStyle
         : settings.conversationBackgroundStyle;
@@ -47,14 +55,20 @@ const buildBackgroundStyles = (settings: Settings): string => {
     let css = "";
 
     if (settings.customBackgroundsEnabled) {
+        // Older layouts paint the conversation from --main-surface-primary; the
+        // app-shell layout paints <main> and its overlays from --color-surface.
         css += `
           html.light, html.dark,
           html.light :not(:where(.dark,.dark *)),
           html.dark :not(:where(.light,.light *)) {
             --main-surface-primary: ${conversationBackground} !important;
           }
-          .bg-token-sidebar-surface-primary,
-          .bg-\\(--sidebar-surface-primary\\) {
+          ${selectors.conversationMain} {
+            --color-surface: ${conversationBackground} !important;
+            --app-color-background-surface: ${conversationBackground} !important;
+            background-color: ${conversationBackground} !important;
+          }
+          ${selectors.sidebarSurface} {
             background-color: ${sidebarBackground} !important;
           }
         `;
@@ -75,6 +89,16 @@ const buildBackgroundStyles = (settings: Settings): string => {
           html.dark :not(:where(.light,.light *)) {
             --main-surface-primary: transparent !important;
           }
+          ${selectors.conversationMain} {
+            --color-surface: transparent !important;
+            --app-color-background-surface: transparent !important;
+            background-color: transparent !important;
+          }
+          /* The layer is absolutely positioned; lift the thread above it. */
+          ${selectors.scrollRoot} {
+            position: relative;
+            z-index: 1;
+          }
           #${BACKGROUND_LAYER_ID} {
             display: block !important;
             background-color: ${layerBase} !important;
@@ -88,7 +112,15 @@ const buildBackgroundStyles = (settings: Settings): string => {
     return css;
 };
 
-const buildDynamicStyles = (settings: Settings): string => {
+const buildDynamicStyles = (
+    settings: Settings,
+    selectors: SelectorMap,
+): string => {
+    const messageBubbles = asCompound(selectors.messageTurn);
+    const userTurns = selectors.userTurn;
+    const assistantTurns = selectors.assistantTurn;
+    const userBubble = selectors.userBubble;
+    const assistantMessage = selectors.assistantMessage;
     const scrollToTopStyles = settings.scrollToTopEnabled
         ? ""
         : "#scroll-to-top-btn { display: none !important; }";
@@ -108,7 +140,9 @@ const buildDynamicStyles = (settings: Settings): string => {
             padding: ${settings.messagePaddingStyle}px !important;
             border-radius: ${settings.messageBorderRadiusStyle}px !important;
           }
-          form {
+          /* Width is required: in a flex column, auto margins shrink the form to its content. */
+          ${selectors.composerForm} {
+            width: 100% !important;
             max-width: ${settings.inputBoxMaxWidthStyle}% !important;
             margin: auto !important;
             min-width: 300px
@@ -128,19 +162,27 @@ const buildDynamicStyles = (settings: Settings): string => {
           ${assistantMessage} {
             background-color: ${settings.messageColorNonUserStyle} !important;
           }
-          ${buildBackgroundStyles(settings)}
+          ${buildBackgroundStyles(settings, selectors)}
           ${scrollToTopStyles}
         `;
 };
 
-/** Pure settings → CSS. Output depends only on the provided settings object. */
-export const buildCss = (settings: Settings): string => {
-    return buildDynamicStyles(settings) + fixedStyles;
+/** Pure settings + selectors → CSS. Output depends only on its arguments. */
+export const buildCss = (
+    settings: Settings,
+    selectors: SelectorMap = DEFAULT_SELECTORS,
+): string => {
+    return (
+        buildDynamicStyles(settings, selectors) + buildFixedStyles(selectors)
+    );
 };
 
 /** @deprecated Prefer buildCss. Kept as an alias for existing call sites. */
-export const updateStyles = (settings: Settings): string => {
-    return buildCss(settings);
+export const updateStyles = (
+    settings: Settings,
+    selectors: SelectorMap = DEFAULT_SELECTORS,
+): string => {
+    return buildCss(settings, selectors);
 };
 
 const sendToActiveTab = (
@@ -163,10 +205,11 @@ const sendToActiveTab = (
     });
 };
 
+/** Live preview: the content script builds CSS so it can use its active selectors. */
 export const sendMessageToTab = (settings: Settings): void => {
     sendToActiveTab({
         action: "updateStyles",
-        arg: buildCss(settings),
+        settings,
     });
 };
 

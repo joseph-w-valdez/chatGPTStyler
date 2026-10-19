@@ -5,6 +5,7 @@ import {
     sendBackgroundImageToTab,
 } from "../stylingFunctions";
 import { defaultSettings, Settings } from "@src/shared/settings";
+import { DEFAULT_SELECTORS } from "@src/shared/selectors";
 import { BACKGROUND_LAYER_ID } from "@src/shared/backgroundImage";
 
 describe("buildCss", () => {
@@ -81,6 +82,27 @@ describe("buildCss", () => {
 
     it("keeps updateStyles as a buildCss alias", () => {
         expect(updateStyles(defaultSettings)).toBe(buildCss(defaultSettings));
+    });
+
+    it("builds from the provided selector map", () => {
+        const css = buildCss(defaultSettings, {
+            ...DEFAULT_SELECTORS,
+            userBubble: ".chat-bubble-user",
+            composerForm: "form.composer",
+        });
+
+        expect(css).toContain(".chat-bubble-user {");
+        expect(css).toContain("form.composer {");
+        expect(css).not.toContain(".user-message-bubble-color");
+    });
+
+    it("wraps overridden selector lists before composing descendants", () => {
+        const css = buildCss(defaultSettings, {
+            ...DEFAULT_SELECTORS,
+            messageTurn: "article, [data-turn]",
+        });
+
+        expect(css).toContain(":is(article, [data-turn]) textarea");
     });
 
     it("omits background surface overrides while customization is disabled", () => {
@@ -216,9 +238,7 @@ describe("sendMessageToTab", () => {
             7,
             {
                 action: "updateStyles",
-                arg: expect.stringContaining(
-                    `max-width: ${defaultSettings.messageMaxWidthStyle}%`,
-                ),
+                settings: defaultSettings,
             },
             expect.any(Function),
         );

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-    CHAT_SCROLL_PARENT_SELECTOR,
     SCROLL_TO_TOP_BUTTON_CLASS_NAME,
     SCROLL_TO_TOP_BUTTON_STYLE,
 } from "@src/lib/utilities/chatDom";
+import { queryActive } from "@src/lib/utilities/activeSelectors";
 
 const getScrollParent = (): HTMLElement | null => {
-    const node = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    const node = queryActive("scrollRoot");
     return node instanceof HTMLElement ? node : null;
 };
 
@@ -74,7 +74,7 @@ const UpArrow = (): JSX.Element => {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="icon text-token-text-primary"
+            className="icon text-token-text-primary text-default"
             aria-hidden="true"
         >
             <path

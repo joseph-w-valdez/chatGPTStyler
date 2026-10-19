@@ -1,35 +1,51 @@
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { ScrollToTop } from "./components/scrollToTop/ScrollToTop";
+import { openSelectorInspector } from "./components/selectorInspector";
 import {
     getOptionsFromStorage,
     getBackgroundImage,
     deleteAllChats,
-    checkSelectors,
 } from "./lib/utilities";
 import { buildCss } from "./shared/utils";
-import { removeUnnecessarySpace } from "@src/lib/utilities";
+import { SCROLL_TO_TOP_MOUNT_ID } from "@src/lib/utilities/chatDom";
 import {
-    CHAT_SCROLL_PARENT_SELECTOR,
-    CONVERSATION_MAIN_SELECTOR,
-    INPUT_BOX_CONTAINER_SELECTOR,
-    SCROLL_CONTROL_HOST_SELECTOR,
-    SCROLL_TO_TOP_MOUNT_ID,
-    USER_TEXT_CONTAINER_SELECTOR,
-} from "@src/lib/utilities/chatDom";
+    getActiveSelectors,
+    getHealedSelectors,
+    loadHealedSelectors,
+    loadSelectorOverrides,
+    onActiveSelectorsChange,
+    queryActive,
+    setHealedSelectors,
+} from "@src/lib/utilities/activeSelectors";
+import { repairSelectors } from "@src/lib/utilities/selectorRepair";
+import { exportWorkingSelectors } from "@src/lib/utilities/selectorExport";
 import {
     BACKGROUND_LAYER_ID,
     BACKGROUND_LAYER_IMAGE_CLASS,
 } from "@src/shared/backgroundImage";
 import { ContentScriptMessage } from "@src/shared/messaging";
+import { Settings } from "@src/shared/settings";
 
 const customStyle = document.createElement("style");
 customStyle.id = "custom-style";
 document.head.appendChild(customStyle);
 
-getOptionsFromStorage(
-    (settings) => (customStyle.textContent = buildCss(settings)),
-);
+let currentSettings: Settings | null = null;
+
+const applyStyles = (): void => {
+    if (currentSettings) {
+        customStyle.textContent = buildCss(
+            currentSettings,
+            getActiveSelectors(),
+        );
+    }
+};
+
+getOptionsFromStorage((settings) => {
+    currentSettings = settings;
+    applyStyles();
+});
 
 // Cached background image data URL (stored in chrome.storage.local). The CSS in
 // #custom-style controls whether the layer is shown / its opacity; the content
@@ -39,7 +55,46 @@ let backgroundImageDataUrl: string | null = null;
 chrome.runtime.onMessage.addListener(
     (request: ContentScriptMessage, _sender, sendResponse) => {
         if (request.action === "updateStyles") {
-            customStyle.textContent = request.arg;
+            currentSettings = request.settings;
+            applyStyles();
+            return false;
+        }
+
+        if (
+            process.env.NODE_ENV === "development" &&
+            request.action === "repairSelectors"
+        ) {
+            try {
+                sendResponse({
+                    status: "SUCCESS",
+                    summary: repairSelectors({ settings: currentSettings }),
+                });
+            } catch (error: unknown) {
+                sendResponse({
+                    status: "FAILURE",
+                    message:
+                        error instanceof Error
+                            ? error.message
+                            : "Layout repair failed",
+                });
+            }
+            return false;
+        }
+
+        if (
+            process.env.NODE_ENV === "development" &&
+            request.action === "resetSelectorRepairs"
+        ) {
+            setHealedSelectors({});
+            sendResponse({
+                status: "SUCCESS",
+                summary: {
+                    repaired: [],
+                    stillBroken: [],
+                    healthy: 0,
+                    activeRepairs: Object.keys(getHealedSelectors()).length,
+                },
+            });
             return false;
         }
 
@@ -69,30 +124,33 @@ chrome.runtime.onMessage.addListener(
 
         if (
             process.env.NODE_ENV === "development" &&
-            request.action === "checkSelectors"
+            request.action === "exportWorkingSelectors"
         ) {
             try {
-                const report = checkSelectors(document);
-                // eslint-disable-next-line no-console
-                console.table(
-                    report.items.map((item) => ({
-                        id: item.id,
-                        count: item.count,
-                        ok: item.ok,
-                        optional: item.optional,
-                        selector: item.selector,
-                    })),
-                );
-                sendResponse({ status: "SUCCESS", report });
+                sendResponse({
+                    status: "SUCCESS",
+                    export: exportWorkingSelectors({
+                        settings: currentSettings,
+                    }),
+                });
             } catch (error: unknown) {
                 sendResponse({
                     status: "FAILURE",
                     message:
                         error instanceof Error
                             ? error.message
-                            : "Selector check failed",
+                            : "Selector export failed",
                 });
             }
+            return false;
+        }
+
+        if (
+            process.env.NODE_ENV === "development" &&
+            request.action === "openSelectorInspector"
+        ) {
+            openSelectorInspector(request.mode, () => currentSettings);
+            sendResponse({ status: "SUCCESS" });
             return false;
         }
 
@@ -100,16 +158,34 @@ chrome.runtime.onMessage.addListener(
     },
 );
 
-const syncLayoutHelpers = (): void => {
-    const userTextContainer = document.querySelectorAll(
-        USER_TEXT_CONTAINER_SELECTOR,
+// Opening the popup closes ChatGPT's menus and dialogs, so shortcuts let the
+// inspector reach elements that only exist while that UI is open.
+if (process.env.NODE_ENV === "development") {
+    window.addEventListener(
+        "keydown",
+        (event) => {
+            if (
+                !event.altKey ||
+                !event.shiftKey ||
+                event.ctrlKey ||
+                event.metaKey
+            ) {
+                return;
+            }
+            const mode =
+                event.code === "KeyP"
+                    ? "pick"
+                    : event.code === "KeyA"
+                    ? "audit"
+                    : null;
+            if (!mode) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            openSelectorInspector(mode, () => currentSettings);
+        },
+        true,
     );
-    const inputBoxContainer = document.querySelector(
-        INPUT_BOX_CONTAINER_SELECTOR,
-    );
-
-    removeUnnecessarySpace({ userTextContainer, inputBoxContainer });
-};
+}
 
 const scrollToTopRoots = new WeakMap<Element, Root>();
 
@@ -123,8 +199,8 @@ const unmountScrollToTop = (mountPoint: Element): void => {
 };
 
 const syncScrollToTop = (): void => {
-    const scrollParent = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
-    const mountHost = document.querySelector(SCROLL_CONTROL_HOST_SELECTOR);
+    const scrollParent = queryActive("scrollRoot");
+    const mountHost = queryActive("scrollControlHost");
     const existingMount = document.getElementById(SCROLL_TO_TOP_MOUNT_ID);
 
     if (
@@ -157,11 +233,11 @@ const syncScrollToTop = (): void => {
 // sidebar) and stays put while the inner scrollport scrolls, so it mounts into
 // the scrollport's non-scrolling parent (falling back to <main>).
 const getBackgroundLayerHost = (): HTMLElement | null => {
-    const scrollParent = document.querySelector(CHAT_SCROLL_PARENT_SELECTOR);
+    const scrollParent = queryActive("scrollRoot");
     if (scrollParent instanceof HTMLElement && scrollParent.parentElement) {
         return scrollParent.parentElement;
     }
-    const main = document.querySelector(CONVERSATION_MAIN_SELECTOR);
+    const main = queryActive("conversationMain");
     return main instanceof HTMLElement ? main : null;
 };
 
@@ -229,7 +305,6 @@ const syncBackgroundImage = (): void => {
 };
 
 const syncPageIntegrations = (): void => {
-    syncLayoutHelpers();
     syncScrollToTop();
     syncBackgroundImage();
 };
@@ -238,6 +313,19 @@ getBackgroundImage((dataUrl) => {
     backgroundImageDataUrl = dataUrl;
     syncBackgroundImage();
 });
+
+onActiveSelectorsChange(() => {
+    applyStyles();
+    // ScrollToTop binds to its scroll root on mount, so force a remount.
+    const existingMount = document.getElementById(SCROLL_TO_TOP_MOUNT_ID);
+    if (existingMount) unmountScrollToTop(existingMount);
+    syncPageIntegrations();
+});
+// Production only runs the registry's reviewed selectors.
+if (process.env.NODE_ENV === "development") {
+    loadHealedSelectors();
+    loadSelectorOverrides();
+}
 
 syncPageIntegrations();
 setInterval(syncPageIntegrations, 1000);
