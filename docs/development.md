@@ -21,20 +21,20 @@ npm install
 
 From [`package.json`](../package.json):
 
-| Command                | Purpose                                                                                                              |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`          | Webpack watch with [`webpack.config.js`](../webpack.config.js) and `--mode development` → updates `dist/js/`          |
-| `npm run build:dev`    | One-off development Webpack build (same flavor as `dev`, no watch)                                                   |
-| `npm run build`        | Alias for `build:prod`                                                                                               |
-| `npm run build:prod`   | Production Webpack via [`webpack.config.js`](../webpack.config.js) and `--mode production`                            |
-| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                                      |
-| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                                            |
-| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                                          |
-| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                                                |
-| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                                                 |
-| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                                          |
-| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                                            |
-| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                                                 |
+| Command                | Purpose                                                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`          | Webpack watch with [`webpack.config.js`](../webpack.config.js) and `--mode development` → updates `dist/js/` |
+| `npm run build:dev`    | One-off development Webpack build (same flavor as `dev`, no watch)                                           |
+| `npm run build`        | Alias for `build:prod`                                                                                       |
+| `npm run build:prod`   | Production Webpack via [`webpack.config.js`](../webpack.config.js) and `--mode production`                   |
+| `npm test`             | Jest with [`jest.config.js`](../jest.config.js)                                                              |
+| `npm run test:ci`      | Jest in CI mode (`--ci --coverage=false`)                                                                    |
+| `npm run typecheck`    | `tsc --noEmit` (check only)                                                                                  |
+| `npm run lint:check`   | ESLint on `src/**/*.ts*` (check only)                                                                        |
+| `npm run format:check` | Prettier `--check` on `src/**/*.ts*`                                                                         |
+| `npm run validate`     | `typecheck` + `lint:check` + `format:check`                                                                  |
+| `npm run lint`         | ESLint **with `--fix`** on `src/**/*.ts*` (mutates files)                                                    |
+| `npm run prettify`     | Prettier **write** on `src/**/*.ts*` (mutates files)                                                         |
 
 Line endings: [`.gitattributes`](../.gitattributes) and Prettier `endOfLine: "lf"` keep LF in the repo so Windows clones don’t drown lint in CRLF noise.
 
@@ -54,14 +54,38 @@ After JS changes with `npm run dev` or `npm run build:dev`, use the extensions p
 
 ### Build flavors
 
-| Flavor | Commands | Behavior |
-| ------ | -------- | -------- |
-| Development | `npm run build:dev`, `npm run dev` | Source maps; keeps debug logging; includes tools like **Check ChatGPT Selectors** |
-| Production | `npm run build:prod`, `npm run build` | Minified; strips `console.log` / `info` / `debug` / `table`; omits dev-only UI; keeps `console.warn` / `console.error` |
+| Flavor      | Commands                              | Behavior                                                                                                               |
+| ----------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Development | `npm run build:dev`, `npm run dev`    | Source maps; keeps debug logging; includes tools like **Repair & export selectors**                                    |
+| Production  | `npm run build:prod`, `npm run build` | Minified; strips `console.log` / `info` / `debug` / `table`; omits dev-only UI; keeps `console.warn` / `console.error` |
 
-### Dev-only selector health check
+### Dev-only selector inspector
 
-With a **development** build (`npm run build:dev` or `npm run dev`), the popup shows **Check ChatGPT Selectors**. Focus a chatgpt.com tab, click it, and the content script returns match counts for critical DOM probes (also `console.table` in the page DevTools). Production builds omit the control.
+With a **development** build (`npm run build:dev` or `npm run dev`), the popup shows the dev selector tools below the settings: **Repair layout** / **Undo repairs**, **Repair & export selectors**, **Audit on page**, and **Pick element**. Production builds omit them and never load repairs or overrides. When [Repair & export](#dev-only-repair--export) reports something broken or in need of review, the **selector inspector** helps find a replacement by hand. It opens as a panel on the chatgpt.com page itself (inside a Shadow DOM), because clicking the page closes the popup.
+
+-   **Workbench** (popup **Audit on page**, or **Alt+Shift+A**): one card per selector in the [registry](../src/shared/selectors.ts). Heuristics locate each surface the extension depends on without relying on the current selectors, and every card shows the active selector's test result plus ranked replacement suggestions.
+    -   **Check** dry-runs the draft in the card: validity, match count versus what the target expects, and how many of the heuristically found elements it covers. Matches are outlined on the page.
+    -   **Apply** makes the extension use the draft immediately: generated CSS is rebuilt and scroll-to-top / the background layer remount. Applied selectors also get a **live effect** check where one exists, e.g. the matched bubbles really render your bubble color, the composer form really has your max-width, scroll-to-top really mounted in the host.
+    -   **Reset** returns a card to its default; **Pick** lets you click the element on the page and **Use** one of its candidates.
+    -   **Retest all** re-runs the heuristics and tests after you open menus, scroll, or switch chats.
+-   **Pick element** (popup) or **Alt+Shift+P**: hover and click any element. The click is intercepted so ChatGPT does not react. The panel shows ranked selector candidates, which current extension selectors touch the element (self / ancestor / descendant), and a breadcrumb for jumping to parents.
+-   **Show** outlines every match on the page for a few seconds.
+-   Each card explains what the selector is **for** and what the right element **looks like** (from `description` / `lookFor` in the registry), to guide picking.
+-   **Copy report** re-runs the audit and copies a paste-ready Markdown summary: failing selectors first with their notes, expected element, and top suggestions; then warnings, passing selectors, overrides in use, and page hints. In the element view it copies the picked element instead. **Save full JSON** downloads everything, including the page inventory. Both mask conversation / GPT / project ids and include no message text.
+
+Suggestions skip UI-state attributes (`data-state`, `data-d-*`, router `data-discover`, ...), never pin state values such as `complete` or `open`, and turn indexed values (`fallback-turn-0`) into prefix selectors. When role turns share every attribute, the workbench also proposes `turn:has(marker)` selectors. Repair only accepts a suggestion that fully passes; warnings are left for you to judge.
+
+Applied selectors are **dev-only overrides** saved in `chrome.storage.local` (`devSelectorOverrides`), so they survive reloads while you test. Production builds never load them, and Repair skips overridden keys. Once a replacement works, run **Repair & export** and paste its `registryPatch` into `src/shared/selectors.ts`, then **Reset all overrides**.
+
+### Dev-only repair & export
+
+**Repair & export selectors** (popup, development build) runs the same repair as the **Repair layout** button, then returns JSON describing the selector each key is actually using right now. It shows where that selector came from (`override`, `repaired`, `default`, `fallback`), its status, and its match count. The JSON is copied automatically. Its `registryPatch` holds the passing repaired or overridden selectors already shaped as `{ defaultSelector, fallbacks }`, so promoting them into `src/shared/selectors.ts` is copy-and-paste. The summary splits keys into `working`, `repaired`, `needsReview` (warnings), `broken`, and `notOnPage` (optional surfaces that are absent until a menu or composer state is open).
+
+### Repair drill (simulated breaks)
+
+To check that Repair can recover from a ChatGPT update without waiting for one, use the workbench's **Repair drill** row. **Break** on a card (or **Break all**) swaps that key's built-in selectors for one that matches nothing, as if ChatGPT had renamed the markup. The page styling breaks visibly. **Run Repair** then has to find replacements using the heuristics alone, and **Repair & export** also copies the export JSON. Simulated breaks live in memory only, so a page reload restores the built-ins. Unlike overrides, they are not skipped by Repair. Reset any overrides first, because Repair leaves overridden keys alone. Use **Undo repairs** (popup dev tools) afterwards to clear the repairs the drill saved.
+
+Use the keyboard shortcuts for elements that only exist while a ChatGPT menu or dialog is open (profile menu, Settings → Data controls): opening the popup would close that UI first. Candidate logic lives in [`selectorDiscovery.ts`](../src/lib/utilities/selectorDiscovery.ts); it skips Tailwind utilities, Radix/React ids, UUIDs, and CSS-module hashes, and down-ranks `aria-label` because it is localized.
 
 Static assets that Webpack does **not** emit (edit by hand when needed):
 

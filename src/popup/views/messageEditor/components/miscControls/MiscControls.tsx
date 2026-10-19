@@ -2,7 +2,6 @@ import React from "react";
 import { Settings, ThemePreference } from "@src/shared/settings";
 import { sendMessageToTab } from "@src/shared/utils";
 import { DeleteAllChatsButton } from "@src/components/deleteAllChatsButton/DeleteAllChatsButton";
-
 export interface MiscControlsProps {
     liveSettings: Settings;
     setLiveSettings: React.Dispatch<React.SetStateAction<Settings>>;

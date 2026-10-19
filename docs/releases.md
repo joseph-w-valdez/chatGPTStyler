@@ -10,8 +10,8 @@ Pushing any tag starts the **Release** workflow:
 2. Development and production builds run concurrently.
 3. Each build is available as a workflow artifact on the Actions run.
 4. A GitHub Release is created for the tag with both zip files attached:
-   - `dist-<tag>.zip` — minified production build for Chrome Web Store submission.
-   - `dist-<tag>-dev.zip` — development build with source maps and dev-only tools; use only for sideloading and debugging.
+    - `dist-<tag>.zip` — minified production build for Chrome Web Store submission.
+    - `dist-<tag>-dev.zip` — development build with source maps and dev-only tools; use only for sideloading and debugging.
 
 The workflow does **not** publish to the Chrome Web Store.
 

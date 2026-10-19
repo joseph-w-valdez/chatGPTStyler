@@ -6,28 +6,30 @@ Agent-oriented guide for working in this repository. For deeper detail, see [doc
 
 **ChatGPT Styler** is a Chromium Manifest V3 extension that customizes the ChatGPT UI (`chatgpt.com`). Users adjust message colors, widths, padding, border radius, and input-box width from a React popup. A content script injects generated CSS into the page, mounts a scroll-to-top control, and can drive ChatGPT’s “delete all chats” UI via DOM automation.
 
--   Package name / version: `chatgpt-styler` `1.3.1` ([`package.json`](package.json))
+-   Package name / version: `chatgpt-styler` `1.5.0` ([`package.json`](package.json))
 -   Store / product context: see [`README.md`](README.md)
 -   Release history: [`CHANGELOG.md`](CHANGELOG.md)
 
 ## Source map
 
-| Path                                                                                         | Role                                                                                                                                                              |
-| -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`src/popup/`](src/popup/)                                                                   | Extension popup UI (React). Entry: [`src/popup/index.tsx`](src/popup/index.tsx). Root: [`src/popup/Popup.tsx`](src/popup/Popup.tsx).                              |
-| [`src/popup/views/messageEditor/`](src/popup/views/messageEditor/)                           | **Active** settings UI: sliders, color pickers, save/cancel/defaults, delete-all button.                                                                          |
-| [`src/contentScript.ts`](src/contentScript.ts)                                               | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
-| [`src/backgroundPage.ts`](src/backgroundPage.ts)                                             | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
-| [`src/shared/settings.ts`](src/shared/settings.ts)                                           | Domain `Settings` interface and `defaultSettings`.                                                                                                                |
-| [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts)               | Pure `buildCss(settings)` → CSS string; `sendMessageToTab` for live preview.                                                                                      |
-| [`src/shared/messaging/`](src/shared/messaging/)                                             | Typed extension message contracts (content-script + popup port).                                                                                                  |
-| [`src/lib/utilities/settingsStorage.ts`](src/lib/utilities/settingsStorage.ts)               | `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                                          |
-| [`src/lib/utilities/deleteAllChats.ts`](src/lib/utilities/deleteAllChats.ts)                 | DOM automation for delete-all.                                                                                                                                    |
-| [`src/lib/utilities/removeUnnecessarySpace.ts`](src/lib/utilities/removeUnnecessarySpace.ts) | Strips ChatGPT layout classes that fight custom widths.                                                                                                           |
-| [`src/components/`](src/components/)                                                         | Shared UI: Header, FormButtons, DeleteAllChatsButton, ScrollToTop.                                                                                                |
-| [`src/css/app.css`](src/css/app.css)                                                         | Global Tailwind entry for the popup.                                                                                                                              |
-| [`dist/`](dist/)                                                                             | Built extension package. Load this folder as an unpacked extension. Includes [`dist/manifest.json`](dist/manifest.json) (source of truth for MV3 config in-repo). |
-| [`webpack.config.js`](webpack.config.js)                                                     | Mode-driven entries/config for `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                   |
+| Path                                                                           | Role                                                                                                                                                              |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`src/popup/`](src/popup/)                                                     | Extension popup UI (React). Entry: [`src/popup/index.tsx`](src/popup/index.tsx). Root: [`src/popup/Popup.tsx`](src/popup/Popup.tsx).                              |
+| [`src/popup/views/messageEditor/`](src/popup/views/messageEditor/)             | **Active** settings UI: sliders, color pickers, save/cancel/defaults, delete-all button.                                                                          |
+| [`src/contentScript.ts`](src/contentScript.ts)                                 | Injected on `*://chatgpt.com/*`. Loads settings → CSS; listens for style / delete messages; mounts scroll-to-top.                                                 |
+| [`src/backgroundPage.ts`](src/backgroundPage.ts)                               | Service worker. Holds in-memory settings from the popup port; persists on popup disconnect.                                                                       |
+| [`src/shared/settings.ts`](src/shared/settings.ts)                             | Domain `Settings` interface and `defaultSettings`.                                                                                                                |
+| [`src/shared/utils/stylingFunctions.ts`](src/shared/utils/stylingFunctions.ts) | Pure `buildCss(settings)` → CSS string; `sendMessageToTab` for live preview.                                                                                      |
+| [`src/shared/messaging/`](src/shared/messaging/)                               | Typed extension message contracts (content-script + popup port).                                                                                                  |
+| [`src/shared/selectors.ts`](src/shared/selectors.ts)                           | Registry of every ChatGPT DOM selector: default, fallbacks, expected counts, descriptions.                                                                        |
+| [`src/lib/utilities/activeSelectors.ts`](src/lib/utilities/activeSelectors.ts) | Resolves active selectors (dev overrides → repairs → registry); `queryActive` / `queryAllActive`.                                                                 |
+| `src/lib/utilities/selector*.ts`                                               | Dev-only selector tools: discovery heuristics, testing, Repair layout, export, and reports.                                                                       |
+| [`src/lib/utilities/settingsStorage.ts`](src/lib/utilities/settingsStorage.ts) | `getOptionsFromStorage`, `saveOptionsToStorage` (`chrome.storage.sync`).                                                                                          |
+| [`src/lib/utilities/deleteAllChats.ts`](src/lib/utilities/deleteAllChats.ts)   | DOM automation for delete-all.                                                                                                                                    |
+| [`src/components/`](src/components/)                                           | Shared UI: Header, FormButtons, DeleteAllChatsButton, ScrollToTop; dev-only SelectorHealthCheck (with RepairLayoutButton) and the on-page SelectorInspector.      |
+| [`src/css/app.css`](src/css/app.css)                                           | Global Tailwind entry for the popup.                                                                                                                              |
+| [`dist/`](dist/)                                                               | Built extension package. Load this folder as an unpacked extension. Includes [`dist/manifest.json`](dist/manifest.json) (source of truth for MV3 config in-repo). |
+| [`webpack.config.js`](webpack.config.js)                                       | Mode-driven entries/config for `backgroundPage`, `popup`, `contentScript` → `dist/js/[name].js`.                                                                  |
 
 Path alias: `@src/*` → `src/*` (TypeScript + Webpack + Jest).
 
@@ -93,7 +95,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 -   Target host is **`chatgpt.com`** only ([`dist/manifest.json`](dist/manifest.json) `host_permissions` / `content_scripts`).
 -   Permissions in use: `activeTab`, `storage`, `unlimitedStorage` (for large conversation background images). Avoid new permissions unless product requires them.
 -   CSS is applied by writing a **string** into `#custom-style`. Selector drift on ChatGPT’s DOM is the #1 breakage mode.
--   `contentScript` re-applies layout helpers and keeps ScrollToTop mounted on a **1s interval** — null-safe, but still avoid heavier work there.
+-   `contentScript` keeps ScrollToTop and the background image layer mounted on a **1s interval** — null-safe, but still avoid heavier work there.
 -   Built JS lands in `dist/js/` (typically gitignored after build); static assets (`manifest.json`, `popup.html`, icons) are **tracked release inputs** under `dist/` and are **not** emitted by Webpack. Never delete tracked static `dist` files; never hand-edit generated `dist/js/*`.
 
 ## Change checklists
@@ -115,7 +117,7 @@ Full flow: [docs/architecture.md](docs/architecture.md). Settings model: [docs/f
 ### Generated CSS / DOM selectors
 
 1. Prefer editing `buildCss` / fixed CSS fragments in `stylingFunctions.ts` rather than hardcoding CSS in the content script.
-2. If ChatGPT’s markup changed, update selectors in content script, styling functions, `deleteAllChats`, `removeUnnecessarySpace`, and `ScrollToTop` together — see [docs/dom-integration.md](docs/dom-integration.md).
+2. If ChatGPT’s markup changed, run **Repair & export selectors** in a dev build (or find a replacement with the selector workbench, Alt+Shift+A on chatgpt.com), then paste its `registryPatch` into [`src/shared/selectors.ts`](src/shared/selectors.ts): the working selector becomes `defaultSelector` and the old default moves into `fallbacks` (never delete known-good variants). Every consumer reads from that registry — see [docs/dom-integration.md](docs/dom-integration.md).
 3. Verify both light and dark ChatGPT themes when colors are involved.
 
 ### Releases

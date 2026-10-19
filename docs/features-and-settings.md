@@ -4,22 +4,21 @@ User-facing behavior and how settings become CSS on ChatGPT. Architecture contex
 
 ## Active features
 
-| Feature                          | Where                        | Behavior                                                                      |
-| -------------------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
-| Message width                    | MessageEditor sliders        | `%` max-width on conversation turns                                           |
-| Message padding                  | MessageEditor sliders        | `px` padding on message containers                                            |
-| Message border radius            | MessageEditor sliders        | `px` border-radius                                                            |
-| Input box width                  | MessageEditor sliders        | `%` max-width on `form`                                                       |
-| User / ChatGPT bubble colors     | ColorControls                | Background colors for odd/even turns                                          |
-| User / ChatGPT text colors       | ColorControls                | Text colors for user vs assistant content                                     |
-| Conversation / sidebar backgrounds | BackgroundControls         | Opt-in surface colors; optional sync into one shared app background           |
-| Conversation background image    | BackgroundControls           | Opt-in uploaded image with opacity; injected fixed layer behind the conversation |
-| Restore defaults / Save / Cancel | FormButtons                  | Reset the active tab, persist immediately, or restore the saved settings      |
-| Delete all conversations         | Misc tab                     | DOM automation on the active ChatGPT tab                                      |
-| Scroll to top                    | Misc tab + ScrollToTop       | Enabled by default; optional floating button when the thread is scrolled       |
-| Popup appearance                 | Misc tab                     | System, Light, or Dark theme preference                                       |
-| Layout cleanup                   | `removeUnnecessarySpace`     | Removes classes that constrain width / alignment                              |
-| Fixed CSS helpers                | `stylingFunctions`           | Content width-cap removal, light-mode submit button color, and related helpers |
+| Feature                            | Where                  | Behavior                                                                         |
+| ---------------------------------- | ---------------------- | -------------------------------------------------------------------------------- |
+| Message width                      | MessageEditor sliders  | `%` max-width on conversation turns                                              |
+| Message padding                    | MessageEditor sliders  | `px` padding on message containers                                               |
+| Message border radius              | MessageEditor sliders  | `px` border-radius                                                               |
+| Input box width                    | MessageEditor sliders  | `%` max-width on the composer form                                               |
+| User / ChatGPT bubble colors       | ColorControls          | Background colors for user vs assistant messages                                 |
+| User / ChatGPT text colors         | ColorControls          | Text colors for user vs assistant content                                        |
+| Conversation / sidebar backgrounds | BackgroundControls     | Opt-in surface colors; optional sync into one shared app background              |
+| Conversation background image      | BackgroundControls     | Opt-in uploaded image with opacity; injected fixed layer behind the conversation |
+| Restore defaults / Save / Cancel   | FormButtons            | Reset the active tab, persist immediately, or restore the saved settings         |
+| Delete all conversations           | Misc tab               | DOM automation on the active ChatGPT tab                                         |
+| Scroll to top                      | Misc tab + ScrollToTop | Enabled by default; optional floating button when the thread is scrolled         |
+| Popup appearance                   | Misc tab               | System, Light, or Dark theme preference                                          |
+| Fixed CSS helpers                  | `stylingFunctions`     | Content width-cap removal, light-mode submit button color, and related helpers   |
 
 ## Settings model
 
@@ -51,25 +50,25 @@ The uploaded background image itself is **not** part of `Settings`. It is stored
 as a data URL under `backgroundImage` in `chrome.storage.local` (sync's per-item
 quota is too small for image data).
 
-| Key                            | Default     |
-| ------------------------------ | ----------- |
-| `messageMaxWidthStyle`         | `"95"`      |
-| `messageColorUserStyle`        | `"#0084FF"` |
-| `messageColorNonUserStyle`     | `"#333333"` |
-| `messagePaddingStyle`          | `"10"`      |
-| `messageBorderRadiusStyle`     | `"5"`       |
-| `inputBoxMaxWidthStyle`        | `"94"`      |
-| `textColorUserStyle`           | `"#FFFFFF"` |
-| `textColorNonUserStyle`        | `"#FFFFFF"` |
-| `customBackgroundsEnabled`     | `false`     |
-| `syncBackgroundColors`         | `false`     |
-| `conversationBackgroundStyle`  | `"#212121"` |
-| `sidebarBackgroundStyle`       | `"#171717"` |
-| `syncedBackgroundStyle`        | `"#212121"` |
-| `backgroundImageEnabled`       | `false`     |
-| `backgroundImageOpacity`       | `"25"`      |
-| `scrollToTopEnabled`           | `true`      |
-| `themePreference`              | `"system"`  |
+| Key                           | Default     |
+| ----------------------------- | ----------- |
+| `messageMaxWidthStyle`        | `"95"`      |
+| `messageColorUserStyle`       | `"#0084FF"` |
+| `messageColorNonUserStyle`    | `"#333333"` |
+| `messagePaddingStyle`         | `"10"`      |
+| `messageBorderRadiusStyle`    | `"5"`       |
+| `inputBoxMaxWidthStyle`       | `"94"`      |
+| `textColorUserStyle`          | `"#FFFFFF"` |
+| `textColorNonUserStyle`       | `"#FFFFFF"` |
+| `customBackgroundsEnabled`    | `false`     |
+| `syncBackgroundColors`        | `false`     |
+| `conversationBackgroundStyle` | `"#212121"` |
+| `sidebarBackgroundStyle`      | `"#171717"` |
+| `syncedBackgroundStyle`       | `"#212121"` |
+| `backgroundImageEnabled`      | `false`     |
+| `backgroundImageOpacity`      | `"25"`      |
+| `scrollToTopEnabled`          | `true`      |
+| `themePreference`             | `"system"`  |
 
 Storage key: `options` in `chrome.storage.sync`. Stored values are merged over `defaultSettings`, so missing keys from older installs receive current defaults.
 
@@ -106,30 +105,27 @@ The popup does not forward its initial defaults to the background until storage 
 
 [`src/shared/utils/stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) is the single place settings become CSS.
 
-1. `buildCss(settings)` is a **pure** function: the returned CSS string depends only on the provided `Settings` object (no module-level mutable fragments).
+1. `buildCss(settings, selectors)` is a **pure** function: the returned CSS string depends only on the provided `Settings` object and selector map. `selectors` defaults to the registry in [`src/shared/selectors.ts`](../src/shared/selectors.ts).
 2. Fixed helper rules (content width-cap removal, turn sizing helpers, light-mode submit button color) are always included.
-3. Primary selector root: `[data-testid^="conversation-turn-"]`.
-    - User turns: `[data-turn="user"]`
-    - Assistant turns: `[data-turn="assistant"]`
+3. Every ChatGPT selector comes from the registry (`messageTurn`, `userTurn`, `userBubble`, `composerForm`, ...). A selector list such as `a, b` is wrapped in `:is(...)` before descendants are appended, so overrides compose correctly.
 
-`updateStyles(settings)` remains as a thin alias of `buildCss` for compatibility.
+`updateStyles(settings, selectors)` remains as a thin alias of `buildCss` for compatibility.
 
 ### Messaging helper
 
 `sendMessageToTab(settings)`:
 
--   Builds CSS via `buildCss(settings)`.
--   Sends `{ action: "updateStyles", arg: cssString }` to the active tab.
+-   Sends `{ action: "updateStyles", settings }` to the active tab.
 -   Live controls always pass the **full updated settings object** (not a single key), so previews never depend on prior call history.
 
-Content script applies `arg` as `customStyle.textContent` — it does not re-parse settings for live updates. On page load it uses `buildCss(settings)` from storage.
+The content script stores the settings and builds CSS with its active selectors (registry defaults, plus dev-only overrides from the selector workbench). On page load it does the same from storage.
 
 ## Scroll to top
 
 [`src/components/scrollToTop/ScrollToTop.tsx`](../src/components/scrollToTop/ScrollToTop.tsx), mounted by the content script:
 
 -   Finds ChatGPT’s scroll container via `[data-scroll-root]`.
--   Mounts beside the native scroll-to-bottom control under `#thread-bottom-container`.
+-   Mounts beside the native scroll-to-bottom arrow, inside the `scrollControlHost` registry match.
 -   Shows a circular button when `scrollTop !== 0`.
 -   Smooth-scrolls to top; hides the button while scrolling.
 

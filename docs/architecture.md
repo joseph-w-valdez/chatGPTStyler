@@ -78,23 +78,25 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 [`src/contentScript.ts`](../src/contentScript.ts):
 
 1. Creates `<style id="custom-style">` in `document.head`.
-2. Loads options from storage and sets `customStyle.textContent = buildCss(settings)`.
+2. Loads options from storage, keeps them as the current settings, and sets `customStyle.textContent = buildCss(settings, getActiveSelectors())`.
 3. Listens for runtime messages:
-    - `action === "updateStyles"` → replace style text with `request.arg` (CSS string).
+    - `action === "updateStyles"` → store `request.settings` and rebuild the style text with the active selectors.
     - `action === "deleteMessages"` → run async `deleteAllChats()`, respond SUCCESS/FAILURE when finished.
-4. Periodically (every 1s) runs layout cleanup (`removeUnnecessarySpace`) and keeps `ScrollToTop` mounted on the current ChatGPT scroll container. Missing DOM nodes are skipped; stale mounts are cleaned up when the parent is replaced.
+4. Periodically (every 1s) keeps `ScrollToTop` and the background image layer mounted on the current ChatGPT scroll container. Missing DOM nodes are skipped; stale mounts are cleaned up when the parent is replaced.
 
 ### Shared styling & storage
 
-| Module                                                                        | Role                                                           |
-| ----------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| [`settings.ts`](../src/shared/settings.ts)                                    | Domain `Settings` interface and `defaultSettings`              |
-| [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts)               | Get/set `options` under `chrome.storage.sync`                  |
-| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts)              | Pure `buildCss(settings)`, `sendMessageToTab` for live preview |
-| [`messaging/`](../src/shared/messaging/)                                      | Typed popup / content / port message contracts                 |
-| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)                 | Profile → Settings → Data controls → delete-all → confirm      |
-| [`chatDom.ts`](../src/lib/utilities/chatDom.ts)                               | Shared ChatGPT DOM selectors / mount ids                       |
-| [`removeUnnecessarySpace.ts`](../src/lib/utilities/removeUnnecessarySpace.ts) | Remove Tailwind/layout classes that constrain width            |
+| Module                                                           | Role                                                      |
+| ---------------------------------------------------------------- | --------------------------------------------------------- |
+| [`settings.ts`](../src/shared/settings.ts)                       | Domain `Settings` interface and `defaultSettings`         |
+| [`settingsStorage.ts`](../src/lib/utilities/settingsStorage.ts)  | Get/set `options` under `chrome.storage.sync`             |
+| [`stylingFunctions.ts`](../src/shared/utils/stylingFunctions.ts) | Pure `buildCss(settings, selectors)`, `sendMessageToTab`  |
+| [`selectors.ts`](../src/shared/selectors.ts)                     | Registry of every ChatGPT DOM selector and its default    |
+| [`activeSelectors.ts`](../src/lib/utilities/activeSelectors.ts)  | Dev overrides, then repairs, then registry variants       |
+| [`messaging/`](../src/shared/messaging/)                         | Typed popup / content / port message contracts            |
+| [`deleteAllChats.ts`](../src/lib/utilities/deleteAllChats.ts)    | Profile → Settings → Data controls → delete-all → confirm |
+| [`chatDom.ts`](../src/lib/utilities/chatDom.ts)                  | Scroll-to-top mount id and button styling                 |
+| [`selectorRepair.ts`](../src/lib/utilities/selectorRepair.ts)    | Repair layout: heal broken selectors, persist the repairs |
 
 ## Communication flows
 
@@ -102,8 +104,8 @@ This is the intentional “save when popup closes” path. Explicit Save in the 
 
 1. User changes a control in MessageEditor / ColorControls / sliders.
 2. Control updates React state with the full next settings object and calls `sendMessageToTab(nextSettings)`.
-3. `sendMessageToTab` builds CSS via pure `buildCss(settings)`, then sends a typed `{ action: "updateStyles", arg }` to the active tab (skips missing tab ids / swallows `runtime.lastError` when no content script).
-4. Content script writes the string into `#custom-style`.
+3. `sendMessageToTab` sends a typed `{ action: "updateStyles", settings }` to the active tab (skips missing tab ids / swallows `runtime.lastError` when no content script).
+4. Content script builds CSS with `buildCss(settings, getActiveSelectors())` and writes it into `#custom-style`. Building on the page, not in the popup, keeps live previews consistent with any dev selector overrides.
 
 **Implication:** Live preview only reaches the **active** tab. The ChatGPT tab must be focused when adjusting styles.
 
